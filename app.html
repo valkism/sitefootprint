@@ -959,7 +959,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
 // Apply saved theme immediately  -  default light
 (function(){
@@ -970,13 +970,12 @@
 firebase.initializeApp({
   apiKey:"AIzaSyBY_fD1V9-bkYs4hsz_KEGmZi1gA3Pv_70",
   authDomain:"footprint-eb752.firebaseapp.com",
-  databaseURL:"https://footprint-eb752-default-rtdb.firebaseio.com",
   projectId:"footprint-eb752",
   storageBucket:"footprint-eb752.appspot.com",
   messagingSenderId:"354485455243",
   appId:"1:354485455243:web:a119223df4b25a9304478e"
 });
-var _auth=firebase.auth(), _db=firebase.database(), _user=null, _udoc=null;
+var _auth=firebase.auth(), _db=firebase.firestore(), _user=null, _udoc=null;
 
 // Persistent login
 _auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
@@ -995,21 +994,21 @@ _auth.onAuthStateChanged(function(user){
     setTimeout(function(){toast('🎉 Welcome! Your 3-day trial has started. Enjoy scanning!',5000);},800);
   }
   if(typeof window._checkAndShowAdmin==='function') window._checkAndShowAdmin(user.email);
-  _db.ref('users/'+user.uid).once('value')
+  _db.collection('users').doc(user.uid).get()
     .then(function(snap){
-      _udoc=snap.val()||{};
+      _udoc=snap.data()||{};
       updateAcctUI();
-      return _db.ref('users/'+user.uid+'/leads').once('value');
+      return _db.collection('users').doc(user.uid).collection('leads').get();
     })
     .then(function(snap){
-      if(!snap||!snap.val())return;
-      var obj=snap.val();
-      var fl=Object.values(obj);
+      if(!snap)return;
+      var fl=[];
+      snap.forEach(function(d){fl.push(d.data());});
       fl.sort(function(a,b){return new Date(b.savedAt||0)-new Date(a.savedAt||0);});
       if(fl.length>0){leads=fl;refreshBadge();renderCRM();}
     })
     .catch(function(e){
-      console.warn('DB error:',e);
+      console.warn('Firestore:',e);
       updateAcctUI();
       renderCRM();
     });
@@ -1068,7 +1067,7 @@ function openCheckout(){
   .finally(()=>{if(btn){btn.disabled=false;btn.textContent='Manage Billing';}});
   }).catch(()=>toast('Authentication error  -  please refresh and try again.'));
 }
-function saveLeadFS(lead){if(!_user)return;_db.ref('users/'+_user.uid+'/leads/'+lead.id).set(lead).catch(console.warn);}
+function saveLeadFS(lead){if(!_user)return;_db.collection('users').doc(_user.uid).collection('leads').doc(lead.id).set(lead).catch(console.warn);}
 
 // ── Community "has website" flagging ──
 // When a user confirms a business HAS a website, we write to a global shared collection.
@@ -1085,13 +1084,13 @@ function communityFlagId(name, address){
 function flagBusinessHasWebsite(lead){
   if(!_user) return;
   var flagId = communityFlagId(lead.name, lead.address);
-  _db.ref('community_flags/'+flagId).set({
+  _db.collection('community_flags').doc(flagId).set({
     name: lead.name,
     address: lead.address || '',
     locationName: lead.locationName || '',
     category: lead.category || '',
     flaggedBy: _user.uid,
-    flagCount: 1,
+    flagCount: firebase.firestore.FieldValue.increment(1),
     lastFlagged: Date.now(),
     reason: 'has_website',
   }, {merge: true})
@@ -1106,12 +1105,10 @@ var _communityFlagLoaded = false;
 function loadCommunityFlags(){
   if(_communityFlagLoaded) return;
   _communityFlagLoaded = true;
-  _db.ref('community_flags').once('value')
+  _db.collection('community_flags').where('flagCount','>=',2).get()
     .then(function(snap){
       _communityFlagCache = new Set();
-      if(snap.val()){
-        Object.entries(snap.val()).forEach(function(e){ if(e[1]&&e[1].flagCount>=2) _communityFlagCache.add(e[0]); });
-      }
+      snap.forEach(function(doc){ _communityFlagCache.add(doc.id); });
       console.log('Community flags loaded:', _communityFlagCache.size);
     })
     .catch(function(e){ console.warn('Could not load community flags:', e); _communityFlagCache = new Set(); });
@@ -1121,11 +1118,11 @@ function isCommunityFlagged(name, address){
   if(!_communityFlagCache) return false;
   return _communityFlagCache.has(communityFlagId(name, address));
 }
-function delLeadFS(id){if(!_user)return;_db.ref('users/'+_user.uid+'/leads/'+id).remove().catch(console.warn);}
-function clearLeadsFS(){if(!_user)return;_db.ref('users/'+_user.uid+'/leads').remove().catch(console.warn);}
+function delLeadFS(id){if(!_user)return;_db.collection('users').doc(_user.uid).collection('leads').doc(id).delete().catch(console.warn);}
+function clearLeadsFS(){if(!_user)return;_db.collection('users').doc(_user.uid).collection('leads').get().then(function(snap){var b=_db.batch();snap.forEach(function(d){b.delete(d.ref);});return b.commit();}).catch(console.warn);}
 
 // Save scan history to Firestore
-function saveScanHistoryFS(entry){if(!_user)return;_db.ref('users/'+_user.uid+'/scans').push({...entry,uid:_user.uid}).catch(console.warn);}
+function saveScanHistoryFS(entry){if(!_user)return;_db.collection('users').doc(_user.uid).collection('scans').add({...entry,uid:_user.uid}).catch(console.warn);}
 
 document.addEventListener('DOMContentLoaded',function(){
   var p=new URLSearchParams(location.search);
@@ -1697,13 +1694,13 @@ async function loadGmapsKeyFromFirestore(){
     const teamId=_udoc&&_udoc.teamId;
     let snap;
     if(teamId){
-      snap=await _db.ref('teams/'+teamId).once('value');
+      snap=await _db.collection('teams').doc(teamId).get();
       const key=snap.val()||'';
       window._cachedGmapsKey=key||null;
       return key||null;
     } else {
-      snap=await _db.ref('users/'+_user.uid+'/gmapsKey').once('value');
-      const key=snap.val()||'';
+      snap=await _db.collection('users').doc(_user.uid).get();
+      const key=snap.data()&&snap.data().gmapsKey||'';
       window._cachedGmapsKey=key||null;
       return key||null;
     }
@@ -1716,12 +1713,12 @@ async function saveGmapsKeyToFirestore(key){
     // Only team owner / head account can save team key
     if(teamId){
       // Check if this user is the team owner
-      const teamSnap=await _db.ref('teams/'+teamId).once('value');
+      const teamSnap=await _db.collection('teams').doc(teamId).get();
       const isOwner=teamSnap.data()&&teamSnap.data().ownerId===_user.uid;
       if(!isOwner){toast('Only the team owner can change the API key');return;}
-      await _db.ref('teams/'+teamId+'/gmapsKey').set(key);
+      await _db.collection('teams').doc(teamId).update({gmapsKey:key});
     } else {
-      await _db.ref('users/'+_user.uid+'/gmapsKey').set(key);
+      await _db.collection('users').doc(_user.uid).update({gmapsKey:key});
     }
     window._cachedGmapsKey=key||null;
   }catch(e){console.warn('saveGmapsKey:',e);toast('Error saving key');}
@@ -2252,18 +2249,18 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
   };
 
   function adminMsg(msg,isErr){var el=document.getElementById('admin-msg');if(!el)return;el.style.display='block';el.style.background=isErr?'var(--red-pale)':'var(--green-pale)';el.style.color=isErr?'var(--red)':'var(--green)';el.style.border=isErr?'1px solid rgba(214,48,49,.2)':'1px solid rgba(26,158,110,.2)';el.textContent=msg;setTimeout(()=>el.style.display='none',4000);}
-  async function findByEmail(email){var snap=await _db.ref('users').orderByChild('email').equalTo(email.trim()).limitToFirst(1).once('value');if(snap.empty)return null;return{id:snap.docs[0].id,data:snap.docs[0].data()};}
+  async function findByEmail(email){var snap=await _db.collection('users').where('email','==',email.trim()).limit(1).get();if(snap.empty)return null;return{id:snap.docs[0].id,data:snap.docs[0].data()};}
 
   function setupAdminControls(){
     document.getElementById('admin-grant-btn')?.addEventListener('click',async function(){
       var email=(document.getElementById('admin-grant-email').value||'').trim();if(!email){adminMsg('Enter an email',true);return;}
       this.disabled=true;this.textContent='…';
-      try{var u=await findByEmail(email);if(!u){adminMsg('User not found: '+email,true);return;}await _db.ref('users/'+u.id).update({plan:'gifted',subscriptionStatus:'active',giftedBy:'admin',giftedAt:Date.now()});adminMsg('✓ Free access granted to '+email);document.getElementById('admin-grant-email').value='';loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='✓ Grant';}
+      try{var u=await findByEmail(email);if(!u){adminMsg('User not found: '+email,true);return;}await _db.collection('users').doc(u.id).update({plan:'gifted',subscriptionStatus:'active',giftedBy:'admin',giftedAt:firebase.firestore.FieldValue.serverTimestamp()});adminMsg('✓ Free access granted to '+email);document.getElementById('admin-grant-email').value='';loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='✓ Grant';}
     });
     document.getElementById('admin-revoke-btn')?.addEventListener('click',async function(){
       var email=(document.getElementById('admin-revoke-email').value||'').trim();if(!email||!confirm('Revoke for '+email+'?'))return;
       this.disabled=true;this.textContent='…';
-      try{var u=await findByEmail(email);if(!u){adminMsg('User not found',true);return;}await _db.ref('users/'+u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:Date.now()});adminMsg('Revoked for '+email);document.getElementById('admin-revoke-email').value='';loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='✕ Revoke';}
+      try{var u=await findByEmail(email);if(!u){adminMsg('User not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:Date.now()});adminMsg('Revoked for '+email);document.getElementById('admin-revoke-email').value='';loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='✕ Revoke';}
     });
     document.getElementById('admin-lookup-btn')?.addEventListener('click',async function(){
       var email=(document.getElementById('admin-lookup-email').value||'').trim();if(!email)return;
@@ -2275,18 +2272,18 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
   async function loadAdminUsers(){
     var container=document.getElementById('admin-users-table');if(!container)return;
     try{
-      var snap=await _db.ref('users').limitToLast(50).once('value');
-      if(!snap.val()){container.innerHTML='<div class="admin-empty">No users yet.</div>';return;}
+      var snap=await _db.collection('users').orderBy('createdAt','desc').limit(50).get();
+      if(snap.empty){container.innerHTML='<div class="admin-empty">No users yet.</div>';return;}
       var rows='';
-      var usersObj=snap.val()||{};Object.entries(usersObj).forEach(function(entry){var doc={id:entry[0],data:function(){return entry[1];}};
+      snap.forEach(function(doc){
         var d=doc.data();
         var pb=d.plan==='gifted'?'apb-gifted':d.plan==='pro'||d.subscriptionStatus==='active'?'apb-active':d.subscriptionStatus==='trialing'?'apb-trial':'apb-free';
         var pl=d.plan==='gifted'?'Gifted':d.plan==='pro'?'Pro':d.subscriptionStatus==='trialing'?'Trial':'Free';
         rows+=`<tr><td style="font-size:.8rem">${esc(d.email||' - ')}</td><td><span class="admin-plan-badge ${pb}">${pl}</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted)">${d.createdAt?new Date(d.createdAt.seconds*1000).toLocaleDateString():' - '}</td><td><div class="admin-actions"><button class="btn btn-green btn-xs agrant" data-email="${esc(d.email||'')}">Grant</button><button class="btn btn-danger btn-xs arevoke" data-email="${esc(d.email||'')}">Revoke</button></div></td></tr>`;
       });
       container.innerHTML=`<div style="overflow-x:auto;border-radius:9px;border:1px solid var(--border)"><table class="admin-table"><thead><tr><th>Email</th><th>Plan</th><th>Joined</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-      container.querySelectorAll('.agrant').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Grant to '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.ref('users/'+u.id).update({plan:'gifted',subscriptionStatus:'active',giftedBy:'admin',giftedAt:Date.now()});adminMsg('✓ Granted to '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
-      container.querySelectorAll('.arevoke').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Revoke for '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.ref('users/'+u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:Date.now()});adminMsg('Revoked for '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
+      container.querySelectorAll('.agrant').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Grant to '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'gifted',subscriptionStatus:'active',giftedBy:'admin',giftedAt:firebase.firestore.FieldValue.serverTimestamp()});adminMsg('✓ Granted to '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
+      container.querySelectorAll('.arevoke').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Revoke for '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:Date.now()});adminMsg('Revoked for '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
     }catch(e){container.innerHTML=`<div class="admin-empty" style="color:var(--red)">Error: ${esc(e.message)}</div>`;}
   }
   window._loadAdminUsers=loadAdminUsers;
