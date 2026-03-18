@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Footprint  -  Find Clients Who Need You</title>
+  <meta name="description" content="Footprint scans any suburb or city and finds local businesses with no website, no Instagram, no social media. The perfect prospecting tool for web designers and social media managers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --bg:#fff;--surf:#f4f8f6;--surf2:#eaf2ee;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
+      --text:#0d1f19;--muted:#6a8c80;--dim:#b8cfc8;
+      --accent:#1a9e6e;--accent2:#157a55;--pale:rgba(26,158,110,0.1);
+      --red:#d63031;--amber:#c07800;--max-w:1100px;
+    }
+    html{font-size:16px;scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden;}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+    .nav-i{max-width:var(--max-w);margin:0 auto;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;}
+    .nlogo{display:flex;align-items:center;text-decoration:none;font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);}
+    .nlogof{color:var(--accent);}
+    .nlogod{width:6px;height:6px;border-radius:50%;background:var(--accent);position:relative;top:-1px;margin-left:1px;}
+    .nlinks{display:flex;align-items:center;gap:22px;}
+    .nlinks a{color:var(--muted);text-decoration:none;font-size:0.84rem;font-weight:500;transition:color .2s;}
+    .nlinks a:hover{color:var(--text);}
+    .ncta{display:flex;gap:8px;}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-family:'Sora',sans-serif;font-size:0.84rem;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;border:none;}
+    .btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
+    .btn-ghost:hover{border-color:var(--border2);color:var(--text);}
+    .btn-green{background:var(--accent);color:#fff;box-shadow:0 0 14px rgba(26,158,110,0.2);}
+    .btn-green:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 2px 20px rgba(26,158,110,0.28);}
+    .btn-lg{padding:13px 26px;font-size:0.95rem;border-radius:10px;}
+
+    /* Hero */
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 28px 80px;background:linear-gradient(180deg,#fff 0%,#f0f8f4 100%);position:relative;overflow:hidden;}
+    .hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 55% at 50% 0%,rgba(26,158,110,0.07) 0%,transparent 60%);}
+    .hero-grid{position:absolute;inset:0;pointer-events:none;opacity:0.04;background-image:linear-gradient(rgba(26,158,110,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(26,158,110,.5) 1px,transparent 1px);background-size:48px 48px;}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1.5px solid rgba(26,158,110,0.25);background:rgba(26,158,110,0.07);color:var(--accent);font-size:0.7rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:24px;position:relative;}
+    .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:bdp 2s ease-in-out infinite;}
+    @keyframes bdp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+    h1{font-family:'Sora',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:700;line-height:1.1;letter-spacing:-0.04em;margin-bottom:18px;position:relative;}
+    h1 em{font-style:normal;color:var(--accent);}
+    .hero-sub{font-size:clamp(0.95rem,1.5vw,1.08rem);color:var(--muted);max-width:560px;margin:0 auto 32px;line-height:1.75;position:relative;}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;position:relative;}
+    .hero-note{font-size:0.71rem;color:var(--muted);position:relative;}
+
+    /* Audience tags */
+    .audience-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px;position:relative;}
+    .atag{display:flex;align-items:center;gap:6px;padding:6px 14px;background:#fff;border:1.5px solid var(--border);border-radius:99px;font-size:0.78rem;font-weight:600;color:var(--muted);}
+    .atag span{font-size:1rem;}
+
+    /* Mock UI preview */
+    .preview-wrap{position:relative;width:100%;max-width:820px;margin:0 auto;}
+    .preview-glow{position:absolute;inset:-20px;background:radial-gradient(ellipse at 50% 60%,rgba(26,158,110,0.07) 0%,transparent 70%);pointer-events:none;}
+    .pwin{background:#fff;border:1.5px solid var(--border2);border-radius:12px;overflow:hidden;box-shadow:0 16px 60px rgba(0,0,0,0.1),0 4px 16px rgba(0,0,0,0.05);}
+    .pbar{display:flex;align-items:center;gap:6px;padding:10px 13px;background:var(--surf);border-bottom:1px solid var(--border);}
+    .pd{width:9px;height:9px;border-radius:50%;}
+    .pbody{display:grid;grid-template-columns:240px 1fr;height:300px;}
+    .psb{border-right:1px solid var(--border);padding:12px;display:flex;flex-direction:column;gap:7px;background:#fff;}
+    .psearch{background:var(--surf2);border:1.5px solid var(--border);border-radius:7px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);}
+    .plab{font-family:'JetBrains Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;}
+    .psrc{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1.5px solid rgba(26,158,110,0.3);border-radius:7px;background:rgba(26,158,110,0.07);}
+    .psrc-l{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--accent);font-weight:700;}
+    .pchips{display:flex;gap:4px;flex-wrap:wrap;}
+    .pchip{padding:3px 8px;border-radius:99px;font-size:0.63rem;font-weight:700;background:var(--pale);color:var(--accent);border:1.5px solid rgba(26,158,110,0.2);}
+    .pchip.off{background:var(--surf2);color:var(--muted);border-color:var(--border);}
+    .pscanb{margin-top:auto;background:var(--accent);color:#fff;border-radius:7px;padding:8px;text-align:center;font-size:0.7rem;font-weight:700;}
+    .pmain{padding:12px;position:relative;background:#fff;overflow:hidden;}
+    .presult-hdr{font-family:'JetBrains Mono',monospace;font-size:0.56rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;}
+    .plead{display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:4px;background:var(--surf);border:1.5px solid var(--border);border-left:3px solid var(--border);border-radius:7px;animation:psl .5s ease both;}
+    .plead:nth-child(2){border-left-color:var(--red);animation-delay:.08s;}
+    .plead:nth-child(3){border-left-color:var(--amber);animation-delay:.2s;}
+    .plead:nth-child(4){border-left-color:var(--accent);animation-delay:.32s;}
+    .plead:nth-child(5){border-left-color:var(--accent);animation-delay:.44s;}
+    @keyframes psl{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+    .psc{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;min-width:28px;text-align:right;flex-shrink:0;}
+    .pi{flex:1;min-width:0;}
+    .pn{font-size:0.74rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .pm{font-size:0.61rem;color:var(--muted);margin-top:1px;}
+    .pbgs{display:flex;gap:3px;flex-shrink:0;}
+    .pbg{font-size:0.53rem;padding:2px 5px;font-weight:700;border-radius:4px;font-family:'JetBrains Mono',monospace;}
+    .pbg-r{background:rgba(214,48,49,.1);color:var(--red);border:1px solid rgba(214,48,49,.18);}
+    .pbg-a{background:rgba(192,120,0,.1);color:var(--amber);border:1px solid rgba(192,120,0,.18);}
+    .pcnt{position:absolute;top:11px;right:11px;background:#fff;border:1.5px solid var(--border);border-radius:7px;padding:5px 9px;font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:700;color:var(--accent);display:flex;flex-direction:column;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+    .pcl{font-family:'JetBrains Mono',monospace;font-size:0.52rem;color:var(--muted);}
+
+    /* Stats */
+    .stats{background:var(--surf);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);}
+    .stats-i{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding:0 32px;}
+    .stat{padding:22px 12px;text-align:center;border-right:1px solid var(--border);}
+    .stat:last-child{border-right:none;}
+    .stat-n{font-family:'Sora',sans-serif;font-size:1.9rem;font-weight:700;line-height:1;color:var(--accent);margin-bottom:4px;}
+    .stat-l{font-size:0.78rem;color:var(--muted);}
+
+    /* Sections */
+    section{padding:clamp(48px,7vw,88px) clamp(20px,4vw,48px);}
+    .si{max-width:var(--max-w);margin:0 auto;}
+    .sec-ey{font-family:'JetBrains Mono',monospace;font-size:0.64rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+    h2{font-family:'Sora',sans-serif;font-size:clamp(1.7rem,3vw,2.6rem);font-weight:700;line-height:1.15;letter-spacing:-0.03em;margin-bottom:12px;}
+    h2 em{font-style:normal;color:var(--accent);}
+    .sub{font-size:0.98rem;color:var(--muted);max-width:480px;line-height:1.75;}
+
+    /* For who section */
+    .for-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-top:40px;}
+    .for-card{background:#fff;padding:32px 28px;transition:background .2s;}
+    .for-card:hover{background:var(--surf);}
+    .for-role{font-size:1.5rem;margin-bottom:10px;}
+    .for-title{font-size:1rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:8px;}
+    .for-desc{font-size:0.83rem;color:var(--muted);line-height:1.75;margin-bottom:16px;}
+    .for-list{display:flex;flex-direction:column;gap:7px;}
+    .for-item{display:flex;align-items:flex-start;gap:8px;font-size:0.8rem;color:var(--muted);}
+    .for-item::before{content:'→';color:var(--accent);font-weight:700;flex-shrink:0;}
+    .for-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--pale);border:1px solid rgba(26,158,110,0.2);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px;}
+
+    /* Data source split */
+    .src-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:24px;}
+    .src-card{padding:22px 22px;background:#fff;border-right:1px solid var(--border);transition:background .2s;}
+    .src-card:last-child{border-right:none;}
+    .src-card:hover{background:var(--surf);}
+    .src-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px;}
+    .sb-free{background:var(--pale);color:var(--accent);border:1px solid rgba(26,158,110,.2);}
+    .sb-best{background:rgba(26,111,168,.09);color:#1a6fa8;border:1px solid rgba(26,111,168,.2);}
+    .sb-pow{background:rgba(192,120,0,.09);color:var(--amber);border:1px solid rgba(192,120,0,.2);}
+    .src-icon{font-size:1.3rem;margin-bottom:7px;display:block;}
+    .src-title{font-size:0.88rem;font-weight:700;margin-bottom:5px;letter-spacing:-0.02em;}
+    .src-desc{font-size:0.78rem;color:var(--muted);line-height:1.65;}
+
+    /* Features */
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:44px;}
+    .feat{background:#fff;padding:24px 20px;transition:background .2s;}
+    .feat:hover{background:var(--surf);}
+    .feat-ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:11px;background:var(--surf2);border:1px solid var(--border);}
+    .feat-t{font-size:0.87rem;font-weight:700;margin-bottom:5px;letter-spacing:-0.02em;}
+    .feat-d{font-size:0.78rem;color:var(--muted);line-height:1.68;}
+
+    /* Steps */
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:44px;position:relative;}
+    .steps::before{content:'';position:absolute;top:22px;left:14%;right:14%;height:1px;background:var(--border);}
+    .step{text-align:center;padding:0 12px;}
+    .step-n{width:44px;height:44px;border-radius:50%;background:#fff;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;color:var(--accent);margin:0 auto 14px;position:relative;z-index:1;box-shadow:0 0 0 4px #fff;}
+    .step-t{font-size:0.85rem;font-weight:700;margin-bottom:5px;letter-spacing:-0.02em;}
+    .step-d{font-size:0.76rem;color:var(--muted);line-height:1.6;}
+
+    /* Pricing */
+    .price-sec{text-align:center;background:var(--surf);}
+    .price-card{max-width:420px;margin:40px auto 0;background:#fff;border:1.5px solid var(--border2);border-radius:14px;overflow:hidden;box-shadow:0 6px 32px rgba(0,0,0,0.07);}
+    .price-top{padding:28px 28px 20px;border-bottom:1px solid var(--border);}
+    .tbadge{display:inline-block;padding:4px 11px;background:rgba(192,120,0,.09);color:var(--amber);border:1px solid rgba(192,120,0,.2);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+    .price-num{font-family:'Sora',sans-serif;font-size:2.6rem;font-weight:700;line-height:1;color:var(--text);margin-bottom:5px;letter-spacing:-0.04em;}
+    .price-num sup{font-size:1rem;vertical-align:super;}
+    .price-per{font-size:0.85rem;color:var(--muted);}
+    .price-note{font-size:0.76rem;color:var(--muted);margin-top:4px;}
+    .price-feats{padding:20px 28px;display:flex;flex-direction:column;gap:8px;}
+    .pf{display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:var(--text);text-align:left;}
+    .pfck{width:16px;height:16px;border-radius:50%;background:var(--pale);border:1.5px solid rgba(26,158,110,.25);color:var(--accent);font-size:0.52rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+    .price-cta{padding:0 28px 28px;}
+    .price-cta .btn{width:100%;justify-content:center;padding:12px;border-radius:10px;}
+    .price-legal{font-size:0.67rem;color:var(--muted);margin-top:9px;line-height:1.65;text-align:center;}
+
+    
+    /* FAQ */
+    .faq-list{max-width:580px;margin:36px auto 0;}
+    .faq-item{border-bottom:1px solid var(--border);padding:16px 0;}
+    .faq-q{font-size:0.87rem;font-weight:700;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:11px;letter-spacing:-0.02em;}
+    .faq-ic{color:var(--muted);transition:transform .2s;flex-shrink:0;}
+    .faq-item.open .faq-ic{transform:rotate(45deg);}
+    .faq-a{font-size:0.81rem;color:var(--muted);line-height:1.75;margin-top:9px;display:none;}
+    .faq-item.open .faq-a{display:block;}
+
+    /* CTA */
+    .cta-sec{text-align:center;}
+    .cta-sec h2{margin-bottom:9px;}
+
+    /* Footer */
+    footer{padding:26px 32px;border-top:1px solid var(--border);background:var(--surf);}
+    .foot-i{max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+    .flogo{display:flex;align-items:center;text-decoration:none;font-family:'Sora',sans-serif;font-size:0.92rem;font-weight:700;letter-spacing:-0.04em;color:var(--muted);}
+    .flogof{color:var(--accent);}
+    .flinks{display:flex;gap:16px;}
+    .flinks a{font-size:0.76rem;color:var(--muted);text-decoration:none;transition:color .2s;}
+    .flinks a:hover{color:var(--text);}
+    .fcopy{font-size:0.68rem;color:var(--dim);}
+
+    /* Responsive */
+    /* ══ Index responsive ══════════════════════════════════════════ */
+
+    /* ── Base fluid type scale ── */
+    :root{
+      --max-w:1100px;
+      --fs-xs:clamp(0.62rem,0.58rem+0.2vw,0.72rem);
+      --fs-sm:clamp(0.72rem,0.67rem+0.25vw,0.84rem);
+      --fs-base:clamp(0.84rem,0.8rem+0.2vw,0.95rem);
+    }
+    html{font-size:clamp(14px,1.1vw+8px,17px);}
+
+    /* Section padding fluid */
+    section{padding:clamp(48px,7vw,88px) clamp(18px,5vw,48px);}
+
+    /* ── lg: laptop ── */
+    @media(max-width:1100px){
+      .for-grid{grid-template-columns:1fr 1fr;}
+      .feat-grid{grid-template-columns:1fr 1fr 1fr;}
+      .nav-i{padding:0 24px;}
+    }
+
+    /* ── md: tablet ── */
+    @media(max-width:900px){
+      .nlinks{display:none;}
+      .feat-grid{grid-template-columns:1fr 1fr;}
+      .src-grid{grid-template-columns:1fr;}
+      .src-card{border-right:none;border-bottom:1px solid var(--border);}
+      .src-card:last-child{border-bottom:none;}
+      .steps{grid-template-columns:repeat(2,1fr);gap:24px;}
+      .steps::before{display:none;}
+      .stats-i{grid-template-columns:repeat(2,1fr);padding:0 18px;}
+      .stat:nth-child(2){border-right:none;}
+      .price-grid{grid-template-columns:1fr 1fr;}
+      .price-col:nth-child(2){border-right:none;border-bottom:1px solid var(--border);}
+    }
+
+    /* ── sm: large phone ── */
+    @media(max-width:640px){
+      section{padding:clamp(40px,8vw,60px) 18px;}
+      .feat-grid{grid-template-columns:1fr;}
+      .for-grid{grid-template-columns:1fr;}
+      .steps{grid-template-columns:1fr;}
+      .hero-cta{flex-direction:column;align-items:center;}
+      .hero-cta .btn{width:100%;justify-content:center;}
+      .audience-row{gap:5px;}
+      .atag{font-size:0.72rem;padding:5px 10px;}
+      .price-grid{grid-template-columns:1fr;}
+      .price-col{border-right:none !important;border-bottom:1px solid var(--border);}
+      .price-col:last-child{border-bottom:none;}
+      .pbody{grid-template-columns:1fr;}
+      .psb{display:none;}
+      .faq-list{margin:28px 0 0;}
+    }
+
+    /* ── xs: small phone ── */
+    @media(max-width:479px){
+      .nav-i{padding:0 14px;}
+      h1{font-size:clamp(1.8rem,7vw,2.4rem);}
+      .hero{padding:100px 16px 60px;}
+      .audience-row{display:none;}
+      .price-grid{grid-template-columns:1fr;}
+      .foot-i{flex-direction:column;gap:8px;text-align:center;}
+      .flinks{justify-content:center;}
+    }
+
+    /* ── wide desktop 1400px+ ── */
+    @media(min-width:1400px){
+      :root{--max-w:1280px;}
+      .for-grid{grid-template-columns:repeat(4,1fr);}
+    }
+
+    /* ── ultra-wide 1800px+ ── */
+    @media(min-width:1800px){
+      html{font-size:18px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-i">
+    <a href="/" class="nlogo"><span class="nlogof">foot</span><span>print</span><span class="nlogod"></span></a>
+    <div class="nlinks">
+      <a href="#for-who">Who it's for</a>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="ncta">
+      <a href="login.html" class="btn btn-ghost">Sign in</a>
+      <a href="login.html?signup=1" class="btn btn-green">Start free trial</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+
+  <div class="eyebrow"><div class="eyebrow-dot"></div>Built for web designers &amp; social media managers</div>
+
+  <h1>Stop cold pitching strangers.<br/><em>Find clients who need you.</em></h1>
+  <p class="hero-sub">Footprint scans any suburb or city and finds local businesses with no website, no Instagram, no social presence  -  a fresh list of warm prospects who genuinely need your services.</p>
+
+  <div class="audience-row">
+    <div class="atag"><span>💻</span> Web Designers</div>
+    <div class="atag"><span>📱</span> Social Media Managers</div>
+    <div class="atag"><span>🎨</span> Freelancers</div>
+    <div class="atag"><span>📣</span> Marketing Agencies</div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="login.html?signup=1" class="btn btn-green btn-lg">Start 3-day free trial</a>
+    <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
+  </div>
+  <div class="hero-note">No credit card charged for 3 days. Cancel anytime.</div>
+
+  <div class="preview-wrap" style="margin-top:48px;">
+    <div class="preview-glow"></div>
+    <div class="pwin">
+      <div class="pbar">
+        <div class="pd" style="background:#ff5f5f"></div><div class="pd" style="background:#f0b429"></div><div class="pd" style="background:#1a9e6e"></div>
+        <span style="margin-left:8px;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted)">footprint.app  -  Fitzroy, Melbourne · 2km</span>
+      </div>
+      <div class="pbody">
+        <div class="psb">
+          <div class="psearch">⌕ Fitzroy, Victoria</div>
+          <div class="plab">Data Source</div>
+          <div class="psrc"><span style="font-size:.95rem">🗺️</span><span class="psrc-l">OpenStreetMap · Free</span></div>
+          <div class="plab">Business Types</div>
+          <div class="pchips"><div class="pchip">Restaurants</div><div class="pchip">Cafés</div><div class="pchip off">Bars</div><div class="pchip">Hair</div></div>
+          <div class="pscanb">▶ START SCAN</div>
+        </div>
+        <div class="pmain">
+          <div class="presult-hdr">18 leads found  -  sorted by gap score</div>
+          <div class="plead"><div class="psc" style="color:var(--red)">91</div><div class="pi"><div class="pn">Bella's Pastry House</div><div class="pm">Bakery · Smith St</div></div><div class="pbgs"><div class="pbg pbg-r">NO SITE</div><div class="pbg pbg-a">NO SOCIAL</div></div></div>
+          <div class="plead"><div class="psc" style="color:var(--amber)">68</div><div class="pi"><div class="pn">Northside Auto Repairs</div><div class="pm">Auto · Brunswick St</div></div><div class="pbgs"><div class="pbg pbg-r">NO SITE</div></div></div>
+          <div class="plead"><div class="psc" style="color:var(--accent)">42</div><div class="pi"><div class="pn">Yuki Hair Studio</div><div class="pm">Hair · Gertrude St</div></div><div class="pbgs"><div class="pbg pbg-a">NO SOCIAL</div></div></div>
+          <div class="plead"><div class="psc" style="color:var(--accent)">31</div><div class="pi"><div class="pn">The Corner Grocer</div><div class="pm">Retail · St David St</div></div><div class="pbgs"><div class="pbg pbg-a">NO EMAIL</div></div></div>
+          <div class="pcnt"><span>18</span><span class="pcl">Leads</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stats-i">
+    <div class="stat"><div class="stat-n">180+</div><div class="stat-l">Countries supported</div></div>
+    <div class="stat"><div class="stat-n">Free</div><div class="stat-l">OpenStreetMap source</div></div>
+    <div class="stat"><div class="stat-n">+Google</div><div class="stat-l">Optional richer data</div></div>
+    <div class="stat"><div class="stat-n">$0</div><div class="stat-l">Per scan, ever</div></div>
+  </div>
+</div>
+
+<!-- For who -->
+<section id="for-who">
+  <div class="si">
+    <div class="sec-ey">Who it's for</div>
+    <h2>Your next client is already<br/><em>out there  -  just offline</em></h2>
+    <p class="sub">Footprint finds the local businesses that haven't made the jump online yet. They need you  -  they just don't know how to find you.</p>
+    <div class="for-grid">
+
+      <div class="for-card">
+        <div class="for-role">💻</div>
+        <div class="for-tag">Web Designers &amp; Devs</div>
+        <div class="for-title">Find businesses with no website</div>
+        <div class="for-desc">Restaurants, hair salons, tradies, mechanics  -  thousands of established local businesses are still running without a website. They have customers and cash flow. They just need someone to build their site.</div>
+        <div class="for-list">
+          <div class="for-item">Scan a suburb and get a list of businesses with no website in minutes</div>
+          <div class="for-item">Filter by type  -  restaurants, retail, trades, beauty  -  whatever you specialise in</div>
+          <div class="for-item">Gap Score shows how urgent the need is  -  high scorers are your hottest leads</div>
+          <div class="for-item">Generate a personalised pitch email for each lead with one click</div>
+        </div>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">📱</div>
+        <div class="for-tag">Social Media Managers</div>
+        <div class="for-title">Find businesses with no social presence</div>
+        <div class="for-desc">Every café, salon, or boutique with no Instagram is a potential retainer client. Footprint filters for businesses with no Facebook, no Instagram, no TikTok  -  your ideal prospect, ready to pitch.</div>
+        <div class="for-list">
+          <div class="for-item">Filter specifically for "No Social Media" to find your ideal prospects</div>
+          <div class="for-item">See at a glance which platforms they're missing  -  Facebook, Instagram, TikTok, Twitter</div>
+          <div class="for-item">Track outreach in the built-in CRM  -  from first contact to signed client</div>
+          <div class="for-item">Use note templates like "Sent proposal" and "Follow up next week" to stay organised</div>
+        </div>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">🎨</div>
+        <div class="for-tag">Freelancers</div>
+        <div class="for-title">A steady pipeline, on demand</div>
+        <div class="for-desc">Stop relying on referrals and job boards. Any time you need new work, open Footprint, scan your local area, and have a fresh list of warm prospects ready to pitch by end of day.</div>
+        <div class="for-list">
+          <div class="for-item">Add to your phone's home screen  -  scan local businesses while you're out and about</div>
+          <div class="for-item">Works in any city, suburb, or postcode worldwide</div>
+          <div class="for-item">Pitch emails written for you  -  personalised to each business's specific gaps</div>
+          <div class="for-item">Export to CSV for your own CRM or invoicing tools</div>
+        </div>
+      </div>
+
+      <div class="for-card">
+        <div class="for-role">📣</div>
+        <div class="for-tag">Marketing Agencies</div>
+        <div class="for-title">Build local territory, at scale</div>
+        <div class="for-desc">Stop buying generic lead lists that your competitors are also pitching. Footprint gives you fresh, hyper-local prospects that nobody else is looking at  -  specific to the suburbs you want to own.</div>
+        <div class="for-list">
+          <div class="for-item">Scan multiple suburbs to build a full territory of prospects</div>
+          <div class="for-item">Use Google Maps API mode for maximum coverage in dense metro areas</div>
+          <div class="for-item">Export to CSV and route leads to your account managers</div>
+          <div class="for-item">Duplicate detection keeps your lists clean across multiple scans</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Data sources -->
+<section style="background:var(--surf)">
+  <div class="si">
+    <div class="sec-ey">Data Sources</div>
+    <h2>Three ways to scan  - <br/><em>one of them is completely free</em></h2>
+    <p class="sub">Choose how you want to find businesses. No source is locked behind a paywall  -  use OpenStreetMap for free, or bring your own Google API key for richer data.</p>
+    <div class="src-grid">
+      <div class="src-card">
+        <div class="src-badge sb-free">✓ Free  -  no setup</div>
+        <span class="src-icon">🗺️</span>
+        <div class="src-title">OpenStreetMap</div>
+        <div class="src-desc">Works out of the box. Uses OpenStreetMap's free Overpass API  -  no API key, no Google account, no billing setup. Just type a location and scan. Covers 180+ countries.</div>
+      </div>
+      <div class="src-card">
+        <div class="src-badge sb-best">⭐ Best coverage</div>
+        <span class="src-icon">🔀</span>
+        <div class="src-title">OSM + Google Maps</div>
+        <div class="src-desc">Merges OpenStreetMap results with Google Places data. Best of both worlds  -  great for dense city areas where OSM coverage may be patchy. Requires your own Google Places API key.</div>
+      </div>
+      <div class="src-card">
+        <div class="src-badge sb-pow">Google Powered</div>
+        <span class="src-icon">📍</span>
+        <div class="src-title">Google Places Only</div>
+        <div class="src-desc">Uses only Google Places for results. Ideal when you want Google's full data  -  star ratings, more complete business info, and better results in areas with less OSM coverage.</div>
+      </div>
+    </div>
+    <p style="font-size:0.78rem;color:var(--muted);margin-top:14px;line-height:1.65;">Google Places API keys are <a href="https://console.cloud.google.com" target="_blank" style="color:var(--accent)">free to get from Google Cloud Console</a>. You pay Google directly for your own usage  -  Google offers a generous free tier ($200/month credit) that covers thousands of scans.</p>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <div class="si">
+    <div class="sec-ey">Features</div>
+    <h2>Everything from scan<br/><em>to signed client</em></h2>
+    <div class="feat-grid">
+      <div class="feat"><div class="feat-ic">⚡</div><div class="feat-t">Gap Score</div><div class="feat-d">Every lead gets a score from 0 - 100 based on what they're missing. Hover the score to see the breakdown. Hot leads rise to the top  -  no more guessing who to call first.</div></div>
+      <div class="feat"><div class="feat-ic">✉️</div><div class="feat-t">AI Pitch Emails</div><div class="feat-d">Click "Generate pitch email" on any lead. Footprint writes a personalised cold outreach email based on that business's name, type, location, and exactly what they're missing online. Free, instant, no API key needed.</div></div>
+      <div class="feat"><div class="feat-ic">🗂</div><div class="feat-t">Built-in CRM</div><div class="feat-d">Track every lead from New → Contacted → Pitched → Won. Note templates like "Left voicemail" and "Meeting booked" keep everything organised without effort.</div></div>
+      <div class="feat"><div class="feat-ic">🚫</div><div class="feat-t">Chain Filtering</div><div class="feat-d">McDonald's, Woolworths, Starbucks  -  automatically filtered out. Your leads are always genuine local businesses that actually need your help, not multinationals with entire marketing departments.</div></div>
+      <div class="feat"><div class="feat-ic">🔎</div><div class="feat-t">Find Contact Details</div><div class="feat-d">Hit "Find contact info" on any lead to instantly open targeted Google and Facebook searches for their phone number, email address, and social profiles.</div></div>
+      <div class="feat"><div class="feat-ic">📥</div><div class="feat-t">Export Anywhere</div><div class="feat-d">Download all leads as CSV with website, phone, email, social presence, gap score, pipeline status and notes. Drop straight into your existing tools.</div></div>
+      <div class="feat"><div class="feat-ic">📱</div><div class="feat-t">Mobile App</div><div class="feat-d">Add to your home screen on iOS or Android. Scan the high street you're standing on, right from your phone. Great for in-person prospecting.</div></div>
+      <div class="feat"><div class="feat-ic">🕐</div><div class="feat-t">Scan History</div><div class="feat-d">Your recent scans save to your account and sync across devices. One click to reload any past search  -  never set up the same scan twice.</div></div>
+      <div class="feat"><div class="feat-ic">🔒</div><div class="feat-t">Your Data, Private</div><div class="feat-d">Leads are stored in your account only. We never sell, share, or use your prospect data for anything except showing it back to you.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section id="how" style="background:var(--surf)">
+  <div class="si" style="text-align:center">
+    <div class="sec-ey">How it works</div>
+    <h2>First leads in<br/><em>under 2 minutes</em></h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-t">Pick a location</div><div class="step-d">Type any suburb, postcode or city. Autocomplete fills in the rest.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Choose your source</div><div class="step-d">OpenStreetMap is free. Add a Google API key for richer data and better coverage.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Scan in seconds</div><div class="step-d">Footprint filters out chains and scores every business by how much they need your services.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Pitch and win</div><div class="step-d">Generate pitch emails, track your pipeline, find contact details, and close deals.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="price-sec">
+  <div class="si">
+    <div class="sec-ey" style="text-align:center">Pricing</div>
+    <h2 style="text-align:center">One flat price.<br/><em>Everything included.</em></h2>
+    <p class="sub" style="margin:0 auto;text-align:center">No per-scan fees. No seat limits. No usage caps.</p>
+    <div class="price-card">
+      <div class="price-top">
+        <div class="tbadge">3-day free trial</div>
+        <div class="price-num"><sup>$</sup>19<span style="font-size:1.5rem">.95</span><span class="price-per"> / month</span></div>
+        <div class="price-note">Then $19.95/month. Cancel anytime.</div>
+      </div>
+      <div class="price-feats">
+        <div class="pf"><div class="pfck">&#10003;</div>Unlimited scans - any city, anywhere</div>
+        <div class="pf"><div class="pfck">&#10003;</div>All three data sources (OSM free + optional Google)</div>
+        <div class="pf"><div class="pfck">&#10003;</div>AI pitch email generator - completely free to use</div>
+        <div class="pf"><div class="pfck">&#10003;</div>Full CRM - pipeline, notes, templates</div>
+        <div class="pf"><div class="pfck">&#10003;</div>Chain filtering - local businesses only</div>
+        <div class="pf"><div class="pfck">&#10003;</div>CSV export + Google Sheets</div>
+        <div class="pf"><div class="pfck">&#10003;</div>Mobile app (add to home screen)</div>
+        <div class="pf"><div class="pfck">&#10003;</div>Scan history synced across devices</div>
+      </div>
+      <div class="price-cta">
+        <a href="login.html?signup=1" class="btn btn-green btn-lg">Start your free trial</a>
+        <div class="price-legal">No card required to start. Cancel anytime.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="si" style="text-align:center">
+    <div class="sec-ey">FAQ</div>
+    <h2>Common <em>questions</em></h2>
+    <div class="faq-list" style="text-align:left">
+      <div class="faq-item"><div class="faq-q">Is it really free to use? <span class="faq-ic">+</span></div><div class="faq-a">Yes  -  the OpenStreetMap source is completely free, no API key required. The pitch email generator is also free. You pay $19.95/month for your Footprint subscription, but there are no additional per-scan or per-lead costs ever.</div></div>
+      <div class="faq-item"><div class="faq-q">Do I need a Google Maps API key? <span class="faq-ic">+</span></div><div class="faq-a">No. OpenStreetMap works out of the box worldwide. If you want richer data or better coverage in dense cities, you can add your own Google Places API key in Settings. It's optional  -  and Google gives $200/month in free API credits, which covers thousands of searches.</div></div>
+      <div class="faq-item"><div class="faq-q">How do the pitch emails work? <span class="faq-ic">+</span></div><div class="faq-a">Expand any lead in your Leads tab and click "Generate pitch email". Footprint instantly creates a personalised cold outreach email based on that business's name, location, type, and exactly what they're missing online. Copy it, or click "Open in Mail" to send it directly. No extra cost, no API key  -  built into your subscription.</div></div>
+      <div class="faq-item"><div class="faq-q">How accurate is the data? <span class="faq-ic">+</span></div><div class="faq-a">OpenStreetMap is excellent in most cities but is community-contributed, so some businesses may have gaps. Every lead includes a direct Google Maps link so you can verify before reaching out. Using the Google Places source gives more complete and up-to-date data, especially for phone numbers and business hours.</div></div>
+      <div class="faq-item"><div class="faq-q">Can I use this on my phone? <span class="faq-ic">+</span></div><div class="faq-a">Yes  -  open Footprint in Safari or Chrome on your phone and tap "Add to Home Screen" for a full app experience. It works great for in-person prospecting  -  scan the street you're standing on and see which nearby businesses don't have websites or social media.</div></div>
+      <div class="faq-item"><div class="faq-q">What happens to my leads if I cancel? <span class="faq-ic">+</span></div><div class="faq-a">Your data stays in read-only mode for 90 days and you can export it as CSV any time. After 90 days of inactivity, accounts and data are deleted permanently.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" style="background:var(--surf);border-top:1.5px solid var(--border);">
+  <div class="si">
+    <div class="sec-ey" style="text-align:center">Get started today</div>
+    <h2>Your next client is sitting on<br/><em>a street near you.</em></h2>
+    <p style="font-size:0.98rem;color:var(--muted);margin:0 auto 26px;max-width:400px;text-align:center;line-height:1.75;">3 days free. No card charged upfront. Find your first leads in under 2 minutes.</p>
+    <div style="display:flex;justify-content:center;">
+      <a href="login.html?signup=1" class="btn btn-green btn-lg">Start your free trial →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-i">
+    <a href="/" class="flogo"><span class="flogof">foot</span><span>print</span></a>
+    <div class="flinks"><a href="#">Privacy</a><a href="#">Terms</a><a href="login.html">Sign in</a></div>
+    <div class="fcopy">© 2025 Footprint</div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
+  window.addEventListener('scr
