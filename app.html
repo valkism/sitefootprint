@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#ffffff"/>
-  <link rel="manifest" href="/manifest.json"/>
-  <title>Footprint  -  Find Digital Gaps</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<!-- saved from url=(0045)https://17746390.site-footprint.pages.dev/app -->
+<html lang="en" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="manifest" href="https://17746390.site-footprint.pages.dev/manifest.json">
+  <title>Footprint — Find Digital Gaps</title>
+  <link href="./app_files/css2" rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
-    /* -- Themes -- */
+    /* ── Themes ── */
     :root[data-theme="light"]{
       --bg:#f7f9f8; --surf:#ffffff; --surf2:#eef3f1; --surf3:#e2eae7;
       --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.14);
@@ -76,7 +76,7 @@
       height:100vh; overflow:hidden; display:flex; flex-direction:column;
     }
 
-    /* -- Auth gate -- */
+    /* ── Auth gate ── */
     #auth-gate{
       position:fixed;inset:0;z-index:999;background:var(--bg);
       display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;
@@ -91,56 +91,18 @@
     @keyframes spin{to{transform:rotate(360deg);}}
     .gate-text{font-size:0.82rem;color:var(--muted);font-weight:500;}
 
-    /* -- App shell: topbar + sidebar + main -- */
+    /* ── App shell: topbar + sidebar + main ── */
     .app-shell{flex:1;overflow:hidden;display:flex;flex-direction:column;}
 
     /* Topbar */
     .topbar{
       height:54px;flex-shrink:0;
       background:var(--topbar-bg);border-bottom:1px solid var(--border);
-\",\"stderr\":\"\"}"
-    }
-  },
-  {
-    "start_timestamp": "2026-03-16T22:36:24.644360Z",
-    "stop_timestamp": "2026-03-16T22:36:25.813964Z",
-    "flags": null,
-    "type": "tool_use",
-    "id": "toolu_01SkU8SQHfUivj9oFd7bD6VW",
-    "name": "bash_tool",
-    "input": {
-      "command": "sed -n '100,380p' /home/claude/fp-fix/footprint-web/app.html",
-      "description": "Read all CSS - layout, components, cards"
-    },
-    "message": "Read all CSS - layout, components, cards",
-    "integration_name": null,
-    "integration_icon_url": null,
-    "icon_name": "commandLine",
-    "context": null,
-    "display_content": {
-      "type": "json_block",
-      "json_block": "{\"language\": \"bash\", \"code\": \"sed -n '100,380p' /home/claude/fp-fix/footprint-web/app.html\"}"
-    },
-    "approval_options": null,
-    "approval_key": null,
-    "is_mcp_app": null
-  },
-  {
-    "start_timestamp": null,
-    "stop_timestamp": null,
-    "flags": null,
-    "type": "tool_result",
-    "tool_use_id": "toolu_01SkU8SQHfUivj9oFd7bD6VW",
-    "name": "bash_tool",
-    "content": [
-      {
-        "type": "text",
-        "text": "{\"returncode\":0,\"stdout\":\"      background:var(--topbar-bg);border-bottom:1px solid var(--border);
       display:flex;align-items:center;padding:0 20px;gap:0;
       position:relative;z-index:10;
     }
 
-    /* Logo - clean wordmark with accent dot */
+    /* Logo — clean wordmark with accent dot */
     .logo{
       display:flex;align-items:center;gap:0;text-decoration:none;
       font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;
@@ -197,15 +159,15 @@
     .sub-warning.show{display:block;}
     .sub-warning a{color:var(--amber);font-weight:600;}
 
-    /* -- App body - single column, full width -- */
+    /* ── App body — single column, full width ── */
     .app-body{
       flex:1;overflow:hidden;display:flex;flex-direction:column;
     }
 
-    /* Sidebar - hidden everywhere, we no longer use it */
+    /* Sidebar — hidden everywhere, we no longer use it */
     .sidebar{display:none !important;}
 
-    /* Main content area - full width */
+    /* Main content area — full width */
     .main-area{
       flex:1;overflow:hidden;display:flex;flex-direction:column;
     }
@@ -214,16 +176,16 @@
     .panels{flex:1;overflow:hidden;display:flex;flex-direction:column;}
     .panel{display:none;flex-direction:column;flex:1;overflow:hidden;}
     .panel.on{display:flex;}
-    .scroll{flex:1;overflow-y:auto;overflow-x:hidden;}
-    /* Content max-width - centered, comfortable reading width */
-    .scroll-inner{max-width:1100px;width:100%;padding:28px 40px;margin:0 auto;box-sizing:border-box;}
+    .scroll{flex:1;overflow-y:auto;overflow-x:hidden;min-height:0;}
+    /* Content max-width — centered, comfortable reading width */
+    .scroll-inner{max-width:900px;width:100%;padding:32px 36px;margin:0 auto;box-sizing:border-box;}
 
-    /* Wide panel (CRM) - wider for the table */
-    .panel-wide .scroll-inner{max-width:1400px;margin:0 auto;}
+    /* Wide panel (CRM) — wider for the table */
+    .panel-wide .scroll-inner{max-width:1100px;margin:0 auto;}
 
-    /* -- Scan panel two-column grid (desktop) -- */
+    /* ── Scan panel two-column grid (desktop) ── */
     .scan-top-grid{
-      display:grid;grid-template-columns:1.2fr 1fr;gap:32px;margin-bottom:0;
+      display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:0;
     }
     .scan-location-col{display:flex;flex-direction:column;}
     .scan-source-col{display:flex;flex-direction:column;}
@@ -234,15 +196,15 @@
       .scan-top-grid{grid-template-columns:1fr;}
     }
 
-    /* -- Section labels -- */
+    /* ── Section labels ── */
     .sec-label{
       font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:500;
-      letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
+      letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);
       display:flex;align-items:center;gap:8px;margin-bottom:10px;
     }
-    .sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+    .sec-label::after{content:'';flex:1;height:1px;background:var(--border);min-width:12px;}
 
-    /* -- Form elements -- */
+    /* ── Form elements ── */
     .field-label{
       font-size:0.7rem;font-weight:600;color:var(--muted);
       letter-spacing:0.04em;display:block;margin-bottom:5px;
@@ -355,8 +317,8 @@
     .notice-blue{background:var(--blue-pale);border:1px solid rgba(26,111,168,0.18);border-left:3px solid var(--blue);}
     .notice-icon{flex-shrink:0;font-size:0.85rem;margin-top:1px;}
 
-    /* -- Scan Progress (in main area) -- */
-    .psec{display:none;flex-direction:column;gap:12px;padding:24px 28px;}
+    /* ── Scan Progress (in main area) ── */
+    .psec{display:none;flex-direction:column;gap:14px;padding:0;}
     .psec.on{display:flex;}
     .prog-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border);}
     .prog-loc{font-size:0.875rem;font-weight:700;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:12px;}
@@ -416,163 +378,276 @@
     .ri-leads{font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:700;color:var(--accent);background:var(--accent-pale);border:1px solid rgba(26,158,110,0.15);padding:2px 7px;border-radius:99px;flex-shrink:0;}
     .ri-del{color:var(--muted);font-size:0.75rem;padding:3px 6px;cursor:pointer;flex-shrink:0;border-radius:5px;transition:all .12s;}
     .ri-del:hover{color:var(--red);background:var(--red-pale);}
-\",\"stderr\":\"\"}",
-        "uuid": "59e4aaa2-96fc-4130-8978-cc4af74ea43e"
-      }
-    ],
-    "is_error": false,
-    "structured_content": null,
-    "meta": null,
-    "message": null,
-    "integration_name": null,
-    "integration_icon_url": null,
-    "icon_name": "commandLine",
-    "display_content": {
-      "type": "json_block",
-      "json_block": "{\"returncode\":0,\"stdout\":\"      background:var(--topbar-bg);border-bottom:1px solid var(--border);
-      display:flex;align-items:center;padding:0 20px;gap:0;
-      position:relative;z-index:10;
+
+    /* ── CRM panel ── */
+    .crm-stats{display:grid;grid-template-columns:repeat(5,1fr);border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:16px;}
+    .cs{padding:14px 8px;text-align:center;background:var(--surf);border-right:1px solid var(--border);transition:background .15s;}
+    .cs-clickable{cursor:pointer;}
+    .cs-clickable:hover{background:var(--surf2);}
+    .cs-clickable.active{background:var(--accent-pale);}
+    .cs:last-child{border-right:none;}
+    .csn{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:700;line-height:1;}
+    .csl{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+    .crm-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+    .search-wrap{flex:1;min-width:160px;position:relative;}
+    .search-wrap .inp{padding-left:32px;}
+    .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:0.85rem;pointer-events:none;}
+    .filter-bar{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;align-items:center;}
+    .filter-lbl{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+    .fc{padding:4px 10px;font-size:0.7rem;font-weight:600;border:1.5px solid var(--border);background:var(--surf2);color:var(--muted);cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:4px;border-radius:99px;}
+    .fc:hover{border-color:var(--border2);color:var(--text);}
+    .fc.on{background:var(--text);color:var(--bg);border-color:var(--text);}
+    .fc-dot{width:5px;height:5px;border-radius:50%;}
+    .llist{display:flex;flex-direction:column;gap:6px;}
+    /* ── Improved lead cards ── */
+    .lcard{background:var(--surf);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:10px;overflow:hidden;transition:all .15s;margin-bottom:6px;}
+    .lcard:hover{box-shadow:var(--shadow);border-color:var(--border2);}
+    .lcard:hover{border-color:var(--border2);}
+    .lcard.hot{border-left-color:var(--red);}
+    .lcard.good{border-left-color:var(--amber);}
+    .lcard.warm{border-left-color:var(--green);}
+    .lctop{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;transition:background .12s;}
+    .lctop:hover{background:var(--surf2);}
+    .lsco-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:44px;}
+    .lsco{font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:700;line-height:1;}
+    .lsco-lbl{font-family:'JetBrains Mono',monospace;font-size:0.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+    .lmain{flex:1;min-width:0;}
+    .lnm{font-size:0.9rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.01em;}
+    .lmeta{font-size:0.7rem;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .lright{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+    .mbadges{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end;max-width:130px;}
+    .mb{font-family:'JetBrains Mono',monospace;font-size:0.56rem;padding:2px 5px;font-weight:700;border-radius:4px;}
+    .mb-ns{background:var(--red-pale);color:var(--red);}
+    .mb-np{background:var(--amber-pale);color:var(--amber);}
+    .mb-ne{background:var(--blue-pale);color:var(--blue);}
+    .mb-nm{background:var(--surf3);color:var(--muted);border:1px solid var(--border);}
+    .stag{font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:99px;}
+    .chev{font-size:0.68rem;color:var(--muted);transition:transform .2s;}
+    .lexp{border-top:1px solid var(--border);padding:16px 18px;display:flex;flex-direction:column;gap:0;}
+    .pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px;}
+    .pip-btn{padding:8px 5px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border:1.5px solid var(--border);background:var(--surf2);color:var(--muted);transition:all .15s;border-radius:7px;}
+    .pip-btn:hover{border-color:var(--border2);color:var(--text);}
+    .pip-btn.active-contacted{background:var(--amber-pale);color:var(--amber);border-color:rgba(192,120,0,.25);}
+    .pip-btn.active-pitched{background:var(--blue-pale);color:var(--blue);border-color:rgba(26,111,168,.25);}
+    .pip-btn.active-won{background:var(--green-pale);color:var(--green);border-color:rgba(26,158,110,.25);}
+    .pip-btn.active-lost{background:var(--red-pale);color:var(--red);border-color:rgba(214,48,49,.2);}
+    .miss-box{background:var(--red-pale);border:1px solid rgba(214,48,49,.18);border-left:3px solid var(--red);padding:9px 11px;margin-bottom:9px;border-radius:7px;}
+    .miss-box-t{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:6px;font-weight:700;}
+    .miss-items{display:flex;flex-wrap:wrap;gap:4px;}
+    .miss-item{font-family:'JetBrains Mono',monospace;font-size:0.66rem;font-weight:700;padding:2px 8px;background:var(--surf);border:1px solid rgba(214,48,49,.2);color:var(--red);border-radius:4px;}
+    .has-box{background:var(--green-pale);border:1px solid rgba(26,158,110,.18);border-left:3px solid var(--green);padding:9px 11px;margin-bottom:9px;border-radius:7px;}
+    .has-box-t{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px;font-weight:700;}
+    .has-items{display:flex;flex-wrap:wrap;gap:4px;}
+    .has-item{font-family:'JetBrains Mono',monospace;font-size:0.66rem;font-weight:700;padding:2px 8px;background:var(--surf);border:1px solid rgba(26,158,110,.2);color:var(--green);border-radius:4px;}
+    .gcs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+    .gc{font-family:'JetBrains Mono',monospace;font-size:0.62rem;padding:2px 8px;font-weight:500;border-radius:4px;}
+    .gc-critical{background:var(--red-pale);color:var(--red);border:1px solid rgba(214,48,49,.18);}
+    .gc-high{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(192,120,0,.18);}
+    .gc-medium{background:var(--green-pale);color:var(--green);border:1px solid rgba(26,158,110,.18);}
+
+    /* Gap score tooltip */
+    .score-wrap{position:relative;display:inline-flex;cursor:help;}
+    .score-tooltip{
+      display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+      background:var(--surf);border:1.5px solid var(--border2);border-radius:8px;
+      padding:10px 12px;min-width:200px;z-index:100;box-shadow:var(--shadow-lg);
+      font-family:'JetBrains Mono',monospace;font-size:0.68rem;
     }
+    .score-wrap:hover .score-tooltip{display:block;}
+    .score-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--border2);}
+    .st-row{display:flex;justify-content:space-between;gap:12px;padding:2px 0;color:var(--text2);}
+    .st-row:first-child{color:var(--text);font-weight:700;border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:3px;}
+    .st-val{color:var(--accent);font-weight:700;}
 
+    /* Data rows */
+    .drows{display:flex;flex-direction:column;gap:3px;margin-bottom:10px;}
+    .dr{display:flex;align-items:flex-start;background:var(--surf2);border:1px solid var(--border);padding:8px 11px;gap:10px;border-radius:7px;}
+    .drl{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:60px;flex-shrink:0;padding-top:2px;}
+    .drv{font-size:0.84rem;color:var(--text);flex:1;word-break:break-word;}
+    .dr-link{color:var(--accent);text-decoration:none;font-size:0.84rem;}
+    .dr-link:hover{text-decoration:underline;}
+    .dr-miss{color:var(--red);font-style:italic;font-size:0.76rem;}
 
-  
-    /* ══ Responsive Design System ══════════════════════════════════
-   Breakpoints:
-     xs  < 480px   (small phones)
-     sm  480 - 767px (large phones)
-     md  768 - 1023px (tablets)
-     lg  1024 - 1279px (small desktop / laptop)
-     xl  1280 - 1535px (standard desktop)
-     2xl 1536px+  (wide desktop / 4K)
-   ════════════════════════════════════════════════════════════ */
+    /* Edit fields */
+    .edit-grid{display:flex;flex-direction:column;gap:3px;margin-bottom:9px;}
+    .ef-row{display:flex;align-items:center;border:1.5px solid var(--border);background:var(--surf2);border-radius:7px;overflow:hidden;transition:border-color .15s;}
+    .ef-row:focus-within{border-color:var(--accent);}
+    .ef-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:64px;flex-shrink:0;padding:8px 9px;border-right:1px solid var(--border);}
+    .ef-inp{flex:1;border:none;background:transparent;outline:none;font-family:'Sora',sans-serif;font-size:0.84rem;color:var(--text);padding:8px 10px;}
+    .ef-inp::placeholder{color:var(--muted);font-style:italic;font-size:0.76rem;}
+    .save-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+    .save-ind{font-family:'JetBrains Mono',monospace;font-size:0.68rem;}
 
-    /* ── Base fluid type scale ── */
-    :root{
-      --fs-xs: clamp(0.6rem, 0.55rem + 0.25vw, 0.7rem);
-      --fs-sm: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
-      --fs-base: clamp(0.82rem, 0.78rem + 0.2vw, 0.92rem);
-      --fs-md: clamp(0.88rem, 0.82rem + 0.3vw, 1rem);
-      --fs-lg: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
-      --fs-xl: clamp(1.1rem, 0.95rem + 0.75vw, 1.5rem);
+    /* AI Pitch */
+    .pitch-area{margin-bottom:10px;}
+    .pitch-output{
+      background:var(--surf2);border:1.5px solid var(--border);border-radius:8px;
+      padding:12px 14px;font-size:0.82rem;line-height:1.7;color:var(--text2);
+      margin-top:8px;white-space:pre-wrap;display:none;
+      max-height:280px;overflow-y:auto;
     }
+    .pitch-output.show{display:block;}
+    .pitch-actions{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap;}
+    .pitch-loading{display:none;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);margin-top:8px;font-family:'JetBrains Mono',monospace;}
+    .pitch-loading.show{display:flex;}
+    .mini-spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--border2);border-top-color:var(--accent);animation:spin .65s linear infinite;flex-shrink:0;}
 
-    /* ── scan top grid ── */
-    @media(max-width:600px){
-      .scan-top-grid{grid-template-columns:1fr;}
+    /* Lead enrichment */
+    .enrich-row{display:flex;gap:6px;align-items:center;margin-bottom:8px;}
+    .enrich-result{font-size:0.76rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:4px;}
+
+    /* Social */
+    .soc-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px;}
+    .soc-c{padding:7px 5px;text-align:center;background:var(--surf2);border:1px solid var(--border);border-radius:7px;}
+    .soc-n{font-family:'JetBrains Mono',monospace;font-size:0.56rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+    .soc-v{font-size:0.76rem;font-weight:700;}
+    .soc-found{color:var(--green);}.soc-none{color:var(--muted);font-style:italic;font-weight:400;}
+
+    /* Quick links */
+    .qlnks{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+    .ql{padding:4px 10px;background:var(--surf2);border:1.5px solid var(--border);color:var(--muted);font-size:0.7rem;font-weight:600;text-decoration:none;transition:all .12s;border-radius:6px;}
+    .ql:hover{border-color:var(--accent);color:var(--accent);}
+    .ql.ql-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+    .ql.ql-primary:hover{background:var(--accent2);}
+
+    /* Notes + templates */
+    .note-templates{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
+    .note-tmpl{padding:3px 9px;background:var(--surf2);border:1px solid var(--border);color:var(--muted);font-size:0.68rem;cursor:pointer;border-radius:5px;transition:all .12s;}
+    .note-tmpl:hover{border-color:var(--accent);color:var(--accent);}
+    .nt{width:100%;background:var(--surf2);border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.82rem;resize:none;min-height:58px;outline:none;line-height:1.5;transition:border-color .15s;}
+    .nt:focus{border-color:var(--accent);}
+    .nt::placeholder{color:var(--muted);}
+
+    /* Export bar */
+    .expbar{display:flex;gap:7px;padding:11px 20px;border-top:1px solid var(--border);background:var(--surf);flex-shrink:0;}
+
+    /* Settings */
+    .settings-section{margin-bottom:24px;}
+    .setting-row{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:var(--surf);border:1px solid var(--border);border-radius:9px;margin-bottom:5px;gap:14px;}
+    .setting-label{font-size:0.85rem;font-weight:600;color:var(--text);}
+    .setting-desc{font-size:0.72rem;color:var(--muted);margin-top:2px;line-height:1.5;}
+    .toggle{position:relative;width:40px;height:21px;flex-shrink:0;}
+    .toggle input{opacity:0;width:0;height:0;}
+    .toggle-slider{position:absolute;inset:0;cursor:pointer;background:var(--surf3);border:1px solid var(--border2);border-radius:21px;transition:.2s;}
+    .toggle-slider::before{content:'';position:absolute;width:15px;height:15px;left:2px;top:2px;background:var(--muted);border-radius:50%;transition:.2s;}
+    .toggle input:checked + .toggle-slider{background:var(--accent);border-color:var(--accent);}
+    .toggle input:checked + .toggle-slider::before{transform:translateX(19px);background:#fff;}
+
+    /* Theme selector — compact pills */
+    .theme-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+    .theme-pill{
+      display:flex;align-items:center;gap:7px;padding:5px 10px 5px 5px;
+      border:1.5px solid var(--border);border-radius:7px;cursor:pointer;
+      transition:all .15s;background:var(--surf2);
     }
+    .theme-pill:hover{border-color:var(--border2);}
+    .theme-pill.on{border-color:var(--accent);background:var(--accent-pale);}
+    .theme-pill-swatch{width:18px;height:18px;border-radius:4px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08);}
+    .theme-pill-name{font-size:0.72rem;font-weight:700;color:var(--muted);}
+    .theme-pill.on .theme-pill-name{color:var(--accent);}
 
-    /* ── xs: small phones < 480px ── */
-    @media(max-width:479px){
-      .topbar{height:48px;}
-      .topbar-nav .tab-btn{font-size:0.7rem;padding:4px 8px;}
-      .scroll-inner{padding:12px 12px 80px;}
-      .lcard .lctop{padding:10px 12px;gap:8px;}
-      .lnm{font-size:0.82rem;}
-      .lsco{font-size:1.1rem;}
-      .crm-stats{grid-template-columns:repeat(3,1fr) !important;}
-      .cs{padding:10px 4px;}
-      .csn{font-size:1.3rem;}
-      .csl{font-size:0.58rem;}
-      .source-selector{grid-template-columns:1fr !important;}
-      .source-opt{flex-direction:row;padding:8px 10px;}
-      .plan-grid{grid-template-columns:1fr !important;}
-    }
+    /* Account card */
+    .account-card{background:var(--surf);border:1.5px solid var(--border2);border-radius:12px;padding:18px;margin-bottom:12px;}
+    .account-name{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:3px;}
+    .account-email{font-size:0.84rem;color:var(--muted);margin-bottom:12px;}
+    .plan-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+    .plan-trial{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(192,120,0,.2);}
+    .plan-active{background:var(--green-pale);color:var(--green);border:1px solid rgba(26,158,110,.2);}
+    .plan-free{background:var(--surf2);color:var(--muted);border:1px solid var(--border);}
 
-    /* ── sm: phones 480 - 767px ── */
-    @media(min-width:480px) and (max-width:767px){
-      .scroll-inner{padding:16px 16px 80px;}
-      .crm-stats{grid-template-columns:repeat(3,1fr) !important;}
-      .cs:nth-child(4),.cs:nth-child(5){border-top:1px solid var(--border);}
-    }
+    /* Empty */
+    .empty{text-align:center;padding:44px 16px;color:var(--muted);}
+    .empty-icon{font-size:2rem;margin-bottom:10px;opacity:.3;}
+    .empty h3{font-family:'Sora',sans-serif;font-size:0.95rem;font-weight:700;color:var(--muted);margin-bottom:6px;}
+    .empty p{font-size:0.8rem;line-height:1.7;color:var(--dim);}
 
-    /* ── md: tablets 768px and below ── */
-    @media(max-width:768px){
+    /* Toast */
+    .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surf);border:1.5px solid var(--border2);border-top:2px solid var(--accent);color:var(--text);padding:8px 18px;font-size:0.78rem;font-weight:600;z-index:999;transition:transform .22s cubic-bezier(.16,1,.3,1);white-space:nowrap;box-shadow:var(--shadow-lg);border-radius:9px;}
+    .toast.on{transform:translateX(-50%) translateY(0);}
+
+    /* Admin */
+    .admin-hero{background:var(--red-pale);border:1px solid rgba(214,48,49,.18);border-left:3px solid var(--red);border-radius:9px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:11px;}
+    .admin-hero-icon{font-size:1.3rem;flex-shrink:0;}
+    .admin-hero-title{font-size:0.9rem;font-weight:700;margin-bottom:2px;}
+    .admin-hero-sub{font-size:0.74rem;color:var(--muted);line-height:1.5;}
+    .admin-input-row{display:flex;gap:7px;margin-bottom:8px;}
+    .admin-input-row .inp{flex:1;}
+    .admin-table{width:100%;border-collapse:collapse;font-size:0.8rem;}
+    .admin-table th{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);background:var(--surf2);}
+    .admin-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+    .admin-table tr:last-child td{border-bottom:none;}
+    .admin-table tr:hover td{background:var(--surf2);}
+    .admin-plan-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:0.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+    .apb-active{background:var(--green-pale);color:var(--green);border:1px solid rgba(26,158,110,.2);}
+    .apb-trial{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(192,120,0,.2);}
+    .apb-free{background:var(--surf3);color:var(--muted);border:1px solid var(--border);}
+    .apb-gifted{background:var(--blue-pale);color:var(--blue);border:1px solid rgba(26,111,168,.2);}
+    .admin-actions{display:flex;gap:4px;}
+    .admin-empty{text-align:center;padding:20px;color:var(--muted);font-size:0.8rem;}
+    #admin-msg{padding:9px 13px;border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;margin-top:8px;display:none;}
+
+    /* ── Mobile nav ── */
+    .mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surf);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0px);}
+    .mob-nav-inner{display:grid;grid-template-columns:repeat(3,1fr);}
+    .mnav{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;border:none;background:none;cursor:pointer;color:var(--muted);font-family:'Sora',sans-serif;font-size:0.62rem;font-weight:600;transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative;}
+    .mnav-icon{font-size:1.15rem;line-height:1;}
+    .mnav.on{color:var(--accent);}
+    .mnav-badge{position:absolute;top:4px;right:calc(50% - 18px);background:var(--accent);color:#fff;font-size:0.5rem;font-weight:700;min-width:14px;height:14px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 3px;}
+
+    /* ── Responsive breakpoints ── */
+    /* Mobile: hide sidebar, show bottom nav */
+    @media (max-width:768px){
       .mob-nav{display:block !important;}
       .scroll-inner{padding:16px 14px 88px;}
       .expbar{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 64px) !important;}
       .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 70px) !important;}
       .frow{grid-template-columns:1fr !important;}
+      .crm-stats{grid-template-columns:repeat(3,1fr) !important;}
+      .cs:nth-child(4),.cs:nth-child(5){border-top:1px solid var(--border) !important;}
       .crm-toolbar{flex-direction:column !important;}
       .pipeline{grid-template-columns:repeat(2,1fr) !important;}
       .source-selector{grid-template-columns:1fr !important;}
+
       .prog-btns,.ctrs{max-width:100% !important;}
-      .crm-stats{grid-template-columns:repeat(3,1fr) !important;}
-      .cs:nth-child(4),.cs:nth-child(5){border-top:1px solid var(--border) !important;}
-      .settings-section .setting-row{flex-direction:column;align-items:flex-start !important;gap:8px !important;}
-      .settings-section .setting-row>button{align-self:flex-start;}
-      .edit-grid{grid-template-columns:1fr !important;}
-      .feat-grid{grid-template-columns:1fr 1fr !important;}
     }
 
-    /* ── lg: laptop 1024px+ ── */
-    @media(min-width:1024px){
-      .scroll-inner{padding:28px 32px;}
-      .panel-wide .scroll-inner{max-width:1000px;}
-      .lcard .lexp{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;}
-      .lcard .lexp .sec-label:first-child{grid-column:1/-1;}
-      .lcard .lexp .pipeline{grid-column:1/-1;}
-      .lcard .lexp .gcs{grid-column:1/-1;}
-      .crm-toolbar{flex-wrap:nowrap;}
-      .feat-grid{grid-template-columns:repeat(3,1fr) !important;}
+    /* Wide desktop: comfortable padding */
+    @media (min-width:1400px){
+
     }
 
-    /* ── xl: standard desktop 1280px+ ── */
-    @media(min-width:1280px){
-      .topbar{height:58px;}
-      .topbar-nav .tab-btn{font-size:0.86rem;padding:6px 14px;}
-      .scroll-inner{padding:32px 40px;}
-      .panel-wide .scroll-inner{max-width:1100px;}
-      .lcard .lexp{grid-template-columns:1fr 1fr;}
-      .crm-stats{grid-template-columns:repeat(5,1fr) !important;}
-    }
-
-    /* ── 2xl: wide desktop 1536px+ ── */
-    @media(min-width:1536px){
-      :root{font-size:17px;}
-      .scroll-inner{padding:36px 48px;}
-      .panel-wide .scroll-inner{max-width:1280px;}
-      .lcard{border-radius:12px;}
-      .topbar-nav .tab-btn{font-size:0.9rem;padding:7px 18px;}
-    }
-
-    /* ── 4K / ultra-wide 2000px+ ── */
-    @media(min-width:2000px){
-      :root{font-size:18px;}
-      .scroll-inner{padding:40px 56px;}
-      .panel-wide .scroll-inner{max-width:1400px;}
-    }
-
-    
-    /* Scan panel  -  single unified layout, no sidebar split */
+    /* Scan panel — single unified layout, no sidebar split */
     #mobile-scan-scroll{display:flex;flex-direction:column;flex:1;}
     #desktop-scan-area{display:none !important;}
-  
-</style>
+  </style>
 </head>
 <body>
 
 <!-- Auth Gate -->
-<div id="auth-gate">
+<div id="auth-gate" style="display: none;">
   <div class="gate-logo">foot<span>print</span></div>
   <div class="gate-spinner"></div>
   <div class="gate-text">Loading your workspace…</div>
 </div>
 
 <!-- Sub warning -->
-<div class="sub-warning" id="sub-warning" style="display:none">Your trial has ended. <a href="#" id="billing-link">Add billing details</a> to continue scanning.</div>
+<div class="sub-warning" id="sub-warning">
+  Your trial has ended. <a href="https://17746390.site-footprint.pages.dev/app#" id="billing-link">Add billing details</a> to continue scanning.
+</div>
 
 <!-- App Shell -->
 <div class="app-shell">
 
   <!-- Topbar -->
   <div class="topbar">
-    <a href="index.html" class="logo">
+    <a href="https://17746390.site-footprint.pages.dev/index.html" class="logo">
       <span class="logo-fp">foot</span><span>print</span><span class="logo-dot"></span>
     </a>
     <div class="topbar-nav">
       <button class="tab-btn on" data-tab="scan">Scan</button>
       <button class="tab-btn" data-tab="crm">Leads<span class="tab-badge" id="crm-count" style="display:none"></span></button>
       <button class="tab-btn" data-tab="settings">Settings</button>
+      <button class="tab-btn" data-tab="team" id="team-tab-btn" style="display:none">Team</button>
       <button class="tab-btn" data-tab="admin" id="admin-tab-btn" style="display:none;color:var(--red)">Admin</button>
     </div>
     <div class="topbar-right">
@@ -588,13 +663,13 @@
   <!-- App body -->
   <div class="app-body">
 
-    <!-- sidebar removed  -  scan form is now full-width in the panel -->
+    <!-- sidebar removed — scan form is now full-width in the panel -->
 
     <!-- ── Main panels ── -->
     <div class="main-area">
       <div class="panels">
 
-        <!-- SCAN panel  -  full width, single column, works on all screens -->
+        <!-- SCAN panel — full width, single column, works on all screens -->
         <div class="panel on" id="panel-scan">
           <div class="scroll" id="mobile-scan-scroll" style="flex:1;min-height:0;">
           <div class="scroll-inner" style="max-width:860px;">
@@ -607,14 +682,14 @@
                 <div class="scan-location-col">
                   <div class="sec-label">Location</div>
                   <div class="loc-wrap" style="margin-bottom:12px">
-                    <input class="inp inp-lg" id="loc-mob" placeholder="Suburb, city or postcode…" autocomplete="off"/>
+                    <input class="inp inp-lg" id="loc-mob" placeholder="Suburb, city or postcode…" autocomplete="off">
                     <div class="ac-drop" id="ac-drop-mob" style="display:none"></div>
                   </div>
                   <div class="frow">
                     <div class="f" style="margin-bottom:0">
                       <label class="field-label">Radius</label>
                       <div class="rwrap">
-                        <input class="inp" id="rv-mob" type="number" value="2" min="0.1" max="100" step="0.5" style="width:72px;flex:none"/>
+                        <input class="inp" id="rv-mob" type="number" value="2" min="0.1" max="100" step="0.5" style="width:72px;flex:none">
                         <span class="runit">km · max 100</span>
                       </div>
                     </div>
@@ -622,7 +697,7 @@
                       <label class="field-label">Max results</label>
                       <select class="sel" id="maxr-mob">
                         <option value="20">20 businesses</option>
-                        <option value="40" selected>40 businesses</option>
+                        <option value="40" selected="">40 businesses</option>
                         <option value="60">60 businesses</option>
                         <option value="100">100 businesses</option>
                         <option value="200">200 businesses</option>
@@ -661,7 +736,7 @@
                   </div>
                   <div id="gmaps-key-area" style="display:none;margin-top:8px">
                     <div class="gmaps-key-row">
-                      <input class="inp" id="gmaps-key-inp" type="password" placeholder="AIza… Google Places API key" autocomplete="off"/>
+                      <input class="inp" id="gmaps-key-inp" type="password" placeholder="AIza… Google Places API key" autocomplete="off">
                       <button class="btn btn-ghost btn-sm" id="gmaps-save-btn">Save</button>
                       <button class="btn btn-danger btn-sm" id="gmaps-clear-btn" style="display:none">✕</button>
                     </div>
@@ -672,17 +747,17 @@
 
               <!-- Business types -->
               <div style="display:flex;align-items:center;gap:8px;margin-top:20px;margin-bottom:10px;">
-                <span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">Business Types</span>
-                <button onclick="setAllChips(true)" style="font-family:'JetBrains Mono',monospace;font-size:0.56rem;background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--muted);cursor:pointer;flex-shrink:0;">All</button>
-                <button onclick="setAllChips(false)" style="font-family:'JetBrains Mono',monospace;font-size:0.56rem;background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--muted);cursor:pointer;flex-shrink:0;">None</button>
+                <span style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.6rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">Business Types</span>
+                <button onclick="setAllChips(true)" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.56rem;background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--muted);cursor:pointer;flex-shrink:0;">All</button>
+                <button onclick="setAllChips(false)" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.56rem;background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--muted);cursor:pointer;flex-shrink:0;">None</button>
                 <div style="flex:1;height:1px;background:var(--border);min-width:0;"></div>
               </div>
-              <div class="chips" id="tchips-mob" style="margin-bottom:16px"></div>
+              <div class="chips" id="tchips-mob" style="margin-bottom:16px"><div class="chip on" data-t="Restaurants">Restaurants</div><div class="chip on" data-t="Cafés">Cafés</div><div class="chip on" data-t="Bars">Bars</div><div class="chip on" data-t="Retail">Retail</div><div class="chip" data-t="Beauty">Beauty</div><div class="chip" data-t="Hair">Hair</div><div class="chip" data-t="Gyms">Gyms</div><div class="chip" data-t="Plumbers">Plumbers</div><div class="chip" data-t="Electricians">Electricians</div><div class="chip" data-t="Dentists">Dentists</div><div class="chip" data-t="Doctors">Doctors</div><div class="chip" data-t="Real Estate">Real Estate</div><div class="chip" data-t="Accounting">Accounting</div><div class="chip" data-t="Law">Law</div><div class="chip" data-t="Auto">Auto</div><div class="chip" data-t="Florists">Florists</div><div class="chip" data-t="Bakeries">Bakeries</div><div class="chip" data-t="Pets">Pets</div><div class="chip" data-t="Supermarkets">Supermarkets</div><div class="chip" data-t="Hotels">Hotels</div><div class="chip" data-t="Pharmacies">Pharmacies</div><div class="chip" data-t="Opticians">Opticians</div><div class="chip" data-t="Electronics">Electronics</div><div class="chip" data-t="Furniture">Furniture</div><div class="chip" data-t="Bookshops">Bookshops</div><div class="chip" data-t="Laundry">Laundry</div><div class="chip" data-t="Childcare">Childcare</div><div class="chip" data-t="Photography">Photography</div><div class="chip" data-t="Travel">Travel</div></div>
 
               <!-- Notice -->
               <div class="notice notice-amber" id="osm-notice">
                 <span class="notice-icon">ⓘ</span>
-                <span id="osm-notice-text">Powered by OpenStreetMap. A missing website in OSM doesn't guarantee no site  -  verify on Google Maps before pitching.</span>
+                <span id="osm-notice-text">Powered by OpenStreetMap. Verify businesses on Google Maps before pitching.</span>
               </div>
 
               <!-- Recent scans -->
@@ -693,8 +768,13 @@
 
               <div style="display:flex;gap:8px;margin-top:8px;">
               <button class="btn btn-primary btn-lg" id="start-btn-mob" style="flex:1;font-size:0.92rem;">▶ &nbsp;Start Scan</button>
+              <button class="btn btn-ghost btn-sm" id="save-template-btn" title="Save this search as a template" style="display:none">⭐ Save</button>
             </div>
-              <p style="font-size:0.7rem;color:var(--muted);text-align:center;margin-top:9px;line-height:1.6;">Chains like McDonald's and Woolworths are filtered out automatically. <br/>Results are saved to your Leads tab.</p>
+            <div id="saved-templates-area" style="display:none;margin-top:10px;">
+              <div style="font-size:0.68rem;color:var(--muted);margin-bottom:5px;font-family:&#39;JetBrains Mono&#39;,monospace;text-transform:uppercase;letter-spacing:.1em;">Saved Templates</div>
+              <div id="templates-list"></div>
+            </div>
+              <p style="font-size:0.7rem;color:var(--muted);text-align:center;margin-top:9px;line-height:1.6;">Chains like McDonald's and Woolworths are filtered out automatically. <br>Results are saved to your Leads tab.</p>
             </div>
 
             <!-- Progress section (shown while scanning) -->
@@ -710,12 +790,12 @@
               </div>
               <div>
                 <div class="pbar"><div class="pbar-f" id="pbarf-mob" style="width:0%"></div></div>
-                <div class="pmeta"><span id="pml-mob">Initialising…</span><span id="pmp-mob"> - </span></div>
+                <div class="pmeta"><span id="pml-mob">Initialising…</span><span id="pmp-mob">—</span></div>
               </div>
               <div class="feed" id="feed-mob"></div>
               <div class="prog-btns">
                 <button class="btn btn-stop" id="stop-btn-mob">■ &nbsp;Stop</button>
-                <button class="btn btn-ghost" id="vcrm-btn-mob" disabled>→ &nbsp;View Leads</button>
+                <button class="btn btn-ghost" id="vcrm-btn-mob" disabled="">→ &nbsp;View Leads</button>
               </div>
               <button class="btn btn-primary btn-full" id="new-scan-btn-mob" style="display:none;margin-top:10px">▶ &nbsp;New Scan</button>
             </div>
@@ -770,7 +850,7 @@
             <div class="crm-toolbar">
               <div class="search-wrap" style="flex:1;min-width:200px;">
                 <span class="search-icon">⌕</span>
-                <input class="inp" id="cq" placeholder="Search by name, address, phone…"/>
+                <input class="inp" id="cq" placeholder="Search by name, address, phone…">
               </div>
               <select class="sel" id="csf" style="width:140px">
                 <option value="">All Status</option>
@@ -783,10 +863,11 @@
               <select class="sel" id="csort" style="width:140px">
                 <option value="score">Gap Score ↓</option>
                 <option value="date">Newest first</option>
-                <option value="name">Name A - Z</option>
+                <option value="name">Name A–Z</option>
                 <option value="no-website">No Website first</option>
                 <option value="no-phone">No Phone first</option>
               </select>
+              <button class="btn btn-ghost btn-sm" id="bulk-pitch-btn" style="display:none" onclick="runBulkPitch()" title="Generate pitch emails for all visible leads">✨ Bulk Pitch</button>
             </div>
 
             <!-- Active filter chips -->
@@ -799,9 +880,7 @@
               <div class="fc" data-m="alloffline"><span class="fc-dot" style="background:var(--red)"></span>Fully Offline</div>
             </div>
 
-            <div class="llist" id="llist">
-              <div class="empty"><div class="empty-icon">🔍</div><h3>No leads yet</h3><p>Run a scan to find businesses<br/>with no digital presence.</p></div>
-            </div>
+            <div class="llist" id="llist"><div class="empty"><div class="empty-icon">🔍</div><h3>No leads yet</h3><p>Run a scan to find businesses.</p></div></div>
           </div>
           </div>
           <div class="expbar">
@@ -819,12 +898,13 @@
             <div class="settings-section">
               <div class="sec-label">Account</div>
               <div class="account-card">
-                <div class="account-name" id="acct-name"> - </div>
-                <div class="account-email" id="acct-email"> - </div>
+                <div class="account-name" id="acct-name">—</div>
+                <div class="account-email" id="acct-email">—</div>
                 <div id="acct-plan" class="plan-badge plan-trial" style="margin-bottom:8px">Trial</div>
                 <div style="font-size:0.76rem;color:var(--muted);margin-bottom:12px" id="acct-trial-note"></div>
                 <div style="display:flex;gap:7px;flex-wrap:wrap">
                   <button class="btn btn-ghost btn-sm" id="manage-billing-btn">Manage Billing</button>
+                  <button class="btn btn-ghost btn-sm" onclick="showUpgradeModal()">⬆ Upgrade Plan</button>
                   <button class="btn btn-danger btn-sm" id="signout-btn2">Sign Out</button>
                 </div>
               </div>
@@ -833,36 +913,36 @@
             <div class="settings-section">
               <div class="sec-label">Theme</div>
               <div class="theme-pills">
-                <div class="theme-pill on" data-theme="light" onclick="setTheme('light')">
+                <div class="theme-pill on" data-theme="light" onclick="setTheme(&#39;light&#39;)">
                   <div class="theme-pill-swatch" style="background:linear-gradient(135deg,#f7f9f8 50%,#1a9e6e 50%)"></div>
                   <span class="theme-pill-name">Light</span>
                 </div>
-                <div class="theme-pill" data-theme="dark" onclick="setTheme('dark')">
+                <div class="theme-pill" data-theme="dark" onclick="setTheme(&#39;dark&#39;)">
                   <div class="theme-pill-swatch" style="background:linear-gradient(135deg,#0c0f0e 50%,#3de8a0 50%)"></div>
                   <span class="theme-pill-name">Dark</span>
                 </div>
-                <div class="theme-pill" data-theme="midnight" onclick="setTheme('midnight')">
+                <div class="theme-pill" data-theme="midnight" onclick="setTheme(&#39;midnight&#39;)">
                   <div class="theme-pill-swatch" style="background:linear-gradient(135deg,#070b14 50%,#5eb8ff 50%)"></div>
                   <span class="theme-pill-name">Midnight</span>
                 </div>
-                <div class="theme-pill" data-theme="warm" onclick="setTheme('warm')">
+                <div class="theme-pill" data-theme="warm" onclick="setTheme(&#39;warm&#39;)">
                   <div class="theme-pill-swatch" style="background:linear-gradient(135deg,#0f0c0a 50%,#ff9f43 50%)"></div>
                   <span class="theme-pill-name">Warm</span>
                 </div>
               </div>
               <div class="setting-row">
                 <div><div class="setting-label">Dark Mode</div><div class="setting-desc">Toggle between dark and light</div></div>
-                <label class="toggle"><input type="checkbox" id="theme-toggle"/><span class="toggle-slider"></span></label>
+                <label class="toggle"><input type="checkbox" id="theme-toggle"><span class="toggle-slider"></span></label>
               </div>
             </div>
 
             <div class="settings-section">
               <div class="sec-label">Detection Rules</div>
-              <div class="setting-row"><div><div class="setting-label">Flag  -  No Website</div><div class="setting-desc">Save businesses with no website in OSM</div></div><label class="toggle"><input type="checkbox" id="r-web" checked/><span class="toggle-slider"></span></label></div>
-              <div class="setting-row"><div><div class="setting-label">Flag  -  No Phone</div><div class="setting-desc">Save businesses with no phone listed</div></div><label class="toggle"><input type="checkbox" id="r-phone" checked/><span class="toggle-slider"></span></label></div>
-              <div class="setting-row"><div><div class="setting-label">Flag  -  No Social Media</div><div class="setting-desc">Facebook, Instagram, TikTok or Twitter</div></div><label class="toggle"><input type="checkbox" id="r-social" checked/><span class="toggle-slider"></span></label></div>
-              <div class="setting-row"><div><div class="setting-label">Flag  -  No Email</div><div class="setting-desc">Save businesses with no email in OSM</div></div><label class="toggle"><input type="checkbox" id="r-email" checked/><span class="toggle-slider"></span></label></div>
-              <div class="setting-row"><div><div class="setting-label">Skip large chains</div><div class="setting-desc">Filter out well-known chains and franchises that obviously have websites</div></div><label class="toggle"><input type="checkbox" id="r-skipchains" checked/><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><div><div class="setting-label">Flag — No Website</div><div class="setting-desc">Save businesses with no website in OSM</div></div><label class="toggle"><input type="checkbox" id="r-web" checked=""><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><div><div class="setting-label">Flag — No Phone</div><div class="setting-desc">Save businesses with no phone listed</div></div><label class="toggle"><input type="checkbox" id="r-phone" checked=""><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><div><div class="setting-label">Flag — No Social Media</div><div class="setting-desc">Facebook, Instagram, TikTok or Twitter</div></div><label class="toggle"><input type="checkbox" id="r-social" checked=""><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><div><div class="setting-label">Flag — No Email</div><div class="setting-desc">Save businesses with no email in OSM</div></div><label class="toggle"><input type="checkbox" id="r-email" checked=""><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><div><div class="setting-label">Skip large chains</div><div class="setting-desc">Filter out well-known chains and franchises that obviously have websites</div></div><label class="toggle"><input type="checkbox" id="r-skipchains" checked=""><span class="toggle-slider"></span></label></div>
             </div>
 
             <div class="settings-section">
@@ -873,7 +953,7 @@
                 <div style="display:flex;flex-direction:column;gap:10px;">
                   <div style="display:flex;gap:11px;align-items:flex-start;">
                     <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
-                    <div style="font-size:0.8rem;color:var(--text2);line-height:1.6;">Go to <a href="https://console.cloud.google.com" target="_blank" style="color:var(--accent);font-weight:600;">console.cloud.google.com</a> and sign in with your Google account</div>
+                    <div style="font-size:0.8rem;color:var(--text2);line-height:1.6;">Go to <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--accent);font-weight:600;">console.cloud.google.com</a> and sign in with your Google account</div>
                   </div>
                   <div style="display:flex;gap:11px;align-items:flex-start;">
                     <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
@@ -885,7 +965,7 @@
                   </div>
                   <div style="display:flex;gap:11px;align-items:flex-start;">
                     <div style="width:22px;height:22px;border-radius:50%;background:var(--amber);color:#fff;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div>
-                    <div style="font-size:0.8rem;color:var(--text2);line-height:1.6;">Go to <strong>Billing</strong> in the sidebar and link a card. Google gives <strong>$200 free credit/month</strong>  -  more than enough for thousands of scans. You won't be charged unless you massively exceed this.</div>
+                    <div style="font-size:0.8rem;color:var(--text2);line-height:1.6;">Go to <strong>Billing</strong> in the sidebar and link a card. Google gives <strong>$200 free credit/month</strong> — more than enough for thousands of scans. You won't be charged unless you massively exceed this.</div>
                   </div>
                   <div style="display:flex;gap:11px;align-items:flex-start;">
                     <div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">5</div>
@@ -897,14 +977,14 @@
                   </div>
                 </div>
                 <div style="margin-top:12px;padding:10px 12px;background:var(--amber-pale);border:1px solid rgba(192,120,0,0.2);border-radius:7px;font-size:0.75rem;color:var(--amber);line-height:1.6;">
-                  ⚠️ If you restrict your API key by API, make sure <strong>"Places API (New)"</strong> is ticked  -  not the old "Places API".
+                  ⚠️ If you restrict your API key by API, make sure <strong>"Places API (New)"</strong> is ticked — not the old "Places API".
                 </div>
               </div>
 
               <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:9px">
-                <div><div class="setting-label">Paste your API key</div><div class="setting-desc">Stored in your browser only  -  never sent to our servers.</div></div>
+                <div><div class="setting-label">Paste your API key</div><div class="setting-desc">Stored in your browser only — never sent to our servers.</div></div>
                 <div style="display:flex;gap:7px;width:100%">
-                  <input class="inp" id="settings-gmaps-inp" type="password" placeholder="AIza…" autocomplete="off" style="flex:1;font-family:'JetBrains Mono',monospace;font-size:0.82rem"/>
+                  <input class="inp" id="settings-gmaps-inp" type="password" placeholder="AIza…" autocomplete="off" style="flex:1;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.82rem">
                   <button class="btn btn-primary btn-sm" id="settings-gmaps-save">Save</button>
                   <button class="btn btn-danger btn-sm" id="settings-gmaps-clear" style="display:none">Remove</button>
                 </div>
@@ -925,13 +1005,145 @@
           </div>
         </div>
 
+        <!-- Team Management -->
+        <div class="panel" id="panel-team">
+          <div class="scroll"><div class="scroll-inner">
+
+            <div id="team-upgrade-notice" style="display:none;background:var(--amber-pale);border:1.5px solid rgba(192,120,0,0.2);border-radius:10px;padding:18px 20px;margin-bottom:20px;text-align:center;">
+              <div style="font-size:1rem;font-weight:700;margin-bottom:6px;">Team features require Partnership plan or above</div>
+              <div style="font-size:0.82rem;color:var(--muted);margin-bottom:14px;">Upgrade to share leads, manage seats, and collaborate as a team.</div>
+              <button class="btn btn-primary" onclick="showUpgradeModal()">Upgrade plan</button>
+            </div>
+
+            <div id="team-content" style="display:none;">
+
+              <!-- Plan-specific header -->
+              <div id="team-dashboard-header" style="margin-bottom:24px;padding:20px;background:var(--surf);border:1.5px solid var(--border);border-radius:12px;">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                  <div>
+                    <div style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;" id="team-plan-label">Plan</div>
+                    <div style="font-size:1.2rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:3px;" id="team-name-display">Your Team</div>
+                    <div style="font-size:0.8rem;color:var(--muted);" id="team-plan-display"></div>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="btn btn-ghost btn-sm" id="rename-team-btn" onclick="renameTeam()" style="display:none">✏️ Rename</button>
+                    <button class="btn btn-ghost btn-sm" id="invite-seat-btn">+ Invite member</button>
+                    <button class="btn btn-danger btn-sm" id="leave-team-btn" style="display:none">Leave team</button>
+                  </div>
+                </div>
+
+                <!-- Seat usage bar -->
+                <div style="margin-top:16px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <span style="font-size:0.74rem;color:var(--muted);">Seats used</span>
+                    <span style="font-size:0.74rem;font-family:&#39;JetBrains Mono&#39;,monospace;color:var(--text);" id="seats-count-label">— / —</span>
+                  </div>
+                  <div style="height:6px;background:var(--surf2);border-radius:99px;overflow:hidden;">
+                    <div id="seats-usage-bar" style="height:100%;background:var(--accent);border-radius:99px;transition:width .3s;width:0%;"></div>
+                  </div>
+                  <div style="font-size:0.7rem;color:var(--muted);margin-top:4px;" id="seats-remaining-label"></div>
+                </div>
+              </div>
+
+              <!-- Invite form -->
+              <div id="invite-form" style="display:none;background:var(--surf);border:1.5px solid var(--accent);border-radius:10px;padding:16px;margin-bottom:16px;">
+                <div style="font-size:0.85rem;font-weight:600;margin-bottom:4px;">Invite a team member</div>
+                <div style="font-size:0.76rem;color:var(--muted);margin-bottom:12px;">They'll get a link to join. Once they sign up and accept, they share your lead pool, API key, and plan limits automatically.</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <input class="inp" id="invite-email-inp" type="email" placeholder="teammate@example.com" style="flex:1;min-width:200px;">
+                  <select class="sel" id="invite-role-sel" style="width:110px;">
+                    <option value="member">Member</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                  <button class="btn btn-primary btn-sm" id="send-invite-btn">Send invite</button>
+                  <button class="btn btn-ghost btn-sm" onclick="document.getElementById(&#39;invite-form&#39;).style.display=&#39;none&#39;">Cancel</button>
+                </div>
+                <div id="invite-status" style="font-size:0.76rem;margin-top:8px;min-height:16px;"></div>
+              </div>
+
+              <!-- Members table -->
+              <div class="settings-section">
+                <div class="sec-label">Team Members</div>
+                <div style="background:var(--surf);border:1px solid var(--border);border-radius:9px;overflow:hidden;">
+                  <table style="width:100%;border-collapse:collapse;">
+                    <thead>
+                      <tr style="background:var(--surf2);">
+                        <th style="padding:9px 13px;text-align:left;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);font-weight:500;">Member</th>
+                        <th style="padding:9px 13px;text-align:left;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);font-weight:500;">Role</th>
+                        <th style="padding:9px 13px;text-align:left;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);font-weight:500;">Joined</th>
+                        <th style="padding:9px 13px;border-bottom:1px solid var(--border);"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="seats-tbody">
+                      <tr><td colspan="4" style="padding:20px;text-align:center;color:var(--muted);font-size:0.82rem;">Loading…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Pending invites -->
+              <div class="settings-section" id="pending-invites-section" style="display:none;">
+                <div class="sec-label">Pending Invites</div>
+                <div id="pending-invites-list"></div>
+              </div>
+
+              <!-- Shared Google Maps API key -->
+              <div class="settings-section" id="team-api-key-section" style="display:none;">
+                <div class="sec-label">Shared Google Maps API Key</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;line-height:1.65;">This key is used by all team members automatically. Only owners and admins can change it.</div>
+                <div style="display:flex;gap:7px;width:100%;">
+                  <input class="inp" id="team-gmaps-inp" type="password" placeholder="AIza…" style="flex:1;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.82rem;">
+                  <button class="btn btn-primary btn-sm" id="team-gmaps-save">Save</button>
+                  <button class="btn btn-danger btn-sm" id="team-gmaps-clear" style="display:none;">Remove</button>
+                </div>
+                <div id="team-gmaps-status" class="source-status no" style="margin-top:6px;">No key saved</div>
+              </div>
+
+              <!-- Agency+: Territory locking -->
+              <div class="settings-section" id="territory-section" style="display:none;">
+                <div class="sec-label">Territory Locking</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-bottom:12px;line-height:1.65;">Claim suburbs or postcodes so two team members don't prospect the same area. Assigned territories show a warning if another member tries to scan them.</div>
+                <div id="territories-list" style="margin-bottom:10px;"></div>
+                <div style="display:flex;gap:8px;">
+                  <input class="inp" id="territory-inp" placeholder="e.g. Fitzroy, Melbourne" style="flex:1;">
+                  <select class="sel" id="territory-owner-sel" style="width:160px;"></select>
+                  <button class="btn btn-ghost btn-sm" id="add-territory-btn">+ Add</button>
+                </div>
+              </div>
+
+              <!-- Enterprise: API access -->
+              <div class="settings-section" id="api-access-section" style="display:none;">
+                <div class="sec-label">API Access</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-bottom:12px;line-height:1.65;">Use the Footprint API to pipe leads directly into your CRM, Zapier, or custom workflows. Your API key is tied to your Enterprise account.</div>
+                <div style="background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:0.74rem;color:var(--muted);margin-bottom:10px;">
+                  POST https://yourapp.pages.dev/api/scan<br>
+                  X-Footprint-Key: <span id="api-key-display" style="color:var(--accent);">Load your key below</span>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn btn-ghost btn-sm" id="gen-api-key-btn">Generate API key</button>
+                  <button class="btn btn-ghost btn-sm" id="copy-api-key-btn" style="display:none;">Copy key</button>
+                </div>
+              </div>
+
+              <!-- Danger zone -->
+              <div class="settings-section" id="team-danger-zone" style="display:none;">
+                <div class="sec-label" style="color:var(--red);">Danger Zone</div>
+                <div class="setting-row">
+                  <div><div class="setting-label">Delete team</div><div class="setting-desc">Permanently removes the team and all shared data. All members lose access immediately.</div></div>
+                  <button class="btn btn-danger btn-sm" id="delete-team-btn">Delete team</button>
+                </div>
+              </div>
+
+            </div>
+
+
         <!-- Admin -->
         <div class="panel" id="panel-admin">
           <div class="scroll"><div class="scroll-inner">
             <div class="admin-hero"><div class="admin-hero-icon">🔐</div><div><div class="admin-hero-title">Admin Console</div><div class="admin-hero-sub">Grant or revoke free access. Changes write directly to Firestore.</div></div></div>
-            <div class="settings-section"><div class="sec-label">Grant Free Subscription</div><div class="admin-input-row"><input class="inp" id="admin-grant-email" type="email" placeholder="user@example.com"/><button class="btn btn-green btn-sm" id="admin-grant-btn" style="flex-shrink:0">✓ Grant</button></div></div>
-            <div class="settings-section"><div class="sec-label">Revoke Subscription</div><div class="admin-input-row"><input class="inp" id="admin-revoke-email" type="email" placeholder="user@example.com"/><button class="btn btn-danger btn-sm" id="admin-revoke-btn" style="flex-shrink:0">✕ Revoke</button></div></div>
-            <div class="settings-section"><div class="sec-label">Look Up User</div><div class="admin-input-row"><input class="inp" id="admin-lookup-email" type="email" placeholder="user@example.com"/><button class="btn btn-ghost btn-sm" id="admin-lookup-btn" style="flex-shrink:0">Search</button></div><div id="admin-lookup-result" style="display:none"><div style="background:var(--surf);border:1px solid var(--border);border-radius:9px;padding:14px;margin-top:4px" id="admin-lookup-body"></div></div></div>
+            <div class="settings-section"><div class="sec-label">Grant Free Subscription</div><div class="admin-input-row"><input class="inp" id="admin-grant-email" type="email" placeholder="user@example.com"><button class="btn btn-green btn-sm" id="admin-grant-btn" style="flex-shrink:0">✓ Grant</button></div></div>
+            <div class="settings-section"><div class="sec-label">Revoke Subscription</div><div class="admin-input-row"><input class="inp" id="admin-revoke-email" type="email" placeholder="user@example.com"><button class="btn btn-danger btn-sm" id="admin-revoke-btn" style="flex-shrink:0">✕ Revoke</button></div></div>
+            <div class="settings-section"><div class="sec-label">Look Up User</div><div class="admin-input-row"><input class="inp" id="admin-lookup-email" type="email" placeholder="user@example.com"><button class="btn btn-ghost btn-sm" id="admin-lookup-btn" style="flex-shrink:0">Search</button></div><div id="admin-lookup-result" style="display:none"><div style="background:var(--surf);border:1px solid var(--border);border-radius:9px;padding:14px;margin-top:4px" id="admin-lookup-body"></div></div></div>
             <div class="settings-section"><div class="sec-label">All Users</div><div id="admin-users-table"><div class="admin-empty">Loading…</div></div></div>
             <div id="admin-msg"></div>
           </div></div>
@@ -946,22 +1158,32 @@
 <!-- Mobile bottom nav -->
 <div class="mob-nav">
   <div class="mob-nav-inner">
-    <button class="mnav on" data-tab="scan" onclick="switchTab('scan')"><span class="mnav-icon">⌕</span><span>Scan</span></button>
-    <button class="mnav" data-tab="crm" onclick="switchTab('crm')"><span class="mnav-icon">🗂</span><span>Leads</span><span class="mnav-badge" id="mnav-badge"></span></button>
-    <button class="mnav" data-tab="settings" onclick="switchTab('settings')"><span class="mnav-icon">⚙</span><span>Settings</span></button>
-    <button class="mnav" data-tab="team" onclick="switchTab('team')" id="team-mob-btn" style="display:none"><span class="mnav-icon">👥</span><span>Team</span></button>
-    <button class="mnav" data-tab="admin" onclick="switchTab('admin')" id="admin-mob-btn" style="display:none"><span class="mnav-icon">🔐</span><span>Admin</span></button>
+    <button class="mnav on" data-tab="scan" onclick="switchTab(&#39;scan&#39;)"><span class="mnav-icon">⌕</span><span>Scan</span></button>
+    <button class="mnav" data-tab="crm" onclick="switchTab(&#39;crm&#39;)"><span class="mnav-icon">🗂</span><span>Leads</span><span class="mnav-badge" id="mnav-badge" style="display: none;"></span></button>
+    <button class="mnav" data-tab="settings" onclick="switchTab(&#39;settings&#39;)"><span class="mnav-icon">⚙</span><span>Settings</span></button>
+    <button class="mnav" data-tab="team" onclick="switchTab(&#39;team&#39;)" id="team-mob-btn" style="display:none"><span class="mnav-icon">👥</span><span>Team</span></button>
+    <button class="mnav" data-tab="admin" onclick="switchTab(&#39;admin&#39;)" id="admin-mob-btn" style="display:none"><span class="mnav-icon">🔐</span><span>Admin</span></button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- Upgrade Modal -->
+<div id="upgrade-modal" style="display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--surf);border:1.5px solid var(--border2);border-radius:14px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:&#39;Sora&#39;,sans-serif;font-size:1rem;font-weight:700;">Choose your plan</div>
+      <button onclick="closeUpgradeModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;padding:4px;">✕</button>
+    </div>
+    <div style="padding:20px 24px;" id="upgrade-plans-grid"></div>
+  </div>
+</div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="./app_files/firebase-app-compat.js.download"></script>
+<script src="./app_files/firebase-auth-compat.js.download"></script>
+<script src="./app_files/firebase-firestore-compat.js.download"></script>
 <script>
-// Apply saved theme immediately  -  default light
+// Apply saved theme immediately — default light
 (function(){
   var t = localStorage.getItem('fp-theme') || 'light';
   document.documentElement.setAttribute('data-theme', t);
@@ -982,7 +1204,7 @@ _auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
 
 _auth.onAuthStateChanged(function(user){
   if(!user){location.href='login.html';return;}
-  // Note: email verification check removed  -  not required for this app
+  // Note: email verification check removed — not required for this app
   _user=user;
   document.getElementById('auth-gate').style.display='none';
   // Scope all localStorage keys to this user so different accounts don't share data
@@ -1002,16 +1224,19 @@ _auth.onAuthStateChanged(function(user){
     })
     .then(function(snap){
       if(!snap)return;
-      var fl=[];
-      snap.forEach(function(d){fl.push(d.data());});
+      var fl=[];snap.forEach(function(d){fl.push(d.data());});
       fl.sort(function(a,b){return new Date(b.savedAt||0)-new Date(a.savedAt||0);});
-      if(fl.length>0){leads=fl;refreshBadge();renderCRM();}
+      // For team plans, load from shared team collection instead
+      const teamId2=(_udoc&&_udoc.teamId);
+      if(teamId2){
+        if(window._loadTeamLeads)window._loadTeamLeads();
+      } else {
+        if(fl.length>0){leads=fl;refreshBadge();renderCRM();}
+      }
+      // Check for pending team invites
+      if(window._checkPendingInvite)window._checkPendingInvite();
     })
-    .catch(function(e){
-      console.warn('Firestore:',e);
-      updateAcctUI();
-      renderCRM();
-    });
+    .catch(function(e){console.warn('Firestore:',e);});
 });
 
 function updateAcctUI(){
@@ -1020,35 +1245,97 @@ function updateAcctUI(){
   var el;
   el=document.getElementById('acct-name');if(el)el.textContent=name;
   el=document.getElementById('acct-email');if(el)el.textContent=_user.email;
+
   var plan=(_udoc&&_udoc.plan)||'trial';
-  var status=(_udoc&&_udoc.subscriptionStatus)||'trialing';
+  var tier_key=(_udoc&&_udoc.tier)||plan;
+  // Map old plan names to tier keys
+  if(tier_key==='pro'||tier_key==='active')tier_key='solo';
+  _tier = TIERS[tier_key] || TIERS.trial;
+
   var badge=document.getElementById('acct-plan');
   var note=document.getElementById('acct-trial-note');
+  var status=(_udoc&&_udoc.subscriptionStatus)||'trialing';
+
   if(plan==='gifted'){
-    if(badge){badge.className='plan-badge plan-active';badge.textContent='Gifted';}
+    _tier=TIERS.gifted;
+    if(badge){badge.className='plan-badge plan-active';badge.textContent='Gifted ✦';}
     if(note)note.textContent='';
   } else if(status==='active'||status==='trialing'){
-    if(badge){badge.className='plan-badge plan-active';badge.textContent=status==='trialing'?'Trial':'Active';}
+    if(badge){badge.className='plan-badge plan-active';badge.textContent=_tier.name+(status==='trialing'?' (Trial)':'');}
     if(status==='trialing'&&note){
       var ends=_udoc&&_udoc.trialEnds?new Date(_udoc.trialEnds):null;
       if(ends){var d=Math.max(0,Math.ceil((ends-Date.now())/86400000));note.textContent=d+' day'+(d!==1?'s':'')+' remaining';}
     } else if(note) note.textContent='';
-    el=document.getElementById('subscribe-btn');if(el)el.style.display='none';
-  } else if(status==='cancelled'||status==='expired'||status==='past_due'){
+  } else {
+    _tier=TIERS.trial;
     if(badge){badge.className='plan-badge plan-free';badge.textContent='Inactive';}
     var banner=document.getElementById('sub-warning');if(banner)banner.classList.add('show');
-  } else {
-    // trialing or other — show as trial
-    if(badge){badge.className='plan-badge plan-active';badge.textContent='Trial';}
-    if(note){
-      var ends=_udoc&&_udoc.trialEnds?new Date(_udoc.trialEnds):null;
-      if(ends){var d=Math.max(0,Math.ceil((ends-Date.now())/86400000));note.textContent=d>0?d+' day'+(d!==1?'s':'')+' remaining':'Trial active';}
-    }
-    el=document.getElementById('subscribe-btn');if(el)el.style.display='none';
   }
+
+  // Update max results selector based on tier
+  var maxrEl=document.getElementById('maxr-mob');
+  if(maxrEl){
+    var max=getTierLimit('maxResults');
+    Array.from(maxrEl.options).forEach(o=>{
+      o.disabled=parseInt(o.value)>max;
+      if(parseInt(o.value)>max)o.textContent=o.textContent.replace(' ✗','')+'  ✗';
+    });
+    if(parseInt(maxrEl.value)>max)maxrEl.value=max;
+  }
+
+  // Show bulk pitch for agency+
+  var bulkBtn=document.getElementById('bulk-pitch-btn');
+
+  // Show save template for partnership+
+  var tmplBtn=document.getElementById('save-template-btn');
+  if(tmplBtn)tmplBtn.style.display=getTierLimit('templates')?'inline-flex':'none';
+  var tmplArea=document.getElementById('saved-templates-area');
+  if(tmplArea)tmplArea.style.display=getTierLimit('templates')?'block':'none';
+  if(getTierLimit('templates'))loadScanTemplates();
+  if(bulkBtn)bulkBtn.style.display=(_tier.bulkPitch)?'inline-flex':'none';
+
+  // Show team tab if on multi-seat plan — rename based on tier
+  var teamTab=document.getElementById('team-tab-btn');
+  var teamMob=document.getElementById('team-mob-btn');
+  if(_tier.seats>1){
+    var tabLabel=_tier.name+' Hub';
+    if(teamTab){teamTab.style.display='inline-block';teamTab.textContent=tabLabel;}
+    if(teamMob){teamMob.style.display='flex';var tmSpan=teamMob.querySelector('span:last-child');if(tmSpan)tmSpan.textContent='Team';}
+  } else {
+    if(teamTab)teamTab.style.display='none';
+    if(teamMob)teamMob.style.display='none';
+  }
+
+  // Update leads count enforcement
   refreshBadge();
+
+  // Show welcome experience once
+  if(window._showWelcome){
+    var wp=window._showWelcome;
+    window._showWelcome=null;
+    setTimeout(function(){showPlanWelcome(wp);},600);
+  }
 }
 
+function showPlanWelcome(plan){
+  var names={solo:'Solo',partnership:'Partnership',agency:'Agency',enterprise:'Enterprise'};
+  var msgs={
+    solo:'Welcome to Footprint Solo! Start your first scan to find leads.',
+    partnership:'Welcome to Footprint Partnership! Head to the Team tab to invite your teammates.',
+    agency:'Welcome to Footprint Agency! Set up your team in the Team tab — you have 10 seats.',
+    enterprise:'Welcome to Footprint Enterprise! The Team tab is where you manage your 50 seats and shared settings.'
+  };
+  var msg=msgs[plan]||('Welcome to Footprint '+names[plan]+'!');
+  // Show a prominent welcome banner
+  var banner=document.getElementById('welcome-banner');
+  if(banner){
+    document.getElementById('welcome-banner-msg').textContent=msg;
+    banner.style.display='flex';
+    if(_tier.seats>1){
+      document.getElementById('welcome-team-btn').style.display='inline-flex';
+    }
+  }
+}
 function openCheckout(){
   if(!_user){toast('Please wait…');return;}
   const btn=document.getElementById('manage-billing-btn');
@@ -1062,10 +1349,10 @@ function openCheckout(){
       cancelUrl:location.origin+'/app.html'})
   }).then(r=>r.json()).then(d=>{
     if(d.url){location.href=d.url;}
-    else{toast('Billing not configured yet  -  set STRIPE_SECRET_KEY and STRIPE_PRICE_ID in Cloudflare.');}
-  }).catch(()=>toast('Could not open checkout  -  check Cloudflare env vars.'))
+    else{toast('Billing not configured yet — set STRIPE_SECRET_KEY and STRIPE_PRICE_ID in Cloudflare.');}
+  }).catch(()=>toast('Could not open checkout — check Cloudflare env vars.'))
   .finally(()=>{if(btn){btn.disabled=false;btn.textContent='Manage Billing';}});
-  }).catch(()=>toast('Authentication error  -  please refresh and try again.'));
+  }).catch(()=>toast('Authentication error — please refresh and try again.'));
 }
 function saveLeadFS(lead){if(!_user)return;_db.collection('users').doc(_user.uid).collection('leads').doc(lead.id).set(lead).catch(console.warn);}
 
@@ -1091,14 +1378,14 @@ function flagBusinessHasWebsite(lead){
     category: lead.category || '',
     flaggedBy: _user.uid,
     flagCount: firebase.firestore.FieldValue.increment(1),
-    lastFlagged: Date.now(),
+    lastFlagged: firebase.firestore.FieldValue.serverTimestamp(),
     reason: 'has_website',
   }, {merge: true})
-  .then(function(){ toast('Thanks! Marked as having a website  -  helps improve accuracy for everyone.'); })
+  .then(function(){ toast('Thanks! Marked as having a website — helps improve accuracy for everyone.'); })
   .catch(function(e){ console.warn('Flag error:', e); });
 }
 
-// Check community flags before displaying a lead  -  returns true if should be hidden
+// Check community flags before displaying a lead — returns true if should be hidden
 var _communityFlagCache = null;
 var _communityFlagLoaded = false;
 
@@ -1109,7 +1396,7 @@ function loadCommunityFlags(){
     .then(function(snap){
       _communityFlagCache = new Set();
       snap.forEach(function(doc){ _communityFlagCache.add(doc.id); });
-      console.log('Community flags loaded:', _communityFlagCache.size);
+      console.log('Community flags loaded:', _communityFlagCache.size, 'businesses marked as having websites');
     })
     .catch(function(e){ console.warn('Could not load community flags:', e); _communityFlagCache = new Set(); });
 }
@@ -1125,9 +1412,29 @@ function clearLeadsFS(){if(!_user)return;_db.collection('users').doc(_user.uid).
 function saveScanHistoryFS(entry){if(!_user)return;_db.collection('users').doc(_user.uid).collection('scans').add({...entry,uid:_user.uid}).catch(console.warn);}
 
 document.addEventListener('DOMContentLoaded',function(){
-  var p=new URLSearchParams(location.search);
-  if(p.get('welcome')==='1'){history.replaceState({},'','/app.html');setTimeout(function(){toast('Welcome to Footprint!');},800);}
-  var btn=document.getElementById('billing-link');if(btn)btn.addEventListener('click',function(e){e.preventDefault();document.getElementById('manage-billing-btn')?.click();});
+  var btn;
+  btn=document.getElementById('signout-btn');if(btn)btn.addEventListener('click',()=>_auth.signOut().then(()=>location.href='login.html'));
+  btn=document.getElementById('signout-btn2');if(btn)btn.addEventListener('click',()=>_auth.signOut().then(()=>location.href='login.html'));
+  btn=document.getElementById('manage-billing-btn');if(btn)btn.addEventListener('click',function(){
+    if(!_user)return;
+    var b=document.getElementById('manage-billing-btn');
+    if(b){b.disabled=true;b.textContent='Opening…';}
+    fetch('/api/create-portal',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:_user.uid})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.url){window.open(d.url,'_blank');}
+      else if(d.error==='No billing account found'){
+        // User hasn't completed checkout yet — send them there
+        toast('No billing account found — completing setup…');
+        openCheckout();
+      } else {
+        toast('Could not open billing portal. Check Stripe env vars are set in Cloudflare.');
+      }
+    })
+    .catch(function(){toast('Could not open billing portal.');})
+    .finally(function(){if(b){b.disabled=false;b.textContent='Manage Billing';}});
+  });
+  btn=document.getElementById('billing-link');if(btn)btn.addEventListener('click',e=>{e.preventDefault();document.getElementById('manage-billing-btn')?.click();});
 });
 </script>
 
@@ -1169,7 +1476,7 @@ const Engine = (() => {
     'Travel':[['shop','travel_agency']],
   };
 
-  // Google Places type map  -  used for keyword-based text search
+  // Google Places type map — used for keyword-based text search
   // Batched into groups to minimise API calls
   const GMAPS_KEYWORD_GROUPS={
     'Restaurants':['restaurants','cafes','coffee shops'],
@@ -1204,10 +1511,10 @@ const Engine = (() => {
   };
 
   // Known large chains to skip (case-insensitive substring match)
-  // Global chains & franchises  -  businesses that definitely have websites
+  // Global chains & franchises — businesses that definitely have websites
   // Covers fast food, retail, hospitality, banking, petrol, pharmacy, fitness globally
   const CHAIN_LIST=[
-    // Fast food  -  global
+    // Fast food — global
     "mcdonald","mcdonalds","subway","starbucks","kfc","burger king","pizza hut","domino",
     "dominos","papa john","little caesar","taco bell","wendys","popeyes","chick-fil-a",
     "five guys","shake shack","chipotle","panda express","wingstop","raising canes",
@@ -1375,7 +1682,7 @@ const Engine = (() => {
         if(!r.ok||d.error){
           lastError=d.error||('HTTP '+r.status);
           if(r.status===403||r.status===503){
-            // Fatal  -  bad key or not configured  -  stop immediately
+            // Fatal — bad key or not configured — stop immediately
             throw new Error(lastError);
           }
           continue;
@@ -1431,7 +1738,7 @@ const Engine = (() => {
           osmEls=dedupe(osmResult.elements||[]);
           emit('status',{message:`OpenStreetMap: ${osmEls.length} businesses found`});
         }catch(osmErr){
-          emit('status',{message:`OpenStreetMap unavailable  -  ${useGoogle?'using Google Places only':'try again later'}`});
+          emit('status',{message:`OpenStreetMap unavailable — ${useGoogle?'using Google Places only':'try again later'}`});
           console.warn('OSM error:',osmErr);
         }
       }
@@ -1443,7 +1750,7 @@ const Engine = (() => {
           const locName=geo.display.split(',').slice(0,2).join(',').trim();
           googleBizzes=await fetchGooglePlaces(gmapsKey,geo.lat,geo.lon,radiusM,selectedTypes,locName);
           if(osmEls.length>0){
-            emit('status',{message:`OSM: ${osmEls.length} · Google: ${googleBizzes.length}  -  merging…`});
+            emit('status',{message:`OSM: ${osmEls.length} · Google: ${googleBizzes.length} — merging…`});
           } else {
             emit('status',{message:`Google Places: ${googleBizzes.length} businesses found`});
           if(googleBizzes.length===0&&osmEls.length===0){
@@ -1451,7 +1758,7 @@ const Engine = (() => {
             return;
           }
           }
-        }catch(e){emit('status',{message:'Google Places query failed  -  check your API key'});console.warn('Google Places error:',e);}
+        }catch(e){emit('status',{message:'Google Places query failed — check your API key'});console.warn('Google Places error:',e);}
       }
 
       if(osmEls.length===0&&googleBizzes.length===0){
@@ -1495,6 +1802,20 @@ const Engine = (() => {
 
 <script>
 // ── App State ───────────────────────────────────────────────────────────
+// ── Tier Definitions ──
+const TIERS = {
+  solo:        { name:'Solo',        price:19,  seats:1,   maxResults:100,  maxLeads:500,   history:8,    shared:false, territories:false, bulkPitch:false, templates:false, whitelabel:false, api:false },
+  partnership: { name:'Partnership', price:39,  seats:3,   maxResults:200,  maxLeads:2000,  history:30,   shared:true,  territories:false, bulkPitch:false, templates:true,  whitelabel:false, api:false },
+  agency:      { name:'Agency',      price:89,  seats:10,  maxResults:500,  maxLeads:10000, history:999,  shared:true,  territories:true,  bulkPitch:true,  templates:true,  whitelabel:false, api:false },
+  enterprise:  { name:'Enterprise',  price:199, seats:50,  maxResults:500,  maxLeads:99999, history:999,  shared:true,  territories:true,  bulkPitch:true,  templates:true,  whitelabel:true,  api:true  },
+  // Legacy / gifted
+  pro:         { name:'Pro',         price:20,  seats:1,   maxResults:200,  maxLeads:2000,  history:30,   shared:false, territories:false, bulkPitch:false, templates:false, whitelabel:false, api:false },
+  trial:       { name:'Trial',       price:0,   seats:1,   maxResults:100,  maxLeads:500,   history:8,    shared:false, territories:false, bulkPitch:false, templates:false, whitelabel:false, api:false },
+  gifted:      { name:'Gifted ✦',   price:0,   seats:1,   maxResults:500,  maxLeads:10000, history:999,  shared:true,  territories:true,  bulkPitch:true,  templates:true,  whitelabel:false, api:false },
+};
+let _tier = TIERS.trial; // updated after auth
+function getTier(){ return _tier; }
+function getTierLimit(key){ return _tier[key] ?? TIERS.trial[key]; }
 
 let leads=[];
 let scanN=0,leadN=0,skipN=0;
@@ -1504,7 +1825,7 @@ let activeMissFilters=new Set();
 let _theme=localStorage.getItem('fp-theme')||'light';
 let _dataSource='osm'; // will be loaded from scoped storage in initApp
 
-// ── Scoped localStorage helpers  -  keys prefixed with user UID ──
+// ── Scoped localStorage helpers — keys prefixed with user UID ──
 // Prevents different accounts on same browser sharing recent scans, settings etc.
 function lsKey(k){return(window._lsPrefix||'fp_anon_')+k;}
 function lsGet(k){try{return localStorage.getItem(lsKey(k));}catch{return null;}}
@@ -1537,7 +1858,7 @@ function initApp(){
   // Tab buttons
   document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
 
-  // Chips  -  both sidebar and mobile
+  // Chips — both sidebar and mobile
   ['tchips','tchips-mob'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c)c.classList.toggle('on');});
@@ -1549,6 +1870,7 @@ function initApp(){
   // Scan buttons
   // start-btn no longer exists (sidebar removed)
   document.getElementById('start-btn-mob')?.addEventListener('click',()=>startScan());
+  document.getElementById('save-template-btn')?.addEventListener('click',saveTemplate);
   // desktop new scan btn removed
   document.getElementById('new-scan-btn-mob')?.addEventListener('click',resetScanMobile);
   // stop-btn-mob is the unified stop button
@@ -1686,7 +2008,7 @@ function initSettingsGmaps(){
     updateSourceNotice();
   });
 }
-// ── Google API key stored in Firestore  -  shared across devices and team members ──
+// ── Google API key stored in Firestore — shared across devices and team members ──
 async function loadGmapsKeyFromFirestore(){
   if(!_user)return null;
   try{
@@ -1695,7 +2017,7 @@ async function loadGmapsKeyFromFirestore(){
     let snap;
     if(teamId){
       snap=await _db.collection('teams').doc(teamId).get();
-      const key=snap.val()||'';
+      const key=snap.data()&&snap.data().gmapsKey||'';
       window._cachedGmapsKey=key||null;
       return key||null;
     } else {
@@ -1728,11 +2050,11 @@ async function saveGmapsKeyToFirestore(key){
 function updateSourceNotice(){
   var key=lsGet('gmaps-key');
   var usingGoogle=_dataSource==='both'&&!!key;
-  // Update sidebar notice visibility  -  we use the notice in mobile only
+  // Update sidebar notice visibility — we use the notice in mobile only
   var n=document.getElementById('osm-notice');
   if(n&&isMobile())n.style.display='flex';
   var t=document.getElementById('osm-notice-text');
-  if(t)t.textContent=usingGoogle?'Using OpenStreetMap + Google Places. Google results won\'t have website/phone  -  verify before pitching.':'Powered by OpenStreetMap. Verify businesses on Google Maps before pitching.';
+  if(t)t.textContent=usingGoogle?'Using OpenStreetMap + Google Places. Google results won\'t have website/phone — verify before pitching.':'Powered by OpenStreetMap. Verify businesses on Google Maps before pitching.';
 }
 
 // ── Theme ──
@@ -1765,6 +2087,11 @@ function switchTab(id){
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===`panel-${id}`));
   document.querySelectorAll('.mnav[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
   if(id==='crm')renderCRM();
+  if(id==='team'&&typeof window._initTeamPanel==='function')window._initTeamPanel();
+  // Update active state in team sidebar if present
+  document.querySelectorAll('.tsidebar-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.tab===id);
+  });
   if(id==='admin'&&typeof window._loadAdminUsers==='function')window._loadAdminUsers();
 }
 window.switchTab=switchTab;
@@ -1829,7 +2156,7 @@ function renderRecent(arr){
     if(!arr.length){sec.style.display='none';return;}
     sec.style.display='block';
     list.innerHTML=arr.map((r,i)=>`<div class="ri" data-i="${i}"><span class="ri-icon">📍</span><div class="ri-main"><div class="ri-name">${esc(r.label)}</div><div class="ri-meta">${(r.types||[]).slice(0,3).join(', ')} · ${r.radius}km · ${fmtDate(r.date)}</div></div><span class="ri-leads">${r.leads} leads</span><span class="ri-del" data-i="${i}">✕</span></div>`).join('');
-    list.querySelectorAll('.ri').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ri-del'))return;const rec=arr[parseInt(el.dataset.i)];['loc','loc-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.label;});['rv','rv-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.radius;});selectedGeo=rec.geo||null;['tchips','tchips-mob'].forEach(cid=>{document.querySelectorAll(`#${cid} .chip`).forEach(c=>c.classList.toggle('on',(rec.types||[]).includes(c.dataset.t)));});toast('Loaded  -  press Start Scan');});});
+    list.querySelectorAll('.ri').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ri-del'))return;const rec=arr[parseInt(el.dataset.i)];['loc','loc-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.label;});['rv','rv-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.radius;});selectedGeo=rec.geo||null;['tchips','tchips-mob'].forEach(cid=>{document.querySelectorAll(`#${cid} .chip`).forEach(c=>c.classList.toggle('on',(rec.types||[]).includes(c.dataset.t)));});toast('Loaded — press Start Scan');});});
     list.querySelectorAll('.ri-del').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();arr.splice(parseInt(el.dataset.i),1);lsSet('recent',JSON.stringify(arr));renderRecent(arr);});});
   });
 }
@@ -1841,11 +2168,79 @@ function saveRecentFS(label,geo,types,radius,leadsFound){
   // Also persist to Firestore
   if(typeof saveScanHistoryFS==='function')saveScanHistoryFS(entry);
 }
+// ── Saved Scan Templates ─────────────────────────────────────────
+function loadScanTemplates(){
+  if(!_user||!getTierLimit('templates'))return;
+  _db.collection('users').doc(_user.uid).collection('scan_templates')
+    .orderBy('createdAt','desc').limit(20).get()
+    .then(function(snap){
+      var list=document.getElementById('templates-list');
+      if(!list)return;
+      if(snap.empty){
+        list.innerHTML='<em style="font-size:0.74rem;color:var(--muted);">No templates yet</em>';
+        return;
+      }
+      var html='';
+      snap.docs.forEach(function(doc){
+        var t=doc.data(), tid=doc.id;
+        html+='<div data-tid="'+tid+'" style="display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid var(--border);">';
+        html+='<span class="tmpl-load" style="flex:1;font-size:0.78rem;cursor:pointer;color:var(--accent);">'+esc(t.name||t.location||'Template')+'</span>';
+        html+='<span style="font-size:0.68rem;color:var(--muted);">'+esc((t.types||[]).slice(0,2).join(', '))+'</span>';
+        html+='<button class="tmpl-del" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.72rem;">✕</button>';
+        html+='</div>';
+      });
+      list.innerHTML=html;
+      list.onclick=function(e){
+        var row=e.target.closest('[data-tid]');
+        if(!row)return;
+        var tid=row.dataset.tid;
+        if(e.target.classList.contains('tmpl-del'))deleteTemplate(tid);
+        else loadTemplate(tid);
+      };
+    }).catch(console.warn);
+}
+function saveTemplate(){
+  if(!_user||!getTierLimit('templates')){toast('Upgrade to Partnership or above to save templates');return;}
+  var loc=(document.getElementById('loc-mob').value||'').trim();
+  if(!loc){toast('Enter a location first');return;}
+  var name=loc+' — '+selectedTypes().slice(0,2).join(', ');
+  var template={
+    name:name,location:loc,
+    types:selectedTypes(),
+    radius:parseFloat(document.getElementById('rv-mob').value)||2,
+    maxResults:parseInt(document.getElementById('maxr-mob').value)||40,
+    dataSource:_dataSource,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  };
+  _db.collection('users').doc(_user.uid).collection('scan_templates').add(template)
+    .then(function(){toast('Template saved: '+name);loadScanTemplates();})
+    .catch(function(e){toast('Error: '+e.message);});
+}
+function loadTemplate(id){
+  _db.collection('users').doc(_user.uid).collection('scan_templates').doc(id).get()
+    .then(function(snap){
+      if(!snap.exists)return;
+      var t=snap.data();
+      var loc=document.getElementById('loc-mob');if(loc)loc.value=t.location||'';
+      var rv=document.getElementById('rv-mob');if(rv)rv.value=t.radius||2;
+      var mr=document.getElementById('maxr-mob');if(mr)mr.value=t.maxResults||40;
+      if(t.dataSource){_dataSource=t.dataSource;document.querySelectorAll('#source-selector-mob .source-opt').forEach(function(o){o.classList.toggle('active',o.dataset.source===t.dataSource);});}
+      document.querySelectorAll('#tchips-mob .chip').forEach(function(c){c.classList.toggle('on',(t.types||[]).includes(c.dataset.t));});
+      selectedGeo=null;
+      toast('Template loaded — press Start Scan');
+    }).catch(console.warn);
+}
+function deleteTemplate(id){
+  _db.collection('users').doc(_user.uid).collection('scan_templates').doc(id).delete()
+    .then(function(){loadScanTemplates();toast('Template deleted');})
+    .catch(console.warn);
+}
+
 function fmtDate(iso){if(!iso)return'';const diff=Date.now()-new Date(iso);if(diff<60000)return'just now';if(diff<3600000)return`${Math.floor(diff/60000)}m ago`;if(diff<86400000)return`${Math.floor(diff/3600000)}h ago`;return new Date(iso).toLocaleDateString('en-AU',{day:'numeric',month:'short'});}
 
 // ── Scan ──
 async function startScan(){
-  // unified  -  always use the single scan form
+  // unified — always use the single scan form
   const locId='loc-mob';
   const rvId='rv-mob';
   const maxrId='maxr-mob';
@@ -1893,7 +2288,7 @@ function resetScanDesktop(){resetScanMobile();}
 function resetScanMobile(){document.getElementById('mob-scan-form').style.display='block';const p=document.getElementById('psec-mob');if(p)p.classList.remove('on');document.getElementById('mini-sec-mob').style.display='none';}
 
 function handleEvent(ev){
-  // Now unified  -  always use the single scan panel elements
+  // Now unified — always use the single scan panel elements
   const fi='feed-mob';
   const pbi='pbarf-mob';
   const pli='pml-mob';
@@ -1902,7 +2297,7 @@ function handleEvent(ev){
   switch(ev.type){
     case 'status':setProg2(pbi,pli,ppi,null,esc(ev.message));feedLnId(fi,'·',esc(ev.message),'t-skip');break;
     case 'geocoded':setNText('ploc-mob',ev.display.split(',').slice(0,3).join(','));feedLnId(fi,'📍',`<span class="fnm">${esc(ev.display.split(',').slice(0,3).join(','))}</span>`);break;
-    case 'total':setPillId(pilo,'run','SCANNING');feedLnId(fi,'◎',`<span class="fnm">${ev.count}</span> businesses found  -  scanning…`);break;
+    case 'total':setPillId(pilo,'run','SCANNING');feedLnId(fi,'◎',`<span class="fnm">${ev.count}</span> businesses found — scanning…`);break;
     case 'progress':
       setProg2(pbi,pli,ppi,ev.pct,ev.label);
       scanN=ev.scanned;leadN=ev.leadsFound;skipN=ev.skipped;
@@ -1919,7 +2314,7 @@ function handleEvent(ev){
       // Duplicate detection: check if same name+address already saved
       const isDup=leads.some(l=>(l.id===b.id)||(l.name===b.name&&l.address===b.address&&l.locationName===b.locationName));
       if(!isDup){const lead={...b,status:'new',notes:'',savedAt:new Date().toISOString()};leads.unshift(lead);saveLead(lead);refreshBadge();}
-      else{feedLnId(fi,'⚠',`<span class="fmsg">${esc(b.name)}  -  duplicate, skipped</span>`,'t-skip');}
+      else{feedLnId(fi,'⚠',`<span class="fmsg">${esc(b.name)} — duplicate, skipped</span>`,'t-skip');}
       break;
     }
     case 'complete':{
@@ -1955,6 +2350,82 @@ function renderMiniMob(){
 }
 function miniHtml(top){return top.map(l=>{const tier=scoreTier(l.gapScore);const hs=!!(l.facebook||l.instagram||l.twitter||l.tiktok);const flags=[!l.website&&'<span class="mf mf-ns">NO SITE</span>',!l.phone&&'<span class="mf mf-np">NO PHONE</span>',!hs&&'<span class="mf mf-nm">NO SOCIAL</span>'].filter(Boolean).slice(0,2).join('');return`<div class="mrow ${tier}" onclick="switchTab('crm')"><div class="msco" style="color:${scoreColor(l.gapScore)}">${l.gapScore}</div><div class="minf"><div class="mnm">${esc(l.name)}</div><div class="mad">${l.address?esc(l.address.split(',').slice(0,2).join(',').trim()):esc(l.locationName||'')}</div></div><div class="mflgs">${flags}</div></div>`;}).join('');}
 
+// ── Upgrade Modal ────────────────────────────────────────────────
+var PLAN_INFO=[
+  {key:'solo',name:'Solo',price:'$19',desc:'For freelancers',seats:1,maxResults:100,maxLeads:500},
+  {key:'partnership',name:'Partnership',price:'$39',desc:'For small teams',seats:3,maxResults:200,maxLeads:2000},
+  {key:'agency',name:'Agency',price:'$89',desc:'For agencies',seats:10,maxResults:500,maxLeads:10000},
+  {key:'enterprise',name:'Enterprise',price:'$199',desc:'For large agencies',seats:50,maxResults:500,maxLeads:99999},
+];
+function showUpgradeModal(){
+  var modal=document.getElementById('upgrade-modal');
+  if(!modal)return;
+  var grid=document.getElementById('upgrade-plans-grid');
+  var currentKey=(_udoc&&(_udoc.tier||_udoc.plan))||'trial';
+  var html='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">';
+  PLAN_INFO.forEach(function(p){
+    var isCurrent=(p.key===currentKey);
+    var leadsStr=p.maxLeads>=99999?'Unlimited':p.maxLeads.toLocaleString();
+    var bc=isCurrent?'var(--accent)':'var(--border)';
+    var bg=isCurrent?'var(--accent-pale)':'var(--surf)';
+    html+='<div style="border:1.5px solid '+bc+';border-radius:10px;padding:16px;background:'+bg+';">';
+    html+='<div style="font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">'+p.name+'</div>';
+    html+='<div style="font-size:1.5rem;font-weight:700;margin-bottom:2px;">'+p.price+'<span style="font-size:0.8rem;color:var(--muted);">/mo</span></div>';
+    html+='<div style="font-size:0.76rem;color:var(--muted);margin-bottom:10px;">'+p.desc+'</div>';
+    html+='<div style="font-size:0.74rem;margin-bottom:12px;line-height:1.8;">';
+    html+=p.seats+(p.seats>1?' seats':' seat')+'<br>'+p.maxResults+' results/scan<br>'+leadsStr+' leads';
+    html+='</div>';
+    if(isCurrent){
+      html+='<div style="text-align:center;font-size:0.74rem;color:var(--accent);font-weight:600;">Current plan</div>';
+    } else {
+      html+='<button onclick="upgradeToplan('+"'"+'\'+p.key+\''+"'"+')">Switch to '+p.name+'</button>';
+    }
+    html+='</div>';
+  });
+  html+='</div>';
+  grid.innerHTML=html;
+  modal.style.display='flex';
+}
+function closeUpgradeModal(){
+  var m=document.getElementById('upgrade-modal');
+  if(m)m.style.display='none';
+}
+function upgradeToplan(plan){
+  if(!_user)return;
+  closeUpgradeModal();
+  toast('Opening checkout for '+plan+' plan…');
+  _user.getIdToken().then(function(tok){
+    fetch('/api/create-checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
+      body:JSON.stringify({
+        uid:_user.uid,email:_user.email,
+        trialDays:0,plan:plan,
+        successUrl:location.origin+'/app.html?upgraded=1&plan='+plan,
+        cancelUrl:location.origin+'/app.html'
+      })
+    }).then(function(r){return r.json();})
+    .then(function(d){if(d.url)location.href=d.url;else toast(d.error||'Could not open checkout');})
+    .catch(function(){toast('Could not open checkout');});
+  });
+}
+// Close modal on backdrop click
+document.addEventListener('DOMContentLoaded',function(){
+  var modal=document.getElementById('upgrade-modal');
+  if(modal)modal.addEventListener('click',function(e){if(e.target===modal)closeUpgradeModal();});
+  var params=new URLSearchParams(location.search);
+  if(params.get('upgraded')==='1'){
+    var plan=params.get('plan')||'';
+    history.replaceState({},'','/app.html');
+    setTimeout(function(){toast('Plan upgraded to '+plan+'!');},1000);
+  }
+  if(params.get('welcome')==='1'){
+    var wplan=params.get('plan')||'solo';
+    history.replaceState({},'','/app.html');
+    // Show plan-specific welcome after auth loads
+    window._showWelcome=wplan;
+  }
+});
 
 // ── CRM ──
 function renderCRM(){
@@ -2007,12 +2478,12 @@ function renderCard(l){
   const bdRows=(l.gapBreakdown||[]).map(b=>`<div class="st-row"><span>${b.label}</span><span class="st-val">+${b.pts}</span></div>`).join('');
   const scoreEl=`<div class="score-wrap lsco-wrap"><div class="lsco" style="color:${color}">${l.gapScore||0}</div><div class="lsco-lbl">score</div><div class="score-tooltip"><div class="st-row"><span>Gap Score</span><span class="st-val">${l.gapScore||0}/100</span></div>${bdRows}</div></div>`;
 
-  const webDisplay=l.website?`<a href="${esc(l.website)}" target="_blank" class="dr-link">${esc(l.website)}</a>`:'<span class="dr-miss">Not in OSM  -  verify on Maps</span>';
-  const phoneDisplay=l.phone?`<a href="tel:${esc(l.phone)}" class="dr-link">${esc(l.phone)}</a>`:'<span class="dr-miss">Not found  -  add below</span>';
-  const emailDisplay=l.email?`<a href="mailto:${esc(l.email)}" class="dr-link">${esc(l.email)}</a>`:'<span class="dr-miss">Not found  -  add below</span>';
+  const webDisplay=l.website?`<a href="${esc(l.website)}" target="_blank" class="dr-link">${esc(l.website)}</a>`:'<span class="dr-miss">Not in OSM — verify on Maps</span>';
+  const phoneDisplay=l.phone?`<a href="tel:${esc(l.phone)}" class="dr-link">${esc(l.phone)}</a>`:'<span class="dr-miss">Not found — add below</span>';
+  const emailDisplay=l.email?`<a href="mailto:${esc(l.email)}" class="dr-link">${esc(l.email)}</a>`:'<span class="dr-miss">Not found — add below</span>';
 
   // Note templates
-  const TEMPLATES=['Left voicemail','Sent email  -  no reply','Follow up in 1 week','Meeting booked','Quote sent','Not interested'];
+  const TEMPLATES=['Left voicemail','Sent email — no reply','Follow up in 1 week','Meeting booked','Quote sent','Not interested'];
   const tmplHtml=TEMPLATES.map(t=>`<span class="note-tmpl" data-tmpl="${esc(t)}" data-lead="${l.id}">${t}</span>`).join('');
 
   return`<div class="lcard ${tier}" id="lc-${l.id}">
@@ -2082,7 +2553,7 @@ function renderCard(l){
 </div>`;
 }
 
-function ef(lid,field,label,value){return`<div class="ef-row"><span class="ef-label">${label}</span><input class="ef-inp" type="text" id="ef-${lid}-${field}" value="${esc(value||'')}" placeholder="${!value?'Not found  -  add here':''}"/></div>`;}
+function ef(lid,field,label,value){return`<div class="ef-row"><span class="ef-label">${label}</span><input class="ef-inp" type="text" id="ef-${lid}-${field}" value="${esc(value||'')}" placeholder="${!value?'Not found — add here':''}"/></div>`;}
 
 function attachCardListeners(){
   document.querySelectorAll('.lctop').forEach(top=>{top.addEventListener('click',()=>{const id=top.id.replace('ltop-','');const exp=document.getElementById(`lexp-${id}`);const chev=document.getElementById(`chev-${id}`);if(!exp)return;const open=exp.style.display==='block';exp.style.display=open?'none':'block';chev.style.transform=open?'':'rotate(180deg)';});});
@@ -2140,7 +2611,7 @@ function buildPitchEmail(l){
   const subjects=[
     noSite?`Quick question about ${name}\'s online presence`:`A small idea for ${name}`,
     `Helping local businesses in ${area} get found online`,
-    `${name}  -  I think I can help`,
+    `${name} — I think I can help`,
     `More customers for ${name}?`,
   ];
 
@@ -2152,11 +2623,11 @@ function buildPitchEmail(l){
   ];
 
   const valueLines=[
-    noSite?`Most potential customers search online before visiting anywhere  -  and without a website, ${name} might be missing out on a lot of them.`
+    noSite?`Most potential customers search online before visiting anywhere — and without a website, ${name} might be missing out on a lot of them.`
           :`Having a stronger online presence can help more local customers find ${name} before they find a competitor.`,
-    noSite?`A simple, clean website can make a big difference  -  letting customers find your hours, location, and contact details instantly.`
+    noSite?`A simple, clean website can make a big difference — letting customers find your hours, location, and contact details instantly.`
           :`Even small improvements to your digital presence can bring a steady stream of new customers through the door.`,
-    noSocial?`A lot of ${cat}s in ${area} are now getting new customers through Instagram and Facebook  -  and it\'s simpler to set up than most people think.`
+    noSocial?`A lot of ${cat}s in ${area} are now getting new customers through Instagram and Facebook — and it\'s simpler to set up than most people think.`
             :`Showing up consistently online helps build trust with new customers before they\'ve even walked in the door.`,
     noSite?`Right now, customers searching for a ${cat} in ${area} might walk straight past ${name} because they can\'t find you online.`
           :`A bit of work on your online presence could meaningfully increase foot traffic and enquiries.`,
@@ -2176,7 +2647,7 @@ ${openings[v]}
 
 ${valueLines[v]}
 
-I specialise in ${serviceStr} for local businesses  -  keeping things simple, affordable, and jargon-free.
+I specialise in ${serviceStr} for local businesses — keeping things simple, affordable, and jargon-free.
 
 If you\'d be open to a quick 10-minute chat, I\'d love to show you what\'s possible. No obligation at all.
 
@@ -2185,6 +2656,24 @@ Thanks for your time,
 [Your Phone / Website]`;
 }
 
+
+function runBulkPitch(){
+  // Generate pitch emails for all currently visible leads
+  var list=document.getElementById('llist');
+  if(!list)return;
+  var cards=list.querySelectorAll('.lcard');
+  if(!cards.length){toast('No leads to pitch');return;}
+  var count=0;
+  cards.forEach(function(card){
+    var id=card.id.replace('lc-','');
+    var idx=leads.findIndex(function(l){return l.id===id;});
+    if(idx===-1||leads[idx]._pitch)return; // skip already generated
+    generatePitch(id);
+    count++;
+  });
+  if(count===0)toast('All visible leads already have pitch emails');
+  else toast('Generating '+count+' pitch emails…');
+}
 
 function copyPitch(leadId){const out=document.getElementById(`pitch-out-${leadId}`);if(out&&out.textContent)navigator.clipboard.writeText(out.textContent).then(()=>toast('Copied to clipboard'));}
 function openMailto(leadId,email){const out=document.getElementById(`pitch-out-${leadId}`);if(!out||!out.textContent)return;const lines=out.textContent.split('\n');const subject=lines.find(l=>l.toLowerCase().startsWith('subject:'));const body=lines.filter(l=>!l.toLowerCase().startsWith('subject:')).join('\n');window.location.href=`mailto:${email||''}?subject=${encodeURIComponent(subject?subject.replace(/^subject:\s*/i,''):'')}&body=${encodeURIComponent(body)}`;}
@@ -2201,7 +2690,7 @@ async function enrichLead(leadId,name,addr){
   // Open three targeted searches
   window.open(`https://www.google.com/search?q=${q}`,'_blank');
   setTimeout(()=>window.open(`https://www.facebook.com/search/pages/?q=${encodeURIComponent(name)}`,'_blank'),400);
-  if(el)el.textContent='Opened 2 search tabs  -  check results for phone, email & social';
+  if(el)el.textContent='Opened 2 search tabs — check results for phone, email & social';
   if(btn){setTimeout(()=>{btn.disabled=false;},3000);}
 }
 
@@ -2213,7 +2702,20 @@ function exportCSV(){if(!leads.length){toast('No leads to export');return;}const
 function exportSheets(){if(!leads.length){toast('No leads');return;}exportCSV();setTimeout(()=>toast('Open Sheets → File → Import → Upload the CSV'),800);}
 
 // ── Helpers ──
-function saveLead(lead){if(typeof saveLeadFS==='function')saveLeadFS(lead);}
+function saveLead(lead){
+  // Enforce tier lead limit
+  var max=getTierLimit('maxLeads');
+  if(leads.length>max){
+    // Already over — don't save more, show warning once
+    if(!window._leadLimitWarned){
+      window._leadLimitWarned=true;
+      toast('Lead limit reached ('+max+' on '+getTier().name+' plan). Upgrade to save more.');
+    }
+    return;
+  }
+  window._leadLimitWarned=false;
+  if(typeof saveLeadFS==='function')saveLeadFS(lead);
+}
 function removeLead(id){if(typeof delLeadFS==='function')delLeadFS(id);}
 function clearAllLeads(){if(typeof clearLeadsFS==='function')clearLeadsFS();}
 function scoreTier(s){if(s>=75)return'hot';if(s>=50)return'good';if(s>=25)return'warm';return'';}
@@ -2234,6 +2736,481 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
 
 <!-- Admin Panel Logic -->
 <script>
+
+// ── Team Management ─────────────────────────────────────────────────────────
+(function(){
+
+  // ── Shared lead loading for team plans ──
+  window._loadTeamLeads = async function(){
+    if(!_user||!_udoc)return;
+    const teamId=_udoc.teamId;
+    if(!teamId)return; // Solo plan — uses own leads only
+
+    // Load leads from the team shared collection
+    try{
+      const snap=await _db.collection('teams').doc(teamId).collection('leads').get();
+      if(snap.empty)return;
+      const fl=[];
+      snap.forEach(function(d){fl.push(d.data());});
+      fl.sort(function(a,b){return new Date(b.savedAt||0)-new Date(a.savedAt||0);});
+      leads=fl;
+      refreshBadge();
+      renderCRM();
+    }catch(e){console.warn('Team leads load error:',e);}
+  };
+
+  // Override saveLead/delLead for team plans
+  var _origSaveLead=window.saveLeadFS||function(){};
+  window.saveLeadFS=function(lead){
+    if(!_user)return;
+    const teamId=_udoc&&_udoc.teamId;
+    if(teamId){
+      // Save to team shared collection
+      _db.collection('teams').doc(teamId).collection('leads').doc(lead.id).set({
+        ...lead,
+        savedBy:_user.uid,
+        savedByEmail:_user.email
+      }).catch(console.warn);
+    } else {
+      // Solo — save to user collection
+      _db.collection('users').doc(_user.uid).collection('leads').doc(lead.id).set(lead).catch(console.warn);
+    }
+  };
+
+  window.delLeadFS=function(id){
+    if(!_user)return;
+    const teamId=_udoc&&_udoc.teamId;
+    if(teamId){
+      _db.collection('teams').doc(teamId).collection('leads').doc(id).delete().catch(console.warn);
+    } else {
+      _db.collection('users').doc(_user.uid).collection('leads').doc(id).delete().catch(console.warn);
+    }
+  };
+
+  window.clearLeadsFS=function(){
+    if(!_user)return;
+    const teamId=_udoc&&_udoc.teamId;
+    const col=teamId
+      ?_db.collection('teams').doc(teamId).collection('leads')
+      :_db.collection('users').doc(_user.uid).collection('leads');
+    col.get().then(function(snap){
+      const b=_db.batch();
+      snap.forEach(function(d){b.delete(d.ref);});
+      return b.commit();
+    }).catch(console.warn);
+  };
+
+  // ── Team Panel Logic ──
+  var _teamData=null;
+  var _isTeamOwner=false;
+
+  window._initTeamPanel=async function(){
+    if(!_user||!_udoc)return;
+
+    const tier=getTier();
+    const hasTeam=tier.seats>1;
+
+    if(!hasTeam){
+      document.getElementById('team-upgrade-notice').style.display='block';
+      document.getElementById('team-content').style.display='none';
+      return;
+    }
+
+    document.getElementById('team-upgrade-notice').style.display='none';
+    document.getElementById('team-content').style.display='block';
+
+    const teamId=_udoc.teamId;
+
+    if(!teamId){
+      // No team yet — this is the head account, create team on first visit
+      await createTeam();
+    } else {
+      await loadTeam(teamId);
+    }
+  };
+
+  async function createTeam(){
+    try{
+      // Create team doc with this user as owner
+      const teamRef=_db.collection('teams').doc();
+      const teamData={
+        id:teamRef.id,
+        ownerId:_user.uid,
+        ownerEmail:_user.email,
+        name:(_user.displayName||_user.email.split('@')[0])+' Team',
+        tier:(_udoc&&_udoc.tier)||'partnership',
+        createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+        members:[{uid:_user.uid,email:_user.email,role:'owner',joinedAt:new Date().toISOString()}],
+        gmapsKey:'',
+      };
+      await teamRef.set(teamData);
+      // Link user to team
+      await _db.collection('users').doc(_user.uid).update({teamId:teamRef.id,teamRole:'owner'});
+      _udoc.teamId=teamRef.id;_udoc.teamRole='owner';
+      await loadTeam(teamRef.id);
+    }catch(e){console.error('createTeam:',e);}
+  }
+
+  async function loadTeam(teamId){
+    try{
+      const snap=await _db.collection('teams').doc(teamId).get();
+      if(!snap.exists){return;}
+      _teamData=snap.data();
+      _isTeamOwner=_teamData.ownerId===_user.uid||_udoc.teamRole==='owner';
+      renderTeamPanel();
+    }catch(e){console.error('loadTeam:',e);}
+  }
+
+  function renderTeamPanel(){
+    if(!_teamData)return;
+    var t=getTier();
+    var members=_teamData.members||[];
+    var seatsUsed=members.length;
+    var seatsTotal=t.seats;
+    var seatsLeft=seatsTotal-seatsUsed;
+    var isOwner=_isTeamOwner;
+    var isAdmin=_udoc&&_udoc.teamRole==='admin';
+    var canManage=isOwner||isAdmin;
+
+    // Header
+    var nd=document.getElementById('team-name-display');if(nd)nd.textContent=_teamData.name||'Your Team';
+    var pl=document.getElementById('team-plan-label');if(pl)pl.textContent=t.name+' Plan';
+    var pd=document.getElementById('team-plan-display');if(pd)pd.textContent=seatsUsed+' of '+seatsTotal+' seats used · '+seatsLeft+' available';
+
+    // Seat bar
+    var bar=document.getElementById('seats-usage-bar');
+    if(bar)bar.style.width=Math.min(100,Math.round((seatsUsed/seatsTotal)*100))+'%';
+    var sc=document.getElementById('seats-count-label');if(sc)sc.textContent=seatsUsed+' / '+seatsTotal;
+    var sr=document.getElementById('seats-remaining-label');
+    if(sr)sr.textContent=seatsLeft>0?seatsLeft+' seat'+(seatsLeft!==1?'s':'')+' remaining':'All seats filled — upgrade for more';
+
+    // Buttons
+    var renBtn=document.getElementById('rename-team-btn');if(renBtn)renBtn.style.display=isOwner?'inline-flex':'none';
+    var invBtn=document.getElementById('invite-seat-btn');if(invBtn){invBtn.style.display=canManage&&seatsLeft>0?'inline-flex':'none';}
+    var leaveBtn=document.getElementById('leave-team-btn');if(leaveBtn)leaveBtn.style.display=isOwner?'none':'inline-flex';
+
+    // Sections visible based on tier + role
+    var apiSec=document.getElementById('team-api-key-section');if(apiSec)apiSec.style.display=canManage?'block':'none';
+    var terrSec=document.getElementById('territory-section');if(terrSec)terrSec.style.display=(t.territories&&canManage)?'block':'none';
+    var apiAccSec=document.getElementById('api-access-section');if(apiAccSec)apiAccSec.style.display=t.api?'block':'none';
+    var dz=document.getElementById('team-danger-zone');if(dz)dz.style.display=isOwner?'block':'none';
+
+    // Members table
+    renderMembersTable(members);
+
+    // Load pending invites
+    if(canManage)loadPendingInvites();
+
+    // Load team API key
+    if(canManage){
+      var ki=document.getElementById('team-gmaps-inp');
+      var ks=document.getElementById('team-gmaps-status');
+      var kc=document.getElementById('team-gmaps-clear');
+      var key=_teamData.gmapsKey||'';
+      if(ki)ki.value=key;
+      if(ks){ks.className='source-status '+(key?'ok':'no');ks.textContent=key?'✓ Key saved':'No key saved';}
+      if(kc)kc.style.display=key?'inline-flex':'none';
+    }
+
+    // Territory locking — populate owner dropdown
+    if(t.territories&&canManage){
+      var ownerSel=document.getElementById('territory-owner-sel');
+      if(ownerSel){
+        ownerSel.innerHTML=members.map(function(m){
+          return '<option value="'+m.uid+'">'+m.email+'</option>';
+        }).join('');
+      }
+      loadTerritories();
+    }
+
+    // Wire invite button
+    var invBtnEl=document.getElementById('invite-seat-btn');
+    if(invBtnEl)invBtnEl.onclick=function(){document.getElementById('invite-form').style.display='block';};
+
+    // Wire send invite
+    var sendInv=document.getElementById('send-invite-btn');
+    if(sendInv&&!sendInv._wired){
+      sendInv._wired=true;
+      sendInv.addEventListener('click',function(){
+        var email=(document.getElementById('invite-email-inp').value||'').trim().toLowerCase();
+        var role=document.getElementById('invite-role-sel').value;
+        var st=document.getElementById('invite-status');
+        if(!email){st.textContent='Enter an email address';st.style.color='var(--red)';return;}
+        sendInv.disabled=true;
+        _db.collection('team_invites').add({
+          teamId:_teamData.id,teamName:_teamData.name,
+          invitedEmail:email,role,
+          invitedBy:_user.email,
+          invitedAt:firebase.firestore.FieldValue.serverTimestamp(),
+          status:'pending'
+        }).then(function(){
+          st.textContent='Invite sent for '+email;
+          st.style.color='var(--green)';
+          document.getElementById('invite-email-inp').value='';
+          loadPendingInvites();
+          sendInv.disabled=false;
+        }).catch(function(e){st.textContent='Error: '+e.message;st.style.color='var(--red)';sendInv.disabled=false;});
+      });
+    }
+
+    // Wire team gmaps save/clear
+    var tgs=document.getElementById('team-gmaps-save');
+    if(tgs&&!tgs._wired){
+      tgs._wired=true;
+      tgs.addEventListener('click',function(){
+        var v=(document.getElementById('team-gmaps-inp').value||'').trim();
+        if(!v){toast('Paste your API key first');return;}
+        _db.collection('teams').doc(_teamData.id).update({gmapsKey:v}).then(function(){
+          window._cachedGmapsKey=v;_teamData.gmapsKey=v;
+          var ks=document.getElementById('team-gmaps-status');
+          if(ks){ks.className='source-status ok';ks.textContent='✓ Key saved';}
+          var kc=document.getElementById('team-gmaps-clear');if(kc)kc.style.display='inline-flex';
+          toast('Team API key saved');
+        }).catch(function(e){toast('Error: '+e.message);});
+      });
+    }
+    var tgc=document.getElementById('team-gmaps-clear');
+    if(tgc&&!tgc._wired){
+      tgc._wired=true;
+      tgc.addEventListener('click',function(){
+        _db.collection('teams').doc(_teamData.id).update({gmapsKey:''}).then(function(){
+          window._cachedGmapsKey=null;_teamData.gmapsKey='';
+          var ki2=document.getElementById('team-gmaps-inp');if(ki2)ki2.value='';
+          var ks=document.getElementById('team-gmaps-status');
+          if(ks){ks.className='source-status no';ks.textContent='No key saved';}
+          tgc.style.display='none';
+          toast('Team API key removed');
+        });
+      });
+    }
+
+    // Wire territory add
+    var addT=document.getElementById('add-territory-btn');
+    if(addT&&!addT._wired){
+      addT._wired=true;
+      addT.addEventListener('click',function(){
+        var loc=(document.getElementById('territory-inp').value||'').trim();
+        var uid=document.getElementById('territory-owner-sel').value;
+        if(!loc){toast('Enter a location');return;}
+        var mem=members.find(function(m){return m.uid===uid;});
+        var ownerEmail=mem?mem.email:'Unknown';
+        var territories=_teamData.territories||[];
+        territories.push({location:loc,ownerUid:uid,ownerEmail:ownerEmail,addedAt:new Date().toISOString()});
+        _db.collection('teams').doc(_teamData.id).update({territories:territories}).then(function(){
+          _teamData.territories=territories;
+          document.getElementById('territory-inp').value='';
+          loadTerritories();
+          toast('Territory added: '+loc);
+        }).catch(function(e){toast('Error: '+e.message);});
+      });
+    }
+
+    // Wire delete + leave
+    var delBtn=document.getElementById('delete-team-btn');
+    if(delBtn&&!delBtn._wired){
+      delBtn._wired=true;
+      delBtn.addEventListener('click',function(){
+        if(!confirm('Delete the team? This cannot be undone. All shared leads will be lost.'))return;
+        _db.collection('teams').doc(_teamData.id).delete().then(function(){
+          return _db.collection('users').doc(_user.uid).update({
+            teamId:firebase.firestore.FieldValue.delete(),
+            teamRole:firebase.firestore.FieldValue.delete()
+          });
+        }).then(function(){toast('Team deleted');setTimeout(function(){location.reload();},1500);})
+        .catch(function(e){toast('Error: '+e.message);});
+      });
+    }
+    var leaveBtn2=document.getElementById('leave-team-btn');
+    if(leaveBtn2&&!leaveBtn2._wired){
+      leaveBtn2._wired=true;
+      leaveBtn2.addEventListener('click',function(){
+        if(!confirm('Leave the team? You will lose access to shared leads.'))return;
+        var newMembers=((_teamData.members||[]).filter(function(m){return m.uid!==_user.uid;}));
+        _db.collection('teams').doc(_teamData.id).update({members:newMembers}).then(function(){
+          return _db.collection('users').doc(_user.uid).update({
+            teamId:firebase.firestore.FieldValue.delete(),
+            teamRole:firebase.firestore.FieldValue.delete()
+          });
+        }).then(function(){toast('Left team');setTimeout(function(){location.reload();},1500);})
+        .catch(function(e){toast('Error: '+e.message);});
+      });
+    }
+
+    // Enterprise: API key generation
+    var genBtn=document.getElementById('gen-api-key-btn');
+    if(genBtn&&!genBtn._wired){
+      genBtn._wired=true;
+      genBtn.addEventListener('click',function(){
+        var existing=_teamData.apiKey;
+        if(existing){
+          document.getElementById('api-key-display').textContent=existing;
+          document.getElementById('copy-api-key-btn').style.display='inline-flex';
+          return;
+        }
+        // Generate a random key
+        var chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var key='fp_ent_';
+        for(var i=0;i<32;i++)key+=chars.charAt(Math.floor(Math.random()*chars.length));
+        _db.collection('teams').doc(_teamData.id).update({apiKey:key}).then(function(){
+          _teamData.apiKey=key;
+          document.getElementById('api-key-display').textContent=key;
+          document.getElementById('copy-api-key-btn').style.display='inline-flex';
+          toast('API key generated');
+        }).catch(function(e){toast('Error: '+e.message);});
+      });
+    }
+    var copyBtn=document.getElementById('copy-api-key-btn');
+    if(copyBtn&&!copyBtn._wired){
+      copyBtn._wired=true;
+      copyBtn.addEventListener('click',function(){
+        navigator.clipboard.writeText(_teamData.apiKey||'').then(function(){toast('API key copied');});
+      });
+    }
+  }
+
+  function loadPendingInvites(){
+    var sec=document.getElementById('pending-invites-section');
+    var list=document.getElementById('pending-invites-list');
+    if(!sec||!list)return;
+    _db.collection('team_invites').where('teamId','==',_teamData.id).where('status','==','pending').get()
+      .then(function(snap){
+        if(snap.empty){sec.style.display='none';return;}
+        sec.style.display='block';
+        var html='';
+        snap.docs.forEach(function(doc){
+          var inv=doc.data();
+          html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;margin-bottom:5px;font-size:0.82rem;">';
+          html+='<div><strong>'+esc(inv.invitedEmail)+'</strong> <span style="color:var(--muted);font-size:0.72rem;">'+inv.role+'</span></div>';
+          html+='<div style="display:flex;align-items:center;gap:8px;">';
+          html+='<span style="font-size:0.68rem;color:var(--amber);background:var(--amber-pale);padding:2px 7px;border-radius:99px;">Pending</span>';
+          html+='<button data-iid="'+doc.id+'" class="cancel-invite-btn" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.72rem;">Cancel</button>';
+          html+='</div></div>';
+        });
+        list.innerHTML=html;
+        list.querySelectorAll('.cancel-invite-btn').forEach(function(b){
+          b.addEventListener('click',function(){
+            _db.collection('team_invites').doc(b.dataset.iid).update({status:'cancelled'})
+              .then(function(){loadPendingInvites();toast('Invite cancelled');});
+          });
+        });
+      }).catch(console.warn);
+  }
+
+  function loadTerritories(){
+    var container=document.getElementById('territories-list');
+    if(!container)return;
+    var territories=_teamData.territories||[];
+    if(!territories.length){container.innerHTML='<div style="font-size:0.76rem;color:var(--muted);font-style:italic;margin-bottom:8px;">No territories assigned yet</div>';return;}
+    var html='';
+    territories.forEach(function(t,idx){
+      html+='<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surf);border:1px solid var(--border);border-radius:7px;margin-bottom:5px;font-size:0.8rem;">';
+      html+='<span style="flex:1;">'+esc(t.location)+'</span>';
+      html+='<span style="font-size:0.72rem;color:var(--muted);">'+esc(t.ownerEmail)+'</span>';
+      html+='<button data-idx="'+idx+'" class="del-territory-btn" style="border:none;background:none;color:var(--muted);cursor:pointer;padding:2px 5px;" title="Remove">✕</button>';
+      html+='</div>';
+    });
+    container.innerHTML=html;
+    container.querySelectorAll('.del-territory-btn').forEach(function(b){
+      b.addEventListener('click',function(){
+        var i=parseInt(b.dataset.idx);
+        var newT=(_teamData.territories||[]).filter(function(_,j){return j!==i;});
+        _db.collection('teams').doc(_teamData.id).update({territories:newT}).then(function(){
+          _teamData.territories=newT;loadTerritories();
+        });
+      });
+    });
+  }
+
+
+  function memberRoleBadge(role){
+    if(role==='owner')return '<span style="background:var(--accent-pale);color:var(--accent);border:1px solid rgba(26,158,110,.2);padding:2px 8px;border-radius:99px;font-size:0.6rem;font-weight:700;font-family:monospace;">OWNER</span>';
+    if(role==='admin')return '<span style="background:var(--blue-pale);color:var(--blue);border:1px solid rgba(26,111,168,.2);padding:2px 8px;border-radius:99px;font-size:0.6rem;font-weight:700;font-family:monospace;">ADMIN</span>';
+    return '<span style="background:var(--surf3);color:var(--muted);border:1px solid var(--border);padding:2px 8px;border-radius:99px;font-size:0.6rem;font-weight:700;font-family:monospace;">MEMBER</span>';
+  }
+  function renderMembersTable(members){
+    const tbody=document.getElementById('seats-tbody');
+    if(!tbody)return;
+    if(!members.length){
+      tbody.innerHTML='<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--muted);">No members yet — invite your team</td></tr>';
+      return;
+    }
+    tbody.innerHTML=members.map(function(m){
+      const isMe=m.uid===_user.uid;
+      const roleBadge=memberRoleBadge(m.role);
+      const actions=(_isTeamOwner&&!isMe&&m.role!=='owner')
+        ?`<button onclick="removeMember('${m.uid}','${esc(m.email)}')" style="font-size:0.72rem;background:none;border:none;color:var(--red);cursor:pointer;padding:3px 6px;border-radius:5px;" title="Remove">✕ Remove</button>`
+        :(isMe?'<span style="font-size:0.72rem;color:var(--muted);">You</span>':'—');
+      return`<tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:10px 13px;font-size:0.82rem;">${esc(m.email)}</td>
+        <td style="padding:10px 13px;">${roleBadge}</td>
+        <td style="padding:10px 13px;font-size:0.76rem;color:var(--muted);">${m.joinedAt?new Date(m.joinedAt).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}):'—'}</td>
+        <td style="padding:10px 13px;">${actions}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  window.renameTeam=async function(){
+    if(!_teamData||!_isTeamOwner)return;
+    var newName=prompt('Team name:',_teamData.name||'My Team');
+    if(!newName||!newName.trim())return;
+    newName=newName.trim();
+    await _db.collection('teams').doc(_teamData.id).update({name:newName});
+    _teamData.name=newName;
+    var nd=document.getElementById('team-name-display');
+    if(nd)nd.textContent=newName;
+    toast('Team renamed');
+  };
+
+  window.removeMember=async function(uid,email){
+    if(!confirm("Remove "+email+" from the team?"))return;
+    try{
+      const newMembers=(_teamData.members||[]).filter(m=>m.uid!==uid);
+      await _db.collection('teams').doc(_teamData.id).update({members:newMembers});
+      await _db.collection('users').doc(uid).update({teamId:firebase.firestore.FieldValue.delete(),teamRole:firebase.firestore.FieldValue.delete()});
+      _teamData.members=newMembers;
+      renderMembersTable(newMembers);
+      toast('Removed '+email);
+    }catch(e){toast("Error: "+e.message);}
+  };
+
+  // ── Check and link pending invite on login ──
+  window._checkPendingInvite=async function(){
+    if(!_user||!_user.email)return;
+    try{
+      const invites=await _db.collection('team_invites')
+        .where('invitedEmail','==',_user.email.toLowerCase())
+        .where('status','==','pending')
+        .limit(1).get();
+      if(invites.empty)return;
+
+      const inviteDoc=invites.docs[0];
+      const invite=inviteDoc.data();
+
+      // Ask user if they want to join
+      if(!confirm('Join team: '+invite.teamName+' (invited by '+invite.invitedBy+')?'))return;
+
+      // Load team and add member
+      const teamSnap=await _db.collection('teams').doc(invite.teamId).get();
+      if(!teamSnap.exists){toast('Team no longer exists');return;}
+      const teamData=teamSnap.data();
+      const newMember={uid:_user.uid,email:_user.email,role:invite.role||'member',joinedAt:new Date().toISOString()};
+      const newMembers=[...(teamData.members||[]),newMember];
+
+      await _db.collection('teams').doc(invite.teamId).update({members:newMembers});
+      await _db.collection('users').doc(_user.uid).update({teamId:invite.teamId,teamRole:invite.role||'member'});
+      await inviteDoc.ref.update({status:'accepted'});
+
+      _udoc.teamId=invite.teamId;_udoc.teamRole=invite.role||'member';
+      toast("Joined "+invite.teamName+"!");
+
+      // Reload leads from team pool
+      if(window._loadTeamLeads)await window._loadTeamLeads();
+    }catch(e){console.warn('Invite check error:',e);}
+  };
+
+  function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+})();
 
 (function(){
   var ADMIN_EMAIL_HASH='aacc00b24125b076d0eb1c82ac3becf0b0f6ed7b33d23fb5daf3d308a8c57024';
@@ -2260,12 +3237,12 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
     document.getElementById('admin-revoke-btn')?.addEventListener('click',async function(){
       var email=(document.getElementById('admin-revoke-email').value||'').trim();if(!email||!confirm('Revoke for '+email+'?'))return;
       this.disabled=true;this.textContent='…';
-      try{var u=await findByEmail(email);if(!u){adminMsg('User not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:Date.now()});adminMsg('Revoked for '+email);document.getElementById('admin-revoke-email').value='';loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='✕ Revoke';}
+      try{var u=await findByEmail(email);if(!u){adminMsg('User not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:firebase.firestore.FieldValue.serverTimestamp()});adminMsg('Revoked for '+email);document.getElementById('admin-revoke-email').value='';loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='✕ Revoke';}
     });
     document.getElementById('admin-lookup-btn')?.addEventListener('click',async function(){
       var email=(document.getElementById('admin-lookup-email').value||'').trim();if(!email)return;
       this.disabled=true;this.textContent='…';
-      try{var u=await findByEmail(email);var res=document.getElementById('admin-lookup-result');var body=document.getElementById('admin-lookup-body');if(!u){body.innerHTML='<div style="color:var(--muted);font-size:.8rem">No user found.</div>';res.style.display='block';return;}var d=u.data;var pb=d.plan==='gifted'?'apb-gifted':d.plan==='pro'||d.subscriptionStatus==='active'?'apb-active':d.subscriptionStatus==='trialing'?'apb-trial':'apb-free';body.innerHTML=`<div style="display:flex;flex-direction:column;gap:7px;font-size:.8rem"><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">UID</span><br/><code style="font-size:.72rem;color:var(--text2)">${esc(u.id)}</code></div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Plan / Status</span><br/><span class="admin-plan-badge ${pb}">${esc(d.plan||'free')}</span> · ${esc(d.subscriptionStatus||' - ')}</div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Stripe ID</span><br/><code style="font-size:.72rem">${esc(d.stripeCustomerId||' - ')}</code></div></div>`;res.style.display='block';}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='Search';}
+      try{var u=await findByEmail(email);var res=document.getElementById('admin-lookup-result');var body=document.getElementById('admin-lookup-body');if(!u){body.innerHTML='<div style="color:var(--muted);font-size:.8rem">No user found.</div>';res.style.display='block';return;}var d=u.data;var pb=d.plan==='gifted'?'apb-gifted':d.plan==='pro'||d.subscriptionStatus==='active'?'apb-active':d.subscriptionStatus==='trialing'?'apb-trial':'apb-free';body.innerHTML=`<div style="display:flex;flex-direction:column;gap:7px;font-size:.8rem"><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">UID</span><br/><code style="font-size:.72rem;color:var(--text2)">${esc(u.id)}</code></div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Plan / Status</span><br/><span class="admin-plan-badge ${pb}">${esc(d.plan||'free')}</span> · ${esc(d.subscriptionStatus||'—')}</div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Stripe ID</span><br/><code style="font-size:.72rem">${esc(d.stripeCustomerId||'—')}</code></div></div>`;res.style.display='block';}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='Search';}
     });
   }
 
@@ -2279,11 +3256,11 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
         var d=doc.data();
         var pb=d.plan==='gifted'?'apb-gifted':d.plan==='pro'||d.subscriptionStatus==='active'?'apb-active':d.subscriptionStatus==='trialing'?'apb-trial':'apb-free';
         var pl=d.plan==='gifted'?'Gifted':d.plan==='pro'?'Pro':d.subscriptionStatus==='trialing'?'Trial':'Free';
-        rows+=`<tr><td style="font-size:.8rem">${esc(d.email||' - ')}</td><td><span class="admin-plan-badge ${pb}">${pl}</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted)">${d.createdAt?new Date(d.createdAt.seconds*1000).toLocaleDateString():' - '}</td><td><div class="admin-actions"><button class="btn btn-green btn-xs agrant" data-email="${esc(d.email||'')}">Grant</button><button class="btn btn-danger btn-xs arevoke" data-email="${esc(d.email||'')}">Revoke</button></div></td></tr>`;
+        rows+=`<tr><td style="font-size:.8rem">${esc(d.email||'—')}</td><td><span class="admin-plan-badge ${pb}">${pl}</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted)">${d.createdAt?new Date(d.createdAt.seconds*1000).toLocaleDateString():'—'}</td><td><div class="admin-actions"><button class="btn btn-green btn-xs agrant" data-email="${esc(d.email||'')}">Grant</button><button class="btn btn-danger btn-xs arevoke" data-email="${esc(d.email||'')}">Revoke</button></div></td></tr>`;
       });
       container.innerHTML=`<div style="overflow-x:auto;border-radius:9px;border:1px solid var(--border)"><table class="admin-table"><thead><tr><th>Email</th><th>Plan</th><th>Joined</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>`;
       container.querySelectorAll('.agrant').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Grant to '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'gifted',subscriptionStatus:'active',giftedBy:'admin',giftedAt:firebase.firestore.FieldValue.serverTimestamp()});adminMsg('✓ Granted to '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
-      container.querySelectorAll('.arevoke').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Revoke for '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:Date.now()});adminMsg('Revoked for '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
+      container.querySelectorAll('.arevoke').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Revoke for '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'free',subscriptionStatus:'cancelled',revokedBy:'admin',revokedAt:firebase.firestore.FieldValue.serverTimestamp()});adminMsg('Revoked for '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
     }catch(e){container.innerHTML=`<div class="admin-empty" style="color:var(--red)">Error: ${esc(e.message)}</div>`;}
   }
   window._loadAdminUsers=loadAdminUsers;
@@ -2300,5 +3277,6 @@ if('serviceWorker' in navigator){
 }
 </script>
 
-</body>
-</html>
+
+
+</div></div></div></body></html>
