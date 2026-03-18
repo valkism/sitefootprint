@@ -10,7 +10,7 @@
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
-    /* \u2500\u2500 Themes \u2500\u2500 */
+    /* -- Themes -- */
     :root[data-theme="light"]{
       --bg:#f7f9f8; --surf:#ffffff; --surf2:#eef3f1; --surf3:#e2eae7;
       --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.14);
@@ -76,7 +76,7 @@
       height:100vh; overflow:hidden; display:flex; flex-direction:column;
     }
 
-    /* \u2500\u2500 Auth gate \u2500\u2500 */
+    /* -- Auth gate -- */
     #auth-gate{
       position:fixed;inset:0;z-index:999;background:var(--bg);
       display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;
@@ -91,7 +91,7 @@
     @keyframes spin{to{transform:rotate(360deg);}}
     .gate-text{font-size:0.82rem;color:var(--muted);font-weight:500;}
 
-    /* \u2500\u2500 App shell: topbar + sidebar + main \u2500\u2500 */
+    /* -- App shell: topbar + sidebar + main -- */
     .app-shell{flex:1;overflow:hidden;display:flex;flex-direction:column;}
 
     /* Topbar */
@@ -140,7 +140,7 @@
       position:relative;z-index:10;
     }
 
-    /* Logo \u2014 clean wordmark with accent dot */
+    /* Logo - clean wordmark with accent dot */
     .logo{
       display:flex;align-items:center;gap:0;text-decoration:none;
       font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;
@@ -197,15 +197,15 @@
     .sub-warning.show{display:block;}
     .sub-warning a{color:var(--amber);font-weight:600;}
 
-    /* \u2500\u2500 App body \u2014 single column, full width \u2500\u2500 */
+    /* -- App body - single column, full width -- */
     .app-body{
       flex:1;overflow:hidden;display:flex;flex-direction:column;
     }
 
-    /* Sidebar \u2014 hidden everywhere, we no longer use it */
+    /* Sidebar - hidden everywhere, we no longer use it */
     .sidebar{display:none !important;}
 
-    /* Main content area \u2014 full width */
+    /* Main content area - full width */
     .main-area{
       flex:1;overflow:hidden;display:flex;flex-direction:column;
     }
@@ -215,13 +215,13 @@
     .panel{display:none;flex-direction:column;flex:1;overflow:hidden;}
     .panel.on{display:flex;}
     .scroll{flex:1;overflow-y:auto;overflow-x:hidden;}
-    /* Content max-width \u2014 centered, comfortable reading width */
+    /* Content max-width - centered, comfortable reading width */
     .scroll-inner{max-width:1100px;width:100%;padding:28px 40px;margin:0 auto;box-sizing:border-box;}
 
-    /* Wide panel (CRM) \u2014 wider for the table */
+    /* Wide panel (CRM) - wider for the table */
     .panel-wide .scroll-inner{max-width:1400px;margin:0 auto;}
 
-    /* \u2500\u2500 Scan panel two-column grid (desktop) \u2500\u2500 */
+    /* -- Scan panel two-column grid (desktop) -- */
     .scan-top-grid{
       display:grid;grid-template-columns:1.2fr 1fr;gap:32px;margin-bottom:0;
     }
@@ -234,7 +234,7 @@
       .scan-top-grid{grid-template-columns:1fr;}
     }
 
-    /* \u2500\u2500 Section labels \u2500\u2500 */
+    /* -- Section labels -- */
     .sec-label{
       font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:500;
       letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
@@ -242,7 +242,7 @@
     }
     .sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-    /* \u2500\u2500 Form elements \u2500\u2500 */
+    /* -- Form elements -- */
     .field-label{
       font-size:0.7rem;font-weight:600;color:var(--muted);
       letter-spacing:0.04em;display:block;margin-bottom:5px;
@@ -355,7 +355,7 @@
     .notice-blue{background:var(--blue-pale);border:1px solid rgba(26,111,168,0.18);border-left:3px solid var(--blue);}
     .notice-icon{flex-shrink:0;font-size:0.85rem;margin-top:1px;}
 
-    /* \u2500\u2500 Scan Progress (in main area) \u2500\u2500 */
+    /* -- Scan Progress (in main area) -- */
     .psec{display:none;flex-direction:column;gap:12px;padding:24px 28px;}
     .psec.on{display:flex;}
     .prog-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border);}
@@ -434,7 +434,7 @@
       position:relative;z-index:10;
     }
 
-    /* Logo \u2014 clean wordmark with accent dot */
+    /* Logo - clean wordmark with accent dot */
     .logo{
       display:flex;align-items:center;gap:0;text-decoration:none;
       font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;
@@ -491,15 +491,15 @@
     .sub-warning.show{display:block;}
     .sub-warning a{color:var(--amber);font-weight:600;}
 
-    /* \u2500\u2500 App body \u2014 single column, full width \u2500\u2500 */
+    /* -- App body - single column, full width -- */
     .app-body{
       flex:1;overflow:hidden;display:flex;flex-direction:column;
     }
 
-    /* Sidebar \u2014 hidden everywhere, we no longer use it */
+    /* Sidebar - hidden everywhere, we no longer use it */
     .sidebar{display:none !important;}
 
-    /* Main content area \u2014 full width */
+    /* Main content area - full width */
     .main-area{
       flex:1;overflow:hidden;display:flex;flex-direction:column;
     }
@@ -509,13 +509,13 @@
     .panel{display:none;flex-direction:column;flex:1;overflow:hidden;}
     .panel.on{display:flex;}
     .scroll{flex:1;overflow-y:auto;overflow-x:hidden;}
-    /* Content max-width \u2014 centered, comfortable reading width */
+    /* Content max-width - centered, comfortable reading width */
     .scroll-inner{max-width:1100px;width:100%;padding:28px 40px;margin:0 auto;box-sizing:border-box;}
 
-    /* Wide panel (CRM) \u2014 wider for the table */
+    /* Wide panel (CRM) - wider for the table */
     .panel-wide .scroll-inner{max-width:1400px;margin:0 auto;}
 
-    /* \u2500\u2500 Scan panel two-column grid (desktop) \u2500\u2500 */
+    /* -- Scan panel two-column grid (desktop) -- */
     .scan-top-grid{
       display:grid;grid-template-columns:1.2fr 1fr;gap:32px;margin-bottom:0;
     }
@@ -528,7 +528,7 @@
       .scan-top-grid{grid-template-columns:1fr;}
     }
 
-    /* \u2500\u2500 Section labels \u2500\u2500 */
+    /* -- Section labels -- */
     .sec-label{
       font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:500;
       letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
@@ -536,7 +536,7 @@
     }
     .sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-    /* \u2500\u2500 Form elements \u2500\u2500 */
+    /* -- Form elements -- */
     .field-label{
       font-size:0.7rem;font-weight:600;color:var(--muted);
       letter-spacing:0.04em;display:block;margin-bottom:5px;
@@ -649,7 +649,7 @@
     .notice-blue{background:var(--blue-pale);border:1px solid rgba(26,111,168,0.18);border-left:3px solid var(--blue);}
     .notice-icon{flex-shrink:0;font-size:0.85rem;margin-top:1px;}
 
-    /* \u2500\u2500 Scan Progress (in main area) \u2500\u2500 */
+    /* -- Scan Progress (in main area) -- */
     .psec{display:none;flex-direction:column;gap:12px;padding:24px 28px;}
     .psec.on{display:flex;}
     .prog-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border);}
@@ -718,7 +718,7 @@
     "stop_timestamp": "2026-03-16T22:36:29.363974Z",
     "flags": null,
     "type": "text",
-    "text": "Good. I have a thorough read of the full file now. Let me do everything in one comprehensive rewrite \u2014 fix the layout properly, polish the UI throughout, and make it genuinely great on both PC and mobile:",
+    "text": "Good. I have a thorough read of the full file now. Let me do everything in one comprehensive rewrite - fix the layout properly, polish the UI throughout, and make it genuinely great on both PC and mobile:",
     "citations": []
   },
   {
@@ -757,7 +757,7 @@
         "type": "text",
         "text": "{\"returncode\":0,\"stdout\":\"    .ri-del:hover{color:var(--red);background:var(--red-pale);}
 
-    /* \u2500\u2500 CRM panel \u2500\u2500 */
+    /* -- CRM panel -- */
     .crm-stats{display:grid;grid-template-columns:repeat(5,1fr);border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:16px;}
     .cs{padding:14px 8px;text-align:center;background:var(--surf);border-right:1px solid var(--border);}
     .cs:last-child{border-right:none;}
@@ -904,7 +904,7 @@
     .toggle input:checked + .toggle-slider{background:var(--accent);border-color:var(--accent);}
     .toggle input:checked + .toggle-slider::before{transform:translateX(19px);background:#fff;}
 
-    /* Theme selector \u2014 compact pills */
+    /* Theme selector - compact pills */
     .theme-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
     .theme-pill{
       display:flex;align-items:center;gap:7px;padding:5px 10px 5px 5px;
@@ -957,7 +957,7 @@
     .admin-empty{text-align:center;padding:20px;color:var(--muted);font-size:0.8rem;}
     #admin-msg{padding:9px 13px;border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;margin-top:8px;display:none;}
 
-    /* \u2500\u2500 Mobile nav \u2500\u2500 */
+    /* -- Mobile nav -- */
     .mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surf);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0px);}
     .mob-nav-inner{display:grid;grid-template-columns:repeat(3,1fr);}
     .mnav{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;border:none;background:none;cursor:pointer;color:var(--muted);font-family:'Sora',sans-serif;font-size:0.62rem;font-weight:600;transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative;}
@@ -965,7 +965,7 @@
     .mnav.on{color:var(--accent);}
     .mnav-badge{position:absolute;top:4px;right:calc(50% - 18px);background:var(--accent);color:#fff;font-size:0.5rem;font-weight:700;min-width:14px;height:14px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 3px;}
 
-    /* \u2500\u2500 Responsive breakpoints \u2500\u2500 */
+    /* -- Responsive breakpoints -- */
     /* Mobile: hide sidebar, show bottom nav */
     @media (max-width:768px){
       .sidebar{display:none !important;}
@@ -988,7 +988,7 @@
 
     }
 
-    /* Scan panel \u2014 single unified layout, no sidebar split */
+    /* Scan panel - single unified layout, no sidebar split */
     #mobile-scan-scroll{display:flex;flex-direction:column;flex:1;}
     #desktop-scan-area{display:none !important;}
   
