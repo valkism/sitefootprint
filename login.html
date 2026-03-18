@@ -272,10 +272,10 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
-firebase.initializeApp({apiKey:"AIzaSyBY_fD1V9-bkYs4hsz_KEGmZi1gA3Pv_70",authDomain:"footprint-eb752.firebaseapp.com",projectId:"footprint-eb752",storageBucket:"footprint-eb752.appspot.com",messagingSenderId:"354485455243",appId:"1:354485455243:web:a119223df4b25a9304478e"});
-var auth=firebase.auth(),db=firebase.firestore();
+firebase.initializeApp({apiKey:"AIzaSyBY_fD1V9-bkYs4hsz_KEGmZia1gA3Pv_70",authDomain:"footprint-eb752.firebaseapp.com",databaseURL:"https://footprint-eb752-default-rtdb.firebaseio.com",projectId:"footprint-eb752",storageBucket:"footprint-eb752.appspot.com",messagingSenderId:"354485455243",appId:"1:354485455243:web:a119223df4b25a9304478e"});
+var auth=firebase.auth(),db=firebase.database();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
 
 var _params=new URLSearchParams(location.search);
@@ -330,14 +330,14 @@ function continueToPay(){
   var lbl=document.getElementById('plan-continue-lbl');
   var spin=document.getElementById('plan-spin');
   btn.disabled=true;lbl.style.display='none';spin.style.display='block';
-  db.collection('users').doc(_pendingUser.uid).set({
+  db.ref('users/'+_pendingUser.uid).update({
     uid:_pendingUser.uid,email:_pendingUser.email,
     name:_pendingUser.displayName||'',
     tier:_plan,plan:'trial',
     subscriptionStatus:'trialing',
     trialEnds:new Date(Date.now()+3*86400000).toISOString(),
-    createdAt:firebase.firestore.FieldValue.serverTimestamp()
-  },{merge:true}).then(function(){
+    createdAt:Date.now()
+  }).then(function(){
     location.href='app.html?welcome=1&plan='+_plan;
   }).catch(function(){
     location.href='app.html?welcome=1&plan='+_plan;
@@ -351,13 +351,13 @@ function setLoading(on){document.getElementById('submit-btn').disabled=on;docume
 var ERRS={'auth/email-already-in-use':'An account with this email already exists.','auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts - please wait a moment.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error - check your connection.','auth/popup-blocked':'Popup blocked - please allow popups for this site.'};
 
 function writeUserDoc(user){
-  db.collection('users').doc(user.uid).set({
+  db.ref('users/'+user.uid).update({
     uid:user.uid,email:user.email,name:user.displayName||'',
-    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+    createdAt:Date.now(),
     plan:'trial',tier:_plan||'solo',
     trialEnds:new Date(Date.now()+3*86400000).toISOString(),
     subscriptionStatus:'trialing',isHeadAccount:true
-  },{merge:true}).catch(function(e){console.warn('writeUserDoc:',e);});
+  }).catch(function(e){console.warn('writeUserDoc:',e);});
 }
 
 function afterAuth(user,isNew){
@@ -367,16 +367,16 @@ function afterAuth(user,isNew){
 }
 
 function goToApp(user){
-  db.collection('users').doc(user.uid).get().then(function(snap){
-    var data=snap.data()||{};
+  db.ref('users/'+user.uid).once('value').then(function(snap){
+    var data=snap.val()||{};
     if(!data.plan){
       // New user - write their doc and go to app
-      db.collection('users').doc(user.uid).set({
+      db.ref('users/'+user.uid).update({
         uid:user.uid,email:user.email,name:user.displayName||'',
         plan:'trial',tier:'solo',subscriptionStatus:'trialing',
         trialEnds:new Date(Date.now()+3*86400000).toISOString(),
-        createdAt:firebase.firestore.FieldValue.serverTimestamp()
-      },{merge:true}).catch(function(){});
+        createdAt:Date.now()
+      }).catch(function(){});
     }
     location.href='app.html';
   }).catch(function(){location.href='app.html';});
