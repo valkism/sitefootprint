@@ -1842,7 +1842,12 @@ const Engine = (() => {
           lastError=d.error||('HTTP '+r.status);
           if(r.status===403||r.status===503){
             // Fatal — bad key or not configured — stop immediately
-            throw new Error(lastError);
+            const msg=lastError==='NO_KEY'
+              ?'No Google API key saved. Add your key in Settings.'
+              :lastError==='REQUEST_DENIED'||r.status===403
+              ?'Google API key error. Check your key is correct and has Places API (New) enabled.'
+              :'Google API error: '+lastError;
+            throw new Error(msg);
           }
           continue;
         }
@@ -2982,13 +2987,17 @@ function renderAnalytics(){
     }).join('');
   }
   // Chart
-  var byDay={};
+  // Build per-day counts by status
+  var byDayStatus={};
   leads.forEach(function(l){
     var d=new Date(l.savedAt||0);
     var day=d.toISOString().slice(0,10);
-    byDay[day]=(byDay[day]||0)+1;
+    if(!byDayStatus[day])byDayStatus[day]={new:0,contacted:0,pitched:0,won:0};
+    var st=l.status||'new';
+    if(byDayStatus[day][st]!==undefined)byDayStatus[day][st]++;
+    else byDayStatus[day]['new']++;
   });
-  var sortedDates=Object.keys(byDay).sort().slice(-14);
+  var sortedDates=Object.keys(byDayStatus).sort().slice(-14);
   var ctx=document.getElementById('an-chart');
   if(ctx&&typeof Chart!=='undefined'){
     if(_analyticsChart)_analyticsChart.destroy();
@@ -2996,9 +3005,21 @@ function renderAnalytics(){
       type:'bar',
       data:{
         labels:sortedDates.map(function(d){return d.slice(5);}),
-        datasets:[{label:'Leads',data:sortedDates.map(function(d){return byDay[d];}),backgroundColor:'rgba(26,158,110,0.7)',borderRadius:4}]
+        datasets:[
+          {label:'New',data:sortedDates.map(function(d){return byDayStatus[d].new;}),backgroundColor:'rgba(26,111,168,0.7)',borderRadius:3},
+          {label:'Contacted',data:sortedDates.map(function(d){return byDayStatus[d].contacted;}),backgroundColor:'rgba(192,120,0,0.75)',borderRadius:3},
+          {label:'Pitched',data:sortedDates.map(function(d){return byDayStatus[d].pitched;}),backgroundColor:'rgba(26,158,110,0.65)',borderRadius:3},
+          {label:'Won',data:sortedDates.map(function(d){return byDayStatus[d].won;}),backgroundColor:'rgba(26,158,110,1)',borderRadius:3}
+        ]
       },
-      options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:1}}}}
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},padding:12,boxWidth:12}}},
+        scales:{
+          x:{stacked:true,grid:{display:false},ticks:{font:{size:11}}},
+          y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}}
+        }
+      }
     });
   }
   // Top suburbs

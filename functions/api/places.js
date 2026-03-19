@@ -15,8 +15,12 @@ export async function onRequestPost(context) {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, X-Places-Key',
   };
-  if (allowedOrigin !== '*' && requestOrigin && !requestOrigin.startsWith(allowedOrigin)) {
-    return new Response('Forbidden', { status: 403 });
+  if (allowedOrigin !== '*' && requestOrigin && allowedOrigin !== '*') {
+    const allowed = allowedOrigin.split(',').map(s => s.trim());
+    const originOk = allowed.some(a => requestOrigin.startsWith(a) || a === '*');
+    if (!originOk) {
+      return new Response('Forbidden', { status: 403, headers: cors });
+    }
   }
   if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
