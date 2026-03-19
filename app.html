@@ -2576,99 +2576,145 @@ function renderCRM(){
 }
 
 function renderCard(l){
-  const tier=scoreTier(l.gapScore);const color=scoreColor(l.gapScore);const st=statusStyle(l.status);
+  const tier=scoreTier(l.gapScore);
+  const color=scoreColor(l.gapScore);
+  const st=statusStyle(l.status);
   const hasSocial=!!(l.facebook||l.instagram||l.twitter||l.tiktok);
-  const missing=[!l.website&&'Website',!l.phone&&'Phone',!l.email&&'Email',!hasSocial&&'Social'].filter(Boolean);
-  const has=[l.website&&'Website',l.phone&&'Phone',l.email&&'Email',l.facebook&&'Facebook',l.instagram&&'Instagram',l.twitter&&'Twitter',l.tiktok&&'TikTok',l.hours&&'Hours',l.cuisine&&'Cuisine'].filter(Boolean);
-  const badges=[!l.website&&'<span class="mb mb-ns">NO SITE</span>',!l.phone&&'<span class="mb mb-np">NO PHONE</span>',!l.email&&'<span class="mb mb-ne">NO EMAIL</span>',!hasSocial&&'<span class="mb mb-nm">NO SOCIAL</span>',l.source==='google'&&'<span class="mb" style="background:var(--blue-pale);color:var(--blue)">GOOGLE</span>'].filter(Boolean).slice(0,4).join('');
-  const socials=[{n:'FB',v:l.facebook},{n:'IG',v:l.instagram},{n:'TW',v:l.twitter},{n:'TT',v:l.tiktok}];
-  const mapsUrl=l.lat&&l.lon?`https://www.google.com/maps/search/?api=1&query=${l.lat},${l.lon}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.name+' '+(l.address||''))}`;
-  const pipHtml=['contacted','pitched','won','lost'].map(s=>`<button class="pip-btn${l.status===s?' active-'+s:''}" data-lead="${l.id}" data-stage="${s}">${s==='won'?'Won ✓':s[0].toUpperCase()+s.slice(1)}</button>`).join('');
+  const mapsUrl=l.lat&&l.lon
+    ?`https://www.google.com/maps/search/?api=1&query=${l.lat},${l.lon}`
+    :`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.name+' '+(l.address||''))}`;
 
-  // Gap score breakdown tooltip
-  const bdRows=(l.gapBreakdown||[]).map(b=>`<div class="st-row"><span>${b.label}</span><span class="st-val">+${b.pts}</span></div>`).join('');
-  const scoreEl=`<div class="score-wrap lsco-wrap"><div class="lsco" style="color:${color}">${l.gapScore||0}</div><div class="lsco-lbl">score</div><div class="score-tooltip"><div class="st-row"><span>Gap Score</span><span class="st-val">${l.gapScore||0}/100</span></div>${bdRows}</div></div>`;
+  // Gap pills - what's missing
+  const gapPills=[];
+  if(!l.website)gapPills.push('<span class="lgap-pill gp-site">No Website</span>');
+  if(!hasSocial)gapPills.push('<span class="lgap-pill gp-social">No Social</span>');
+  if(!l.phone)gapPills.push('<span class="lgap-pill gp-phone">No Phone</span>');
+  if(!l.email)gapPills.push('<span class="lgap-pill gp-email">No Email</span>');
 
-  const webDisplay=l.website?`<a href="${esc(l.website)}" target="_blank" class="dr-link">${esc(l.website)}</a>`:'<span class="dr-miss">Not in OSM — verify on Maps</span>';
-  const phoneDisplay=l.phone?`<a href="tel:${esc(l.phone)}" class="dr-link">${esc(l.phone)}</a>`:'<span class="dr-miss">Not found — add below</span>';
-  const emailDisplay=l.email?`<a href="mailto:${esc(l.email)}" class="dr-link">${esc(l.email)}</a>`:'<span class="dr-miss">Not found — add below</span>';
+  // Score ring SVG
+  const r=20,circ=2*Math.PI*r;
+  const sc=l.gapScore||0;
+  const offset=circ-(sc/100)*circ;
+  const scoreRing=`<svg class="score-ring" viewBox="0 0 52 52">
+    <circle class="score-ring-bg" cx="26" cy="26" r="${r}"/>
+    <circle class="score-ring-fg" cx="26" cy="26" r="${r}" stroke="${color}"
+      stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+    <text class="score-ring-text" x="26" y="26" style="fill:${color}">${sc}</text>
+  </svg>`;
+
+  // Pipeline buttons
+  const pipHtml=['contacted','pitched','won','lost'].map(s=>{
+    const labels={contacted:'Contacted',pitched:'Pitched',won:'Won ✓',lost:'Lost'};
+    return `<button class="pip-btn${l.status===s?' active-'+s:''}" data-lead="${l.id}" data-stage="${s}">${labels[s]}</button>`;
+  }).join('');
+
+  // Contact info rows
+  const webRow=l.website
+    ?`<a href="${esc(l.website)}" target="_blank" class="dr-link" style="font-size:.82rem">${esc(l.website.replace(/^https?:\/\//,'').slice(0,40))}</a>`
+    :'<span style="font-size:.8rem;color:var(--muted);font-style:italic;">Not found</span>';
+  const phoneRow=l.phone
+    ?`<a href="tel:${esc(l.phone)}" class="dr-link" style="font-size:.82rem">${esc(l.phone)}</a>`
+    :'<span style="font-size:.8rem;color:var(--muted);font-style:italic;">Not found</span>';
+  const emailRow=l.email
+    ?`<a href="mailto:${esc(l.email)}" class="dr-link" style="font-size:.82rem">${esc(l.email)}</a>`
+    :'<span style="font-size:.8rem;color:var(--muted);font-style:italic;">Not found</span>';
 
   // Note templates
-  const TEMPLATES=['Left voicemail','Sent email — no reply','Follow up in 1 week','Meeting booked','Quote sent','Not interested'];
+  const TEMPLATES=['Left voicemail','Sent email - awaiting reply','Follow up next week','Meeting booked','Quote sent','Not interested'];
   const tmplHtml=TEMPLATES.map(t=>`<span class="note-tmpl" data-tmpl="${esc(t)}" data-lead="${l.id}">${t}</span>`).join('');
 
   return`<div class="lcard ${tier}" id="lc-${l.id}">
+  <!-- Card header - always visible -->
   <div class="lctop" id="ltop-${l.id}">
-    ${scoreEl}
-    <div class="lmain"><div class="lnm">${esc(l.name)}</div><div class="lmeta">${l.address?esc(l.address.split(',').slice(0,2).join(',').trim()):esc(l.locationName||'')}</div></div>
+    <div class="lsco-wrap">
+      ${scoreRing}
+      <div class="lsco-lbl">score</div>
+    </div>
+    <div class="lmain">
+      <div class="lnm">${esc(l.name)}</div>
+      <div class="lmeta">${esc(l.address?(l.address.split(',').slice(0,2).join(',').trim()):l.locationName||'')}</div>
+      <div class="lgaps">${gapPills.join('')}</div>
+    </div>
     <div class="lright">
-      <div class="stag" id="stag-${l.id}" style="background:${st.bg};color:${st.c};border:1px solid ${st.bd}">${st.label}</div>
-      <div class="mbadges">${badges}</div>
-      <div class="chev" id="chev-${l.id}">▾</div>
+      <div class="stag" style="background:${st.bg};color:${st.c};border:1px solid ${st.bd}">${st.label}</div>
+      <div class="chev" id="chev-${l.id}">&#9660;</div>
     </div>
   </div>
-  <div class="lexp" id="lexp-${l.id}">
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:7px">Pipeline</div>
-    <div class="pipeline" id="pip-${l.id}" style="margin-bottom:12px">${pipHtml}</div>
-    ${missing.length?`<div class="miss-box"><div class="miss-box-t">✕ Missing</div><div class="miss-items">${missing.map(m=>`<span class="miss-item">${m}</span>`).join('')}</div></div>`:''}
-    ${has.length?`<div class="has-box"><div class="has-box-t">✓ Has</div><div class="has-items">${has.map(h=>`<span class="has-item">${h}</span>`).join('')}</div></div>`:''}
-    <div class="gcs">${(l.gapTags||[]).map(t=>{const c=t.cls==='gap-critical'?'gc-critical':t.cls==='gap-high'?'gc-high':'gc-medium';return`<span class="gc ${c}">${t.text}</span>`;}).join('')}</div>
 
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:7px">AI Pitch Email</div>
-    <div class="pitch-area" id="pitch-${l.id}">
-      <div class="pitch-loading" id="pitch-loading-${l.id}"><div class="mini-spin"></div>Generating pitch…</div>
-      <div class="pitch-output" id="pitch-out-${l.id}"></div>
-      <div class="pitch-actions" id="pitch-actions-${l.id}" style="display:none">
-        <button class="btn btn-ghost btn-xs" onclick="copyPitch('${l.id}')">📋 Copy</button>
-        <button class="btn btn-ghost btn-xs" onclick="openMailto('${l.id}','${esc(l.email||'')}')">✉ Open in Mail</button>
-        <button class="btn btn-ghost btn-xs" onclick="openEmailModal('${l.id}')">&#128231; Send Email</button>
-        <button class="btn btn-danger btn-xs" onclick="clearPitch('${l.id}')">✕ Clear</button>
+  <!-- Expanded detail -->
+  <div class="lexp" id="lexp-${l.id}">
+
+    <!-- Pipeline -->
+    <div class="lexp-section">
+      <div class="lexp-label">Move to stage</div>
+      <div class="pipeline" id="pip-${l.id}">${pipHtml}</div>
+    </div>
+
+    <!-- Contact details -->
+    <div class="lexp-section">
+      <div class="lexp-label">Contact Details</div>
+      <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;align-items:center;font-size:.82rem;">
+        <span style="color:var(--muted);font-weight:600;">Website</span><span>${webRow}</span>
+        <span style="color:var(--muted);font-weight:600;">Phone</span><span>${phoneRow}</span>
+        <span style="color:var(--muted);font-weight:600;">Email</span><span>${emailRow}</span>
+        ${l.rating?`<span style="color:var(--muted);font-weight:600;">Rating</span><span style="color:var(--amber)">&#9733; ${l.rating}${l.reviewCount?' ('+l.reviewCount+' reviews)':''}</span>`:''}
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <a class="btn btn-ghost btn-sm" href="${esc(mapsUrl)}" target="_blank">&#128205; Maps</a>
+        <button class="btn btn-ghost btn-sm" onclick="generatePitch('${l.id}')">&#10024; Pitch email</button>
+        <button class="btn btn-ghost btn-sm" onclick="openEmailModal('${l.id}')">&#128231; Send email</button>
+        <button class="btn btn-ghost btn-sm enrich-btn" data-lead="${l.id}" data-name="${esc(l.name)}" data-addr="${esc(l.address||'')}">&#128269; Find contact</button>
       </div>
     </div>
-    <button class="btn btn-ghost btn-sm" id="pitch-btn-${l.id}" onclick="generatePitch('${l.id}')">✨ Generate pitch email</button>
 
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:7px;margin-top:12px">Business Info</div>
-    <div class="drows">
-      <div class="dr"><span class="drl">Website</span><span class="drv">${webDisplay}</span></div>
-      <div class="dr"><span class="drl">Phone</span><span class="drv">${phoneDisplay}</span></div>
-      <div class="dr"><span class="drl">Email</span><span class="drv">${emailDisplay}</span></div>
-      ${l.address?`<div class="dr"><span class="drl">Address</span><span class="drv">${esc(l.address)}</span></div>`:''}
-      ${l.category?`<div class="dr"><span class="drl">Type</span><span class="drv">${esc(l.category)}</span></div>`:''}
-      ${l.rating?`<div class="dr"><span class="drl">Rating</span><span class="drv" style="color:var(--amber)">★ ${l.rating}${l.reviewCount?' ('+l.reviewCount+' reviews)':''}</span></div>`:''}
-      <div class="dr"><span class="drl">Maps</span><a class="dr-link" href="${esc(mapsUrl)}" target="_blank">Open in Google Maps ↗</a></div>
-      ${l.osmUrl?`<div class="dr"><span class="drl">OSM</span><a class="dr-link" href="${esc(l.osmUrl)}" target="_blank">OpenStreetMap ↗</a></div>`:''}
+    <!-- AI Pitch -->
+    <div class="lexp-section" id="pitch-section-${l.id}" style="display:none;">
+      <div class="lexp-label">AI Pitch Email</div>
+      <div class="pitch-loading" id="pitch-loading-${l.id}"><div class="mini-spin"></div>Generating...</div>
+      <div class="pitch-output" id="pitch-out-${l.id}"></div>
+      <div class="pitch-actions" id="pitch-actions-${l.id}" style="display:none">
+        <button class="btn btn-ghost btn-xs" onclick="copyPitch('${l.id}')">&#128203; Copy</button>
+        <button class="btn btn-ghost btn-xs" onclick="openMailto('${l.id}','${esc(l.email||'')}')">&#10003; Open in Mail</button>
+        <button class="btn btn-ghost btn-xs" onclick="openEmailModal('${l.id}')">&#128231; Send Email</button>
+        <button class="btn btn-danger btn-xs" onclick="clearPitch('${l.id}')">&#10005; Clear</button>
+      </div>
     </div>
 
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:7px">Find Contact Details</div>
-    <div class="enrich-row">
-      <button class="btn btn-ghost btn-sm enrich-btn" data-lead="${l.id}" data-name="${esc(l.name)}" data-addr="${esc(l.address||'')}">🔎 Search for contact info</button>
-      <div class="enrich-result" id="enrich-${l.id}"></div>
+    <!-- Edit details -->
+    <div class="lexp-section">
+      <div class="lexp-label">Edit Details</div>
+      <div class="edit-grid">
+        ${ef(l.id,'website','Website',l.website)}
+        ${ef(l.id,'phone','Phone',l.phone)}
+        ${ef(l.id,'email','Email',l.email)}
+        ${ef(l.id,'hours','Hours',l.hours)}
+        ${ef(l.id,'category','Type',l.category)}
+      </div>
+      <div class="save-row" style="margin-top:8px;">
+        <span class="save-ind" id="sind-${l.id}"></span>
+        <button class="btn btn-ghost btn-sm save-btn" data-lead="${l.id}">Save changes</button>
+      </div>
     </div>
 
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:7px">Edit Details</div>
-    <div class="edit-grid">
-      ${ef(l.id,'website','Website',l.website)}${ef(l.id,'phone','Phone',l.phone)}${ef(l.id,'email','Email',l.email)}${ef(l.id,'hours','Hours',l.hours)}${ef(l.id,'category','Type',l.category)}
+    <!-- Notes -->
+    <div class="lexp-section">
+      <div class="lexp-label">Notes</div>
+      <div class="note-templates">${tmplHtml}</div>
+      <textarea class="nt" id="nt-${l.id}" placeholder="Add notes, call outcomes, follow-up reminders...">${esc(l.notes||'')}</textarea>
+      <div style="margin-top:8px;">
+        <button class="btn btn-danger btn-sm del-btn" data-lead="${l.id}">&#10005; Delete lead</button>
+      </div>
     </div>
-    <div class="save-row"><span class="save-ind" id="sind-${l.id}"></span><button class="btn btn-ghost btn-sm save-btn" data-lead="${l.id}">Save Changes</button></div>
 
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:7px">Social Presence</div>
-    <div class="soc-row">${socials.map(s=>`<div class="soc-c"><div class="soc-n">${s.n}</div><div class="soc-v ${s.v?'soc-found':'soc-none'}">${s.v?`<a href="${esc(s.v.startsWith('http')?s.v:'https://'+s.v)}" target="_blank">Found ↗</a>`:'None'}</div></div>`).join('')}</div>
-
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:7px">Quick Verify</div>
-    <div class="qlnks"><a class="ql ql-primary" href="${esc(mapsUrl)}" target="_blank">📍 Google Maps</a>${quickLinks(l.name,l.address).map(q=>`<a class="ql" href="${q.url}" target="_blank">${q.label}</a>`).join('')}</div>
-
-    <div class="sec-label" style="font-size:.58rem;margin-bottom:5px">Notes</div>
-    <div class="note-templates">${tmplHtml}</div>
-    <textarea class="nt" id="nt-${l.id}" placeholder="Add notes…">${esc(l.notes||'')}</textarea>
-    <div style="margin-top:7px"><button class="btn btn-danger btn-sm del-btn" data-lead="${l.id}">✕ Delete</button></div>
   </div>
 </div>`;
 }
 
+
 function ef(lid,field,label,value){return`<div class="ef-row"><span class="ef-label">${label}</span><input class="ef-inp" type="text" id="ef-${lid}-${field}" value="${esc(value||'')}" placeholder="${!value?'Not found — add here':''}"/></div>`;}
 
 function attachCardListeners(){
-  document.querySelectorAll('.lctop').forEach(top=>{top.addEventListener('click',()=>{const id=top.id.replace('ltop-','');const exp=document.getElementById(`lexp-${id}`);const chev=document.getElementById(`chev-${id}`);if(!exp)return;const open=exp.style.display==='block';exp.style.display=open?'none':'block';chev.style.transform=open?'':'rotate(180deg)';});});
+  document.querySelectorAll('.lctop').forEach(top=>{top.addEventListener('click',()=>{const id=top.id.replace('ltop-','');const exp=document.getElementById(`lexp-${id}`);const chev=document.getElementById(`chev-${id}`);if(!exp)return;const open=exp.style.display==='flex'||exp.style.display==='block';exp.style.display=open?'none':'block';chev.style.transform=open?'':'rotate(180deg)';});});
   document.querySelectorAll('.pip-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.lead,stage=btn.dataset.stage;const idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;leads[idx].status=leads[idx].status===stage?'new':stage;saveLead(leads[idx]);const pip=document.getElementById(`pip-${id}`);pip.querySelectorAll('.pip-btn').forEach(b=>b.className=`pip-btn${leads[idx].status===b.dataset.stage?' active-'+b.dataset.stage:''}`);const stag=document.getElementById(`stag-${id}`);const st=statusStyle(leads[idx].status);if(stag){stag.textContent=st.label;stag.style.background=st.bg;stag.style.color=st.c;stag.style.border=`1px solid ${st.bd}`;}document.getElementById('cs-w').textContent=leads.filter(l=>l.status==='won').length;});});
   document.querySelectorAll('.save-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.lead,idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;['website','phone','email','hours','category'].forEach(f=>{const el=document.getElementById(`ef-${id}-${f}`);if(!el)return;leads[idx][f]=el.value.trim()||null;});saveLead(leads[idx]);const ind=document.getElementById(`sind-${id}`);if(ind){ind.textContent='✓ Saved';ind.style.color='var(--green)';setTimeout(()=>ind.textContent='',2000);}toast('Saved');});});
   document.querySelectorAll('.nt').forEach(ta=>{ta.addEventListener('blur',()=>{const id=ta.id.replace('nt-',''),idx=leads.findIndex(l=>l.id===id);if(idx!==-1){leads[idx].notes=ta.value;saveLead(leads[idx]);}});});
@@ -2702,6 +2748,7 @@ function generatePitch(leadId){
   const actions=document.getElementById('pitch-actions-'+leadId);
   const loading=document.getElementById('pitch-loading-'+leadId);
   if(btn)btn.style.display='none';
+  var pitchSec=document.getElementById('pitch-section-'+leadId);if(pitchSec)pitchSec.style.display='block';
   if(loading)loading.classList.remove('show');
 
   const text=buildPitchEmail(l);
