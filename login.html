@@ -1,36 +1,33 @@
 <!DOCTYPE html>
-<!-- saved from url=(0047)login -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Sign in — Footprint</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Sign in - Footprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#f4f8f6;--surf:#ffffff;--surf2:#eef3f1;--surf3:#e2eae7;
+  --bg:#f4f8f6;--surf:#ffffff;--surf2:#eef3f1;
   --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
-  --text:#0d1f19;--text2:#3a5a50;--muted:#6a8c80;--dim:#b8cfc8;
+  --text:#0d1f19;--muted:#6a8c80;--dim:#b8cfc8;
   --accent:#1a9e6e;--accent2:#157a55;--accent-pale:rgba(26,158,110,0.1);
-  --amber:#c07800;--amber-pale:rgba(192,120,0,0.08);--red:#d63031;
+  --amber:#c07800;--red:#d63031;
 }
-html{font-size:16px;-webkit-text-size-adjust:100%;height:100%;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
 body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;display:flex;}
 .page{flex:1;display:flex;min-height:100dvh;}
-
-/* Left panel */
-.lp{display:none;width:420px;flex-shrink:0;background:linear-gradient(160deg,#f0faf5 0%,#e4f5ec 100%);border-right:1px solid var(--border);padding:44px 40px;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+.lp{display:none;width:clamp(340px,30vw,440px);flex-shrink:0;background:linear-gradient(160deg,#f0faf5 0%,#e4f5ec 100%);border-right:1px solid var(--border);padding:44px 40px;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
 .lp::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(26,158,110,0.1) 0%,transparent 70%);pointer-events:none;}
-.lp::after{content:'';position:absolute;bottom:-60px;left:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(26,158,110,0.06) 0%,transparent 70%);pointer-events:none;}
 @media(min-width:860px){.lp{display:flex;}}
-.lp-logo{display:flex;align-items:center;text-decoration:none;font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);position:relative;z-index:1;}
+.lp-logo{display:flex;align-items:center;text-decoration:none;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);position:relative;z-index:1;}
 .lp-logo-fp{color:var(--accent);}
 .lp-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;position:relative;top:-1px;margin-left:1px;}
 .lp-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0;position:relative;z-index:1;}
-.lp-h{font-family:'Sora',sans-serif;font-size:1.7rem;font-weight:700;line-height:1.2;margin-bottom:11px;letter-spacing:-0.04em;}
+.lp-h{font-size:clamp(1.4rem,2.2vw,1.75rem);font-weight:700;line-height:1.2;margin-bottom:12px;letter-spacing:-0.04em;}
 .lp-h em{font-style:normal;color:var(--accent);}
-.lp-p{font-size:0.83rem;color:var(--muted);line-height:1.75;margin-bottom:26px;}
+.lp-p{font-size:0.83rem;color:var(--muted);line-height:1.75;margin-bottom:24px;}
 .lp-list{display:flex;flex-direction:column;gap:10px;}
 .lp-item{display:flex;align-items:flex-start;gap:10px;font-size:0.81rem;}
 .lp-check{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(26,158,110,0.12);border:1.5px solid rgba(26,158,110,0.28);display:flex;align-items:center;justify-content:center;font-size:0.58rem;color:var(--accent);}
@@ -39,16 +36,13 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
 .lp-trial{padding:14px 16px;background:rgba(192,120,0,0.07);border:1.5px solid rgba(192,120,0,0.18);border-radius:10px;position:relative;z-index:1;}
 .lp-trial-tag{font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:700;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
 .lp-trial-body{font-size:0.79rem;color:var(--muted);line-height:1.6;}
-
-/* Right panel */
-.rp{flex:1;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top,24px) 24px env(safe-area-inset-bottom,24px);min-height:100dvh;background:var(--bg);}
+.rp{flex:1;display:flex;align-items:center;justify-content:center;padding:24px clamp(16px,4vw,32px);min-height:100dvh;background:var(--bg);}
 @media(min-width:860px){.rp{min-height:auto;background:#fff;}}
-.form-box{width:100%;max-width:400px;}
-.mob-logo{display:flex;align-items:center;text-decoration:none;font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);margin-bottom:26px;}
+.form-box{width:100%;max-width:380px;}
+.mob-logo{display:flex;align-items:center;text-decoration:none;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);margin-bottom:26px;}
 .mob-logo-fp{color:var(--accent);}
 .mob-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;position:relative;top:-1px;margin-left:1px;}
 @media(min-width:860px){.mob-logo{display:none;}}
-
 .tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surf2);border:1.5px solid var(--border);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px;}
 .tab{padding:9px;text-align:center;font-size:0.84rem;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'Sora',sans-serif;border-radius:8px;transition:all .15s;}
 .tab.on{background:#fff;color:var(--text);box-shadow:0 1px 8px rgba(0,0,0,0.08);}
@@ -62,7 +56,7 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
 .finput:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,158,110,0.1);}
 .finput::placeholder{color:var(--dim);}
 .row-right{display:flex;justify-content:flex-end;margin-top:-4px;margin-bottom:12px;}
-.text-btn{font-size:0.77rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Sora',sans-serif;padding:3px 0;transition:color .15s;font-weight:500;}
+.text-btn{font-size:0.77rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Sora',sans-serif;padding:3px 0;transition:color .15s;}
 .text-btn:hover{color:var(--accent);}
 .btn-pri{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;box-shadow:0 0 14px rgba(26,158,110,0.18);}
 .btn-pri:hover:not(:disabled){background:var(--accent2);transform:translateY(-1px);}
@@ -76,47 +70,11 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
 .spin{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:rot .65s linear infinite;display:none;flex-shrink:0;}
 @keyframes rot{to{transform:rotate(360deg);}}
 .view{display:none;}.view.show{display:block;}
-.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;color:var(--muted);cursor:pointer;margin-bottom:16px;background:none;border:none;font-family:'Sora',sans-serif;padding:0;transition:color .15s;font-weight:500;}
+.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;color:var(--muted);cursor:pointer;margin-bottom:16px;background:none;border:none;font-family:'Sora',sans-serif;padding:0;transition:color .15s;}
 .back-btn:hover{color:var(--text);}
-
-/* Step indicator */
-.steps-bar{display:flex;align-items:center;gap:0;margin-bottom:24px;}
-.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;transition:all .2s;}
-.step-dot.done{background:var(--accent);color:#fff;}
-.step-dot.active{background:var(--text);color:#fff;}
-.step-dot.pending{background:var(--surf2);color:var(--muted);border:1.5px solid var(--border);}
-.step-line{flex:1;height:2px;background:var(--border);}
-.step-line.done{background:var(--accent);}
-
-/* Plan picker */
-.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
-.plan-card{border:2px solid var(--border);border-radius:10px;padding:14px 12px;cursor:pointer;transition:all .18s;background:var(--surf);position:relative;}
-.plan-card:hover{border-color:var(--border2);background:var(--surf2);}
-.plan-card.selected{border-color:var(--accent);background:var(--accent-pale);}
-.plan-card.popular-card{border-color:var(--text);background:var(--text);color:#fff;}
-.plan-card.popular-card:hover{background:#1a2e27;}
-.plan-card.popular-card.selected{border-color:var(--accent);background:var(--accent);}
-.plan-badge-tag{position:absolute;top:-1px;right:10px;background:var(--accent);color:#fff;font-family:'JetBrains Mono',monospace;font-size:0.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:0 0 6px 6px;}
-.plan-name{font-size:0.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;color:var(--muted);}
-.plan-card.popular-card .plan-name{color:rgba(255,255,255,0.6);}
-.plan-card.popular-card.selected .plan-name{color:rgba(255,255,255,0.8);}
-.plan-price{font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:700;line-height:1;letter-spacing:-0.04em;margin-bottom:3px;}
-.plan-price span{font-size:0.75rem;font-weight:400;color:var(--muted);}
-.plan-card.popular-card .plan-price span{color:rgba(255,255,255,0.5);}
-.plan-desc{font-size:0.72rem;color:var(--muted);margin-bottom:8px;}
-.plan-card.popular-card .plan-desc{color:rgba(255,255,255,0.55);}
-.plan-feats{font-size:0.72rem;display:flex;flex-direction:column;gap:3px;}
-.plan-feat{display:flex;align-items:center;gap:5px;}
-.plan-feat::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;}
-.plan-card.popular-card .plan-feat{color:rgba(255,255,255,0.8);}
-.plan-card.popular-card .plan-feat::before{color:rgba(255,255,255,0.7);}
-.plan-selected-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.62rem;display:none;align-items:center;justify-content:center;}
-.plan-card.selected .plan-selected-check{display:flex;}
-.plan-card.popular-card.selected .plan-selected-check{background:#fff;color:var(--accent);}
-
-.f-title{font-family:'Sora',sans-serif;font-size:1.45rem;font-weight:700;margin-bottom:3px;line-height:1.2;letter-spacing:-0.04em;}
+.f-title{font-size:clamp(1.25rem,2vw,1.5rem);font-weight:700;margin-bottom:3px;line-height:1.2;letter-spacing:-0.04em;}
 .f-sub{font-size:0.83rem;color:var(--muted);margin-bottom:19px;line-height:1.5;}
-.fgt-title{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:700;margin-bottom:5px;letter-spacing:-0.03em;}
+.fgt-title{font-size:1.3rem;font-weight:700;margin-bottom:5px;letter-spacing:-0.03em;}
 .fgt-sub{font-size:0.83rem;color:var(--muted);margin-bottom:18px;line-height:1.6;}
 </style>
 </head>
@@ -125,18 +83,18 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
 <div class="lp">
   <a href="index.html" class="lp-logo"><span class="lp-logo-fp">foot</span><span>print</span><span class="lp-logo-dot"></span></a>
   <div class="lp-body">
-    <h2 class="lp-h">Your next client is already<br><em>out there — just offline</em></h2>
-    <p class="lp-p">Footprint scans any suburb or city and finds local businesses with no website, no Instagram, no social media — a ready-made list of warm prospects.</p>
+    <h2 class="lp-h">Your next client is already<br/><em>out there</em></h2>
+    <p class="lp-p">Footprint scans any suburb or city and finds local businesses with no website, no Instagram, no social media - a ready-made list of warm prospects.</p>
     <div class="lp-list">
-      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>Find businesses with no website</strong> — perfect for web designers</div></div>
-      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>Find businesses with no social media</strong> — perfect for social media managers</div></div>
-      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>AI pitch emails</strong> — personalised for every lead, free</div></div>
-      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>Built-in CRM</strong> — track leads from first contact to won</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Find businesses with no website</strong> - perfect for web designers</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Find businesses with no social media</strong> - perfect for social media managers</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>AI pitch emails</strong> - written for every lead, free to use</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Pipeline tracker</strong> - manage contacted, pitched and won deals</div></div>
     </div>
   </div>
   <div class="lp-trial">
-    <div class="lp-trial-tag">✦ 3-day free trial</div>
-    <div class="lp-trial-body">Full access for 3 days. Card required but not charged until day 4. Cancel any time.</div>
+    <div class="lp-trial-tag">3-day free trial</div>
+    <div class="lp-trial-body">Full access for 3 days. No payment required to get started.</div>
   </div>
 </div>
 
@@ -144,45 +102,30 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
   <div class="form-box">
     <a href="index.html" class="mob-logo"><span class="mob-logo-fp">foot</span><span>print</span><span class="mob-logo-dot"></span></a>
 
-    <!-- View: Sign in / Sign up step 1 (credentials) -->
     <div id="v-main" class="view show">
       <div class="tabs">
-        <button class="tab on" id="tab-in" onclick="setMode(&#39;signin&#39;)">Sign in</button>
-        <button class="tab" id="tab-up" onclick="setMode(&#39;signup&#39;)">Sign up</button>
+        <button class="tab on" id="tab-in" onclick="setMode('signin')">Sign in</button>
+        <button class="tab" id="tab-up" onclick="setMode('signup')">Sign up</button>
       </div>
-      <!-- Step indicator (signup only) -->
-      <div id="signup-steps" style="display:none;margin-bottom:20px;">
-        <div class="steps-bar">
-          <div class="step-dot active" id="sdot-1">1</div>
-          <div class="step-line" id="sline-1"></div>
-          <div class="step-dot pending" id="sdot-2">2</div>
-          <div class="step-line" id="sline-2"></div>
-          <div class="step-dot pending" id="sdot-3">3</div>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:0.64rem;color:var(--muted);margin-top:4px;">
-          <span>Your details</span><span style="text-align:center;">Choose plan</span><span style="text-align:right;">Payment</span>
-        </div>
-      </div>
-
       <div class="f-title" id="f-title">Welcome back</div>
       <div class="f-sub" id="f-sub">Sign in to your Footprint account</div>
       <div class="alert a-err" id="main-err"></div>
       <div class="alert a-ok" id="main-ok"></div>
-      <form onsubmit="handleSubmit(event)" autocomplete="on" novalidate="">
+      <form onsubmit="handleSubmit(event)" autocomplete="on" novalidate>
         <div class="field" id="name-field" style="display:none">
           <label class="flabel">Full name</label>
-          <input class="finput" id="f-name" type="text" placeholder="Jane Smith" autocomplete="name">
+          <input class="finput" id="f-name" type="text" placeholder="Jane Smith" autocomplete="name"/>
         </div>
         <div class="field">
           <label class="flabel">Email</label>
-          <input class="finput" id="f-email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email" required="">
+          <input class="finput" id="f-email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email" required/>
         </div>
         <div class="field">
           <label class="flabel">Password</label>
-          <input class="finput" id="f-pass" type="password" placeholder="••••••••" autocomplete="current-password" required="">
+          <input class="finput" id="f-pass" type="password" placeholder="Password" autocomplete="current-password" required/>
         </div>
-        <div class="row-right" id="forgot-row" style="display: flex;">
-          <button type="button" class="text-btn" onclick="showView(&#39;forgot&#39;)">Forgot password?</button>
+        <div class="row-right" id="forgot-row">
+          <button type="button" class="text-btn" onclick="showView('forgot')">Forgot password?</button>
         </div>
         <button type="submit" class="btn-pri" id="submit-btn">
           <span id="submit-lbl">Sign in</span>
@@ -191,104 +134,21 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
       </form>
       <div class="divider">or</div>
       <button class="btn-google" onclick="handleGoogle()">
-        <svg width="17" height="17" viewBox="0 0 18 18" aria-hidden="true">
-          <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"></path>
-          <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"></path>
-          <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"></path>
-          <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"></path>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
         Continue with Google
       </button>
-      <p class="legal" id="legal-txt">By continuing you agree to our <a href="login#">Terms</a> and <a href="login#">Privacy Policy</a>.</p>
+      <p class="legal" id="legal-txt">By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
     </div>
 
-    <!-- View: Plan picker (step 2 of signup) -->
-    <div id="v-plan" class="view">
-      <div class="steps-bar" style="margin-bottom:6px;">
-        <div class="step-dot done">✓</div>
-        <div class="step-line done"></div>
-        <div class="step-dot active">2</div>
-        <div class="step-line"></div>
-        <div class="step-dot pending">3</div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:0.64rem;color:var(--muted);margin-top:4px;margin-bottom:22px;">
-        <span>Your details</span><span style="text-align:center;">Choose plan</span><span style="text-align:right;">Payment</span>
-      </div>
-      <div class="f-title">Choose your plan</div>
-      <div class="f-sub">You can change or cancel any time. 3-day free trial on all plans.</div>
-      <div class="alert a-err" id="plan-err"></div>
-
-      <div class="plan-grid">
-        <div class="plan-card" id="pc-solo" onclick="selectPlan(&#39;solo&#39;)">
-          <div class="plan-selected-check">✓</div>
-          <div class="plan-name">Solo</div>
-          <div class="plan-price">$19<span>/mo</span></div>
-          <div class="plan-desc">For freelancers</div>
-          <div class="plan-feats">
-            <div class="plan-feat">1 seat</div>
-            <div class="plan-feat">100 results/scan</div>
-            <div class="plan-feat">500 stored leads</div>
-            <div class="plan-feat">AI pitch emails</div>
-          </div>
-        </div>
-        <div class="plan-card" id="pc-partnership" onclick="selectPlan(&#39;partnership&#39;)">
-          <div class="plan-selected-check">✓</div>
-          <div class="plan-name">Partnership</div>
-          <div class="plan-price">$39<span>/mo</span></div>
-          <div class="plan-desc">For small teams</div>
-          <div class="plan-feats">
-            <div class="plan-feat">3 seats</div>
-            <div class="plan-feat">200 results/scan</div>
-            <div class="plan-feat">2,000 leads</div>
-            <div class="plan-feat">Shared lead pool</div>
-          </div>
-        </div>
-        <div class="plan-card popular-card" id="pc-agency" onclick="selectPlan(&#39;agency&#39;)">
-          <div class="plan-badge-tag">Most popular</div>
-          <div class="plan-selected-check">✓</div>
-          <div class="plan-name">Agency</div>
-          <div class="plan-price">$89<span>/mo</span></div>
-          <div class="plan-desc">For agencies</div>
-          <div class="plan-feats">
-            <div class="plan-feat">10 seats</div>
-            <div class="plan-feat">500 results/scan</div>
-            <div class="plan-feat">10,000 leads</div>
-            <div class="plan-feat">Territory locking</div>
-          </div>
-        </div>
-        <div class="plan-card" id="pc-enterprise" onclick="selectPlan(&#39;enterprise&#39;)">
-          <div class="plan-selected-check">✓</div>
-          <div class="plan-name">Enterprise</div>
-          <div class="plan-price">$199<span>/mo</span></div>
-          <div class="plan-desc">For large agencies</div>
-          <div class="plan-feats">
-            <div class="plan-feat">50 seats</div>
-            <div class="plan-feat">Unlimited leads</div>
-            <div class="plan-feat">White-label PDFs</div>
-            <div class="plan-feat">API access</div>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn-pri" id="plan-continue-btn" onclick="continueToPay()" disabled="">
-        <span id="plan-continue-lbl">Select a plan to continue</span>
-        <div class="spin" id="plan-spin"></div>
-      </button>
-      <p style="font-size:0.68rem;color:var(--muted);text-align:center;margin-top:9px;line-height:1.65;">
-        Card required to start. Not charged until day 4. Cancel anytime via Settings.
-      </p>
-    </div>
-
-    <!-- View: Forgot password -->
     <div id="v-forgot" class="view">
-      <button class="back-btn" onclick="showView(&#39;main&#39;)">← Back to sign in</button>
+      <button class="back-btn" onclick="showView('main')">Back to sign in</button>
       <div class="fgt-title">Reset password</div>
-      <div class="fgt-sub">Enter your email and we'll send a link to reset your password.</div>
+      <div class="fgt-sub">Enter your email and we'll send a reset link.</div>
       <div class="alert a-err" id="fgt-err"></div>
       <div class="alert a-ok" id="fgt-ok"></div>
       <div class="field">
         <label class="flabel">Email</label>
-        <input class="finput" id="fgt-email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+        <input class="finput" id="fgt-email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email"/>
       </div>
       <button class="btn-pri" id="fgt-btn" onclick="handleForgot()">
         <span id="fgt-lbl">Send reset link</span>
@@ -296,23 +156,21 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
       </button>
     </div>
 
-    <!-- View: Verify email -->
     <div id="v-verify" class="view">
       <div style="text-align:center;padding:12px 0 24px">
-        <div style="font-size:2.5rem;margin-bottom:16px">📧</div>
+        <div style="font-size:2.5rem;margin-bottom:16px">&#128231;</div>
         <div class="fgt-title">Check your email</div>
-        <div class="fgt-sub">We sent a verification link to<br><strong id="verify-email-addr" style="color:var(--text)"></strong><br>Click it then come back here.</div>
+        <div class="fgt-sub">We sent a verification link to<br/><strong id="verify-email-addr" style="color:var(--text)"></strong><br/>Click it then come back here.</div>
         <div class="alert a-err" id="verify-err" style="text-align:left"></div>
         <div class="alert a-ok" id="verify-ok" style="text-align:left"></div>
         <button class="btn-pri" id="verify-check-btn" onclick="checkVerified()" style="margin-bottom:10px">
-          <span id="verify-check-lbl">I've verified — continue</span>
+          <span id="verify-check-lbl">I've verified - continue</span>
           <div class="spin" id="verify-check-spin"></div>
         </button>
         <button class="btn-google" onclick="resendVerification()" style="margin-bottom:10px">Resend verification email</button>
-        <button class="back-btn" style="margin:8px auto 0;display:flex;justify-content:center" onclick="auth.signOut().then(function(){showView(&#39;main&#39;);setMode(&#39;signin&#39;);})">← Use a different account</button>
+        <button class="back-btn" style="margin:8px auto 0;display:flex;justify-content:center" onclick="auth.signOut().then(function(){showView('main');setMode('signin');})">Use a different account</button>
       </div>
     </div>
-
   </div>
 </div>
 </div>
@@ -325,146 +183,49 @@ firebase.initializeApp({apiKey:"AIzaSyBY_fD1V9-bkYs4hsz_KEGmZi1gA3Pv_70",authDom
 var auth=firebase.auth(),db=firebase.firestore();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
 
-var _params=new URLSearchParams(location.search);
-var mode=_params.get('signup')==='1'?'signup':'signin';
-// Pre-select plan from URL if coming from homepage plan button
-var _plan=_params.get('plan')||null;
-var _pendingUser=null; // holds Firebase user between credential step and plan step
-
+var mode=new URLSearchParams(location.search).get('signup')==='1'?'signup':'signin';
 setMode(mode);
-if(_plan)selectPlan(_plan); // pre-select if came from homepage
+auth.onAuthStateChanged(function(user){if(user&&mode==='signin')location.href='app.html';});
 
-auth.onAuthStateChanged(function(user){
-  if(user&&mode==='signin')location.href='app.html';
-});
-
-function showView(n){
-  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('show');});
-  var el=document.getElementById('v-'+n);
-  if(el)el.classList.add('show');
-  if(n==='forgot'){
-    var em=document.getElementById('f-email').value;
-    if(em)document.getElementById('fgt-email').value=em;
-    hideA('fgt-err');hideA('fgt-ok');
-  }
-}
+function showView(n){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('show');});var el=document.getElementById('v-'+n);if(el)el.classList.add('show');if(n==='forgot'){var em=document.getElementById('f-email').value;if(em)document.getElementById('fgt-email').value=em;hideA('fgt-err');hideA('fgt-ok');}}
 
 function setMode(m){
-  mode=m;
-  var up=m==='signup';
+  mode=m;var up=m==='signup';
   document.getElementById('tab-in').classList.toggle('on',!up);
   document.getElementById('tab-up').classList.toggle('on',up);
   document.getElementById('f-title').textContent=up?'Create your account':'Welcome back';
-  document.getElementById('f-sub').textContent=up?'Step 1 of 3 — enter your details':'Sign in to your Footprint account';
+  document.getElementById('f-sub').textContent=up?'Free 3-day trial - no card needed':'Sign in to your Footprint account';
   document.getElementById('name-field').style.display=up?'block':'none';
   document.getElementById('forgot-row').style.display=up?'none':'flex';
-  document.getElementById('submit-lbl').textContent=up?'Continue':'Sign in';
-  document.getElementById('signup-steps').style.display=up?'block':'none';
+  document.getElementById('submit-lbl').textContent=up?'Create account':'Sign in';
   document.getElementById('legal-txt').innerHTML=up?'By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.':'By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.';
   hideA('main-err');hideA('main-ok');
 }
 
-// ── Plan selection ──────────────────────────────────────────────
-function selectPlan(key){
-  _plan=key;
-  document.querySelectorAll('.plan-card').forEach(function(c){c.classList.remove('selected');});
-  var card=document.getElementById('pc-'+key);
-  if(card)card.classList.add('selected');
-  var btn=document.getElementById('plan-continue-btn');
-  var lbl=document.getElementById('plan-continue-lbl');
-  if(btn)btn.disabled=false;
-  var names={solo:'Solo $19/mo',partnership:'Partnership $39/mo',agency:'Agency $89/mo',enterprise:'Enterprise $199/mo'};
-  if(lbl)lbl.textContent='Continue with '+names[key]+' →';
-}
-
-function continueToPay(){
-  if(!_plan){showA('plan-err','Please select a plan to continue.');return;}
-  if(!_pendingUser){showA('plan-err','Session expired. Please go back and sign in again.');return;}
-
-  var btn=document.getElementById('plan-continue-btn');
-  var lbl=document.getElementById('plan-continue-lbl');
-  var spin=document.getElementById('plan-spin');
-  btn.disabled=true;
-  lbl.style.display='none';
-  spin.style.display='block';
-
-  // Save tier to Firestore before checkout so it's there immediately
-  db.collection('users').doc(_pendingUser.uid).update({tier:_plan,plan:'trial'})
-    .catch(function(){})
-    .finally(function(){
-      // Go to Stripe checkout
-      _pendingUser.getIdToken().then(function(tok){
-        fetch('/api/create-checkout',{
-          method:'POST',
-          headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
-          body:JSON.stringify({
-            uid:_pendingUser.uid,
-            email:_pendingUser.email,
-            trialDays:3,
-            plan:_plan,
-            successUrl:location.origin+'/app.html?welcome=1&plan='+_plan,
-            cancelUrl:location.origin+'/login.html?signup=1'
-          })
-        })
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(d.url){location.href=d.url;}
-          else{showA('plan-err',d.error||'Could not open checkout. Try again.');btn.disabled=false;lbl.style.display='inline';spin.style.display='none';}
-        })
-        .catch(function(){
-          showA('plan-err','Network error. Please try again.');
-          btn.disabled=false;lbl.style.display='inline';spin.style.display='none';
-        });
-      });
-    });
-}
-
-// ── Auth handlers ───────────────────────────────────────────────
 function showA(id,msg){var e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show');}}
 function hideA(id){var e=document.getElementById(id);if(e)e.classList.remove('show');}
 function setLoading(on){document.getElementById('submit-btn').disabled=on;document.getElementById('submit-spin').style.display=on?'block':'none';document.getElementById('submit-lbl').style.display=on?'none':'inline';}
 
-var ERRS={'auth/email-already-in-use':'An account with this email already exists.','auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts — please wait a moment.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error — check your connection.','auth/popup-blocked':'Popup blocked — please allow popups for this site.'};
+var ERRS={'auth/email-already-in-use':'An account with this email already exists.','auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts - please wait a moment.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error - check your connection.','auth/popup-blocked':'Popup blocked - please allow popups for this site.'};
 
 function writeUserDoc(user){
   db.collection('users').doc(user.uid).set({
     uid:user.uid,email:user.email,name:user.displayName||'',
-    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-    plan:'trial',tier:_plan||'solo',
+    plan:'trial',tier:'solo',subscriptionStatus:'trialing',
     trialEnds:new Date(Date.now()+3*86400000).toISOString(),
-    stripeCustomerId:null,subscriptionStatus:'trialing',
-    isHeadAccount:true // marks this as the owner/head account
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
   },{merge:true}).catch(function(e){console.warn('writeUserDoc:',e);});
 }
 
 function afterAuth(user,isNew){
-  _pendingUser=user;
   if(isNew){
     writeUserDoc(user);
     user.sendEmailVerification().catch(function(){});
     showVerifyScreen(user.email);
   } else {
     if(!user.emailVerified){showVerifyScreen(user.email);return;}
-    goToApp(user);
+    location.href='app.html';
   }
-}
-
-function goToApp(user){
-  db.collection('users').doc(user.uid).get().then(function(snap){
-    var data=snap.data()||{};
-    if(!data.stripeCustomerId){
-      // No Stripe yet — go to plan picker
-      _pendingUser=user;
-      if(_plan){
-        // Plan already selected (from URL or earlier click) — go straight to checkout
-        continueToPay();
-      } else {
-        showView('plan');
-      }
-    } else {
-      location.href='app.html';
-    }
-  }).catch(function(){location.href='app.html';});
 }
 
 function showVerifyScreen(email){
@@ -474,22 +235,17 @@ function showVerifyScreen(email){
 }
 
 function handleSubmit(e){
-  e.preventDefault();
-  hideA('main-err');hideA('main-ok');
-  setLoading(true);
+  e.preventDefault();hideA('main-err');hideA('main-ok');setLoading(true);
   var email=document.getElementById('f-email').value.trim();
   var pass=document.getElementById('f-pass').value;
   var name=document.getElementById('f-name').value.trim();
   if(mode==='signup'){
-    auth.createUserWithEmailAndPassword(email,pass)
-      .then(function(c){
-        var p=name?c.user.updateProfile({displayName:name}):Promise.resolve();
-        return p.then(function(){afterAuth(c.user,true);setLoading(false);});
-      })
-      .catch(function(err){setLoading(false);showA('main-err',ERRS[err.code]||err.message);});
+    auth.createUserWithEmailAndPassword(email,pass).then(function(c){
+      var p=name?c.user.updateProfile({displayName:name}):Promise.resolve();
+      return p.then(function(){setLoading(false);afterAuth(c.user,true);});
+    }).catch(function(err){setLoading(false);showA('main-err',ERRS[err.code]||err.message);});
   } else {
-    auth.signInWithEmailAndPassword(email,pass)
-      .then(function(c){setLoading(false);afterAuth(c.user,false);})
+    auth.signInWithEmailAndPassword(email,pass).then(function(c){setLoading(false);afterAuth(c.user,false);})
       .catch(function(err){setLoading(false);showA('main-err',ERRS[err.code]||err.message);});
   }
 }
@@ -498,15 +254,10 @@ function handleGoogle(){
   hideA('main-err');hideA('main-ok');
   var provider=new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({prompt:'select_account'});
-  auth.signInWithPopup(provider)
-    .then(function(r){afterAuth(r.user,r.additionalUserInfo&&r.additionalUserInfo.isNewUser);})
+  auth.signInWithPopup(provider).then(function(r){afterAuth(r.user,r.additionalUserInfo&&r.additionalUserInfo.isNewUser);})
     .catch(function(err){
       if(err.code==='auth/popup-closed-by-user'||err.code==='auth/cancelled-popup-request')return;
-      if(err.code==='auth/account-exists-with-different-credential'){
-        showA('main-err','An account already exists with this email. Please sign in with email and password instead.');
-      } else {
-        showA('main-err',ERRS[err.code]||'Google sign-in failed.');
-      }
+      showA('main-err',err.code==='auth/account-exists-with-different-credential'?'An account already exists with this email. Please sign in with email and password.':(ERRS[err.code]||'Google sign-in failed.'));
     });
 }
 
@@ -515,50 +266,37 @@ function handleForgot(){
   hideA('fgt-err');hideA('fgt-ok');
   if(!email){showA('fgt-err','Please enter your email address.');return;}
   var btn=document.getElementById('fgt-btn');
-  btn.disabled=true;
-  document.getElementById('fgt-spin').style.display='block';
-  document.getElementById('fgt-lbl').style.display='none';
-  auth.sendPasswordResetEmail(email)
-    .then(function(){showA('fgt-ok','Reset link sent to '+email);})
+  btn.disabled=true;document.getElementById('fgt-spin').style.display='block';document.getElementById('fgt-lbl').style.display='none';
+  auth.sendPasswordResetEmail(email).then(function(){showA('fgt-ok','Reset link sent to '+email);})
     .catch(function(err){showA('fgt-err',ERRS[err.code]||'Could not send reset email.');})
     .finally(function(){btn.disabled=false;document.getElementById('fgt-spin').style.display='none';document.getElementById('fgt-lbl').style.display='inline';});
 }
 
 function checkVerified(){
   var btn=document.getElementById('verify-check-btn');
-  btn.disabled=true;
-  document.getElementById('verify-check-spin').style.display='block';
-  document.getElementById('verify-check-lbl').style.display='none';
+  btn.disabled=true;document.getElementById('verify-check-spin').style.display='block';document.getElementById('verify-check-lbl').style.display='none';
   hideA('verify-err');hideA('verify-ok');
   auth.currentUser.reload().then(function(){
     var user=auth.currentUser;
     if(!user){showA('verify-err','Session expired. Please sign in again.');btn.disabled=false;return;}
     if(user.emailVerified){
-      showA('verify-ok','Email verified! Continuing…');
-      _pendingUser=user;
-      setTimeout(function(){goToApp(user);},800);
+      showA('verify-ok','Email verified! Taking you in...');
+      setTimeout(function(){location.href='app.html';},800);
     } else {
-      showA('verify-err','Not verified yet. Click the link in your email, then try again.');
-      btn.disabled=false;
-      document.getElementById('verify-check-spin').style.display='none';
-      document.getElementById('verify-check-lbl').style.display='inline';
+      showA('verify-err','Not verified yet. Click the link in your email then try again.');
+      btn.disabled=false;document.getElementById('verify-check-spin').style.display='none';document.getElementById('verify-check-lbl').style.display='inline';
     }
   }).catch(function(){
     showA('verify-err','Could not check verification. Please try again.');
-    btn.disabled=false;
-    document.getElementById('verify-check-spin').style.display='none';
-    document.getElementById('verify-check-lbl').style.display='inline';
+    btn.disabled=false;document.getElementById('verify-check-spin').style.display='none';document.getElementById('verify-check-lbl').style.display='inline';
   });
 }
 
 function resendVerification(){
-  var user=auth.currentUser;
-  if(!user)return;
-  user.sendEmailVerification()
-    .then(function(){showA('verify-ok','Verification email resent — check your inbox and spam folder.');})
+  var user=auth.currentUser;if(!user)return;
+  user.sendEmailVerification().then(function(){showA('verify-ok','Verification email resent - check your inbox and spam folder.');})
     .catch(function(err){showA('verify-err',ERRS[err.code]||'Could not resend email.');});
 }
 </script>
-
-
-</body></html>
+</body>
+</html>
