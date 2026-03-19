@@ -1363,39 +1363,45 @@ _auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
 
 _auth.onAuthStateChanged(function(user){
   if(!user){location.href='login.html';return;}
-  // Note: email verification check removed — not required for this app
   _user=user;
   document.getElementById('auth-gate').style.display='none';
-  // Scope all localStorage keys to this user so different accounts don't share data
-  window._lsPrefix = 'fp_' + user.uid + '_';
-  if(typeof initApp==='function') initApp();
-  // Show welcome message if coming back from Stripe checkout
-  if(new URLSearchParams(location.search).get('welcome')==='1'){
-    history.replaceState({},'','/app.html');
-    setTimeout(function(){toast('🎉 Welcome! Your 3-day trial has started. Enjoy scanning!',5000);},800);
-  }
-  if(typeof window._checkAndShowAdmin==='function') window._checkAndShowAdmin(user.email);
+  window._lsPrefix='fp_'+user.uid+'_';
+
+  // Load user doc first, THEN init app so _udoc is ready
   _db.collection('users').doc(user.uid).get()
     .then(function(snap){
       _udoc=snap.data()||{};
+      // Create user doc if it doesn't exist yet
+      if(!snap.exists){
+        _db.collection('users').doc(user.uid).set({
+          uid:user.uid,email:user.email,
+          plan:'trial',tier:'solo',
+          subscriptionStatus:'trialing',
+          createdAt:firebase.firestore.FieldValue.serverTimestamp()
+        },{merge:true}).catch(function(){});
+      }
       updateAcctUI();
+      // Now init app with user doc loaded
+      if(typeof initApp==='function')initApp();
+      if(typeof window._checkAndShowAdmin==='function')window._checkAndShowAdmin(user.email);
+      if(new URLSearchParams(location.search).get('welcome')==='1'){
+        history.replaceState({},'','/app.html');
+        setTimeout(function(){toast('Welcome to Footprint!',4000);},800);
+      }
       return _db.collection('users').doc(user.uid).collection('leads').get();
     })
     .then(function(snap){
       if(!snap)return;
       var fl=[];snap.forEach(function(d){fl.push(d.data());});
       fl.sort(function(a,b){return new Date(b.savedAt||0)-new Date(a.savedAt||0);});
-      // For team plans, load from shared team collection instead
-      const teamId2=(_udoc&&_udoc.teamId);
-      if(teamId2){
-        if(window._loadTeamLeads)window._loadTeamLeads();
-      } else {
-        if(fl.length>0){leads=fl;refreshBadge();renderCRM();}
-      }
-      // Check for pending team invites
-      if(window._checkPendingInvite)window._checkPendingInvite();
+      if(fl.length>0){leads=fl;refreshBadge();renderCRM();}
     })
-    .catch(function(e){console.warn('Firestore:',e);});
+    .catch(function(e){
+      console.warn('Firestore init error:',e);
+      // Still init the app even if Firestore fails
+      if(typeof initApp==='function')initApp();
+      updateAcctUI();
+    });
 });
 
 function updateAcctUI(){
@@ -1891,13 +1897,18 @@ const Engine = (() => {
       const radiusM=Math.round(radiusKm*1000);
       // Load gmaps key - await Firestore if not cached yet
       let gmapsKey=(typeof window.getGmapsKey==='function')?window.getGmapsKey():null;
+      console.log('[Footprint] dataSource:',dataSource,'cachedKey:',gmapsKey);
       if(!gmapsKey&&(dataSource==='both'||dataSource==='google')){
         try{
           if(typeof window.loadGmapsKeyFromFirestore==='function'){
             gmapsKey=await window.loadGmapsKeyFromFirestore();
+            console.log('[Footprint] key from Firestore:',gmapsKey?'FOUND ('+gmapsKey.slice(0,8)+'...)':'NULL');
+          } else {
+            console.log('[Footprint] loadGmapsKeyFromFirestore not on window');
           }
-        }catch(e){console.warn('Could not load gmaps key:',e);}
+        }catch(e){console.warn('[Footprint] key load error:',e);}
       }
+      console.log('[Footprint] final gmapsKey:',gmapsKey?'SET':'NULL','useGoogle will be:',(dataSource==='both'||dataSource==='google')&&!!gmapsKey);
       const useGoogle=(dataSource==='both'||dataSource==='google')&&!!gmapsKey;
       if((dataSource==='both'||dataSource==='google')&&!gmapsKey){
         emit('error',{message:'No Google API key found. Go to Settings and save your Google Places API key first.'});
@@ -2186,32 +2197,46 @@ function initSettingsGmaps(){
 }
 // ── Google API key stored in Firestore — shared across devices and team members ──
 async function loadGmapsKeyFromFirestore(){
+  // First check localStorage (instant, works offline)
+  var lsKey=localStorage.getItem('fp-gmaps-key-'+(_user?_user.uid:'anon'));
+  if(lsKey){window._cachedGmapsKey=lsKey;return lsKey;}
+  // Also check legacy key location
+  var legacyKey=localStorage.getItem('fp-gmaps-key');
+  if(legacyKey){window._cachedGmapsKey=legacyKey;return legacyKey;}
+  // Try Firestore
   if(!_user)return null;
   try{
-    // For team plans, key is stored on the team doc; for solo, on the user doc
     const teamId=_udoc&&_udoc.teamId;
     let snap;
     if(teamId){
       snap=await _db.collection('teams').doc(teamId).get();
       const key=snap.data()&&snap.data().gmapsKey||'';
-      window._cachedGmapsKey=key||null;
+      if(key){window._cachedGmapsKey=key;localStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
       return key||null;
     } else {
       snap=await _db.collection('users').doc(_user.uid).get();
       const key=snap.data()&&snap.data().gmapsKey||'';
-      window._cachedGmapsKey=key||null;
+      if(key){window._cachedGmapsKey=key;localStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
       return key||null;
     }
-  }catch(e){console.warn('loadGmapsKey:',e);return null;}
+  }catch(e){
+    console.warn('loadGmapsKey:',e);
+    return null;
+  }
 }
 window.loadGmapsKeyFromFirestore=loadGmapsKeyFromFirestore;
 async function saveGmapsKeyToFirestore(key){
+  // Always save to localStorage first so it works immediately
+  if(_user){
+    if(key){localStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
+    else{localStorage.removeItem('fp-gmaps-key-'+_user.uid);}
+  }
+  window._cachedGmapsKey=key||null;
+  // Then try Firestore (best effort)
   if(!_user)return;
   try{
     const teamId=_udoc&&_udoc.teamId;
-    // Only team owner / head account can save team key
     if(teamId){
-      // Check if this user is the team owner
       const teamSnap=await _db.collection('teams').doc(teamId).get();
       const isOwner=teamSnap.data()&&teamSnap.data().ownerId===_user.uid;
       if(!isOwner){toast('Only the team owner can change the API key');return;}
@@ -2219,8 +2244,10 @@ async function saveGmapsKeyToFirestore(key){
     } else {
       await _db.collection('users').doc(_user.uid).update({gmapsKey:key});
     }
-    window._cachedGmapsKey=key||null;
-  }catch(e){console.warn('saveGmapsKey:',e);toast('Error saving key');}
+  }catch(e){
+    // Firestore failed but localStorage worked - key is still usable
+    console.warn('saveGmapsKey Firestore:',e);
+  }
 }
 
 
