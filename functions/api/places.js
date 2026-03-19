@@ -44,12 +44,17 @@ export async function onRequestPost(context) {
   // ── API key resolution ────────────────────────────────────────────────────
   // Priority: server env key (free for all) → user-supplied key (authenticated only)
   let apiKey = env.GOOGLE_PLACES_KEY || null;
+  console.log('[places] GOOGLE_PLACES_KEY set:', !!apiKey);
+  console.log('[places] FIREBASE_WEB_API_KEY set:', !!env.FIREBASE_WEB_API_KEY);
 
   if (!apiKey) {
     // No server key — require an authenticated user supplying their own key
     const authHeader = request.headers.get('Authorization');
     const idToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
     const clientKey = request.headers.get('X-Places-Key');
+
+    console.log('[places] idToken present:', !!idToken);
+    console.log('[places] clientKey present:', !!clientKey);
 
     if (!idToken || !clientKey) {
       return new Response(JSON.stringify({
@@ -59,7 +64,9 @@ export async function onRequestPost(context) {
     }
 
     // Verify the Firebase ID token before trusting the client-supplied key
+    console.log('[places] calling verifyFirebaseToken...');
     const uid = await verifyFirebaseToken(idToken, env.FIREBASE_WEB_API_KEY);
+    console.log('[places] verifyFirebaseToken result uid:', uid);
     if (!uid) {
       return new Response(JSON.stringify({ error: 'Unauthorized', results: [] }), {
         status: 401, headers: { ...cors, 'Content-Type': 'application/json' }
