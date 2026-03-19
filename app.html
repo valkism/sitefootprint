@@ -1889,8 +1889,20 @@ const Engine = (() => {
       if(preGeo){geo=preGeo;emit('geocoded',{display:geo.display});}
       else{emit('status',{message:`Locating "${location}"…`});geo=await geocode(location);if(stopFlag){emit('stopped',{reason:'user'});return;}emit('geocoded',{display:geo.display});}
       const radiusM=Math.round(radiusKm*1000);
-      const gmapsKey=(typeof window.getGmapsKey==='function')?window.getGmapsKey():null;
+      // Load gmaps key - await Firestore if not cached yet
+      let gmapsKey=(typeof window.getGmapsKey==='function')?window.getGmapsKey():null;
+      if(!gmapsKey&&(dataSource==='both'||dataSource==='google')){
+        try{
+          if(typeof loadGmapsKeyFromFirestore==='function'){
+            gmapsKey=await loadGmapsKeyFromFirestore();
+          }
+        }catch(e){console.warn('Could not load gmaps key:',e);}
+      }
       const useGoogle=(dataSource==='both'||dataSource==='google')&&!!gmapsKey;
+      if((dataSource==='both'||dataSource==='google')&&!gmapsKey){
+        emit('error',{message:'No Google API key found. Go to Settings and save your Google Places API key first.'});
+        return;
+      }
 
       // ── Query data sources ──
       let osmEls=[];
