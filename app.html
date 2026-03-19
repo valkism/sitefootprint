@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="https://17746390.site-footprint.pages.dev/manifest.json">
   <title>Footprint — Find Digital Gaps</title>
-  <link href="./app_files/css2" rel="stylesheet">
+  <link  rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
@@ -619,6 +619,30 @@
     /* Scan panel — single unified layout, no sidebar split */
     #mobile-scan-scroll{display:flex;flex-direction:column;flex:1;}
     #desktop-scan-area{display:none !important;}
+
+    /* Analytics */
+    .an-card{background:var(--surf);border:1.5px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+    .an-val{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;line-height:1;margin-bottom:4px;}
+    .an-lbl{font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;}
+    .funnel-row{display:flex;align-items:center;gap:10px;padding:8px 0;}
+    .funnel-bar-wrap{flex:1;height:28px;background:var(--surf2);border-radius:6px;overflow:hidden;}
+    .funnel-bar{height:100%;border-radius:6px;transition:width .4s;}
+    .funnel-lbl{font-size:0.76rem;min-width:90px;color:var(--text);}
+    .funnel-count{font-family:'JetBrains Mono',monospace;font-size:0.74rem;min-width:30px;text-align:right;color:var(--muted);}
+    .suburb-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;font-size:0.8rem;}
+    .won-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;}
+    .won-row input.deal-val{width:100px;background:var(--surf2);border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text);text-align:right;}
+    .email-modal{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
+    .email-modal.show{display:flex;}
+    .email-box{background:var(--surf);border:1.5px solid var(--border2);border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
+    .email-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .email-body{padding:18px 20px;display:flex;flex-direction:column;gap:12px;}
+    .email-field{display:flex;flex-direction:column;gap:4px;}
+    .email-field label{font-size:0.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+    .email-field input,.email-field textarea{background:var(--surf2);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.84rem;outline:none;transition:border-color .15s;}
+    .email-field input:focus,.email-field textarea:focus{border-color:var(--accent);}
+    .email-field textarea{min-height:160px;resize:vertical;line-height:1.6;}
+    .email-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
   </style>
 </head>
 <body>
@@ -646,6 +670,8 @@
     <div class="topbar-nav">
       <button class="tab-btn on" data-tab="scan">Scan</button>
       <button class="tab-btn" data-tab="crm">Leads<span class="tab-badge" id="crm-count" style="display:none"></span></button>
+      <button class="tab-btn" data-tab="analytics">Analytics</button>
+      <button class="tab-btn" data-tab="heatmap">Heat Map</button>
       <button class="tab-btn" data-tab="settings">Settings</button>
       <button class="tab-btn" data-tab="team" id="team-tab-btn" style="display:none">Team</button>
       <button class="tab-btn" data-tab="admin" id="admin-tab-btn" style="display:none;color:var(--red)">Admin</button>
@@ -891,6 +917,71 @@
         </div>
 
 <!-- Settings -->
+        <!-- Analytics Panel -->
+        <div class="panel" id="panel-analytics">
+          <div class="scroll"><div class="scroll-inner">
+
+            <!-- Summary cards -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;" id="analytics-summary">
+              <div class="an-card"><div class="an-val" id="an-total">0</div><div class="an-lbl">Total Leads</div></div>
+              <div class="an-card"><div class="an-val" id="an-won" style="color:var(--green)">0</div><div class="an-lbl">Won</div></div>
+              <div class="an-card"><div class="an-val" id="an-winrate" style="color:var(--accent)">0%</div><div class="an-lbl">Win Rate</div></div>
+              <div class="an-card"><div class="an-val" id="an-pipeline" style="color:var(--amber)">0</div><div class="an-lbl">In Pipeline</div></div>
+            </div>
+
+            <!-- Funnel -->
+            <div class="settings-section">
+              <div class="sec-label">Conversion Funnel</div>
+              <div id="an-funnel" style="display:flex;flex-direction:column;gap:8px;margin-top:12px;"></div>
+            </div>
+
+            <!-- Win rate over time -->
+            <div class="settings-section">
+              <div class="sec-label">Leads Over Time</div>
+              <canvas id="an-chart" height="200" style="width:100%;margin-top:12px;"></canvas>
+            </div>
+
+            <!-- Top suburbs -->
+            <div class="settings-section">
+              <div class="sec-label">Top Locations</div>
+              <div id="an-suburbs" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;"></div>
+            </div>
+
+            <!-- Won deals with value -->
+            <div class="settings-section">
+              <div class="sec-label">Won Deals</div>
+              <div style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;">Track deal values on leads you have won to see your total pipeline revenue.</div>
+              <div id="an-won-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+              <div style="margin-top:12px;padding:12px 16px;background:var(--accent-pale);border:1px solid rgba(26,158,110,0.2);border-radius:8px;display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:0.82rem;font-weight:600;">Total Won Revenue</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent);" id="an-revenue">$0</span>
+              </div>
+            </div>
+
+          </div></div>
+        </div>
+
+        <!-- Heat Map Panel -->
+        <div class="panel" id="panel-heatmap">
+          <div style="position:relative;flex:1;display:flex;flex-direction:column;">
+            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surf);">
+              <div style="font-size:0.82rem;font-weight:600;">Lead Heat Map</div>
+              <div style="display:flex;gap:8px;align-items:center;font-size:0.74rem;color:var(--muted);">
+                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#d63031;"></span>Hot (75+)
+                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#c07800;margin-left:6px;"></span>Good (50+)
+                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1a9e6e;margin-left:6px;"></span>Warm (25+)
+              </div>
+              <button class="btn btn-ghost btn-sm" id="heatmap-fit-btn" style="margin-left:auto;">Fit all leads</button>
+            </div>
+            <div id="heatmap-container" style="flex:1;min-height:400px;"></div>
+            <div id="heatmap-empty" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--muted);">
+              <div style="font-size:2rem;">🗺️</div>
+              <div style="font-size:0.88rem;font-weight:600;">No leads with location data yet</div>
+              <div style="font-size:0.78rem;">Run a scan to start building your map</div>
+            </div>
+          </div>
+        </div>
+
         <div class="panel" id="panel-settings">
           <div class="scroll">
           <div class="scroll-inner">
@@ -1168,6 +1259,36 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Direct Email Modal -->
+<div class="email-modal" id="email-modal">
+  <div class="email-box">
+    <div class="email-head">
+      <div style="font-weight:700;font-size:0.95rem;">Send Email</div>
+      <button onclick="closeEmailModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;padding:4px;">&#10005;</button>
+    </div>
+    <div class="email-body">
+      <div class="email-field">
+        <label>To</label>
+        <input type="email" id="em-to" placeholder="recipient@example.com"/>
+      </div>
+      <div class="email-field">
+        <label>Subject</label>
+        <input type="text" id="em-subject"/>
+      </div>
+      <div class="email-field">
+        <label>Message</label>
+        <textarea id="em-body"></textarea>
+      </div>
+      <div id="em-status" style="font-size:0.78rem;min-height:16px;"></div>
+    </div>
+    <div class="email-foot">
+      <button class="btn btn-ghost btn-sm" onclick="closeEmailModal()">Cancel</button>
+      <button class="btn btn-ghost btn-sm" onclick="openMailtoFallback()">&#128231; Open in Mail app</button>
+      <button class="btn btn-primary btn-sm" onclick="sendEmailJS()" id="em-send-btn">Send &#8594;</button>
+    </div>
+  </div>
+</div>
+
 <!-- Upgrade Modal -->
 <div id="upgrade-modal" style="display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;">
   <div style="background:var(--surf);border:1.5px solid var(--border2);border-radius:14px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
@@ -1179,9 +1300,12 @@
   </div>
 </div>
 
-<script src="./app_files/firebase-app-compat.js.download"></script>
-<script src="./app_files/firebase-auth-compat.js.download"></script>
-<script src="./app_files/firebase-firestore-compat.js.download"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
 // Apply saved theme immediately — default light
 (function(){
@@ -1631,171 +1755,35 @@ const Engine = (() => {
   }
 
   function score(biz,rules){
-    let s=0;const tags=[];
+    let s=0;const tags=[];const breakdown=[];
     const hasSoc=!!(biz.facebook||biz.instagram||biz.twitter||biz.tiktok);
-    const breakdown=[];
+
+    // Core gaps
     if(!biz.website){s+=35;tags.push({text:'No website',cls:'gap-critical'});breakdown.push({label:'No website',pts:35});}
     if(!biz.phone&&rules.noPhone){s+=12;tags.push({text:'No phone',cls:'gap-high'});breakdown.push({label:'No phone',pts:12});}
     if(!biz.email&&rules.noEmail){s+=8;tags.push({text:'No email',cls:'gap-high'});breakdown.push({label:'No email',pts:8});}
     if(!hasSoc&&rules.noSocial){s+=15;tags.push({text:'No social media',cls:'gap-high'});breakdown.push({label:'No social media',pts:15});}
-    if(!biz.website&&!hasSoc){s+=10;tags.push({text:'No online presence at all',cls:'gap-critical'});breakdown.push({label:'No presence bonus',pts:10});}
+    if(!biz.website&&!hasSoc){s+=10;tags.push({text:'No online presence',cls:'gap-critical'});breakdown.push({label:'No presence bonus',pts:10});}
+
+    // Rating boost - low rated businesses need more help
+    if(biz.rating&&biz.rating<=3.5){s+=8;breakdown.push({label:'Low rating ('+biz.rating+'★)',pts:8});}
+    else if(biz.rating&&biz.rating<=4.0){s+=4;breakdown.push({label:'Below avg rating ('+biz.rating+'★)',pts:4});}
+
+    // Review count - few reviews means low visibility
+    if(biz.reviewCount!==undefined&&biz.reviewCount<10){s+=6;breakdown.push({label:'Few reviews (<10)',pts:6});}
+
+    // Category weights - some businesses need help more urgently
+    const highValue=['restaurant','cafe','beauty','hair','gym','dentist','doctor'];
+    const cat=(biz.category||'').toLowerCase();
+    if(highValue.some(c=>cat.includes(c))){s+=5;breakdown.push({label:'High-value category',pts:5});}
+
     s=Math.min(s,100);
     const label=s>=75?'🔥 Hot':s>=50?'⚡ Good':s>=25?'✅ Warm':'❄️ Weak';
     const isLead=(rules.noWebsite&&!biz.website)||(rules.noPhone&&!biz.phone)||(rules.noEmail&&!biz.email)||(rules.noSocial&&!hasSoc);
     return{score:s,tags,label,isLead,breakdown};
   }
 
-  function dedupe(els){
-    const seen=new Set();
-    return els.filter(el=>{const t=el.tags||{};const n=t.name||t['name:en'];if(!n)return false;const k=`${n.toLowerCase().trim()}|${t['addr:street']||''}|${t['addr:housenumber']||''}`;if(seen.has(k))return false;seen.add(k);return true;});
-  }
-
-  async function fetchGooglePlaces(apiKey,lat,lon,radiusM,selectedTypes,locationName){
-    const seen=new Set();
-    const results=[];
-    let lastError=null;
-
-    // Build keyword list from selected types (max 6 calls)
-    const addedKws=new Set();
-    const toFetch=[];
-    for(const t of selectedTypes){
-      const kws=GMAPS_KEYWORD_GROUPS[t]||[t.toLowerCase()];
-      const kw=kws[0];
-      if(!addedKws.has(kw)){addedKws.add(kw);toFetch.push(kw);}
-      if(toFetch.length>=6)break;
-    }
-
-    const place=locationName?locationName.split(',').slice(0,2).join(',').trim():'';
-
-    for(const keyword of toFetch){
-      try{
-        const body={lat,lon,radius:Math.min(radiusM,50000),keyword,locationName:locationName||''};
-        const r=await fetch('/api/places',{
-          method:'POST',
-          headers:{'Content-Type':'application/json','X-Places-Key':apiKey},
-          body:JSON.stringify(body)
-        });
-
-        const d=await r.json();
-
-        // Surface errors properly
-        if(!r.ok||d.error){
-          lastError=d.error||('HTTP '+r.status);
-          if(r.status===403||r.status===503){
-            // Fatal — bad key or not configured — stop immediately
-            throw new Error(lastError);
-          }
-          continue;
-        }
-
-        const batch=d.results||[];
-        for(const p of batch){
-          if(seen.has(p.place_id))continue;
-          seen.add(p.place_id);
-          const b=parseGPlace(p);
-          if(b)results.push(b);
-        }
-
-        if(toFetch.indexOf(keyword)<toFetch.length-1){
-          await new Promise(r=>setTimeout(r,200));
-        }
-      }catch(e){
-        // Re-throw fatal errors so scan() can emit them
-        throw e;
-      }
-    }
-    return results;
-  }
-
-
-  function parseGPlace(p){
-    if(!p.name)return null;
-    const lat=p.geometry?.location?.lat;const lon=p.geometry?.location?.lng;
-    const cat=(p.types||[]).find(t=>!['point_of_interest','establishment'].includes(t))||null;
-    let _web=p.website||null;
-    if(_web&&!/^https?:\/\//i.test(_web))_web='https://'+_web;
-    return{id:`gp_${p.place_id}`,name:p.name,website:_web,phone:p.phone||null,email:null,address:p.vicinity||null,category:cat?cat.replace(/_/g,' '):null,hours:null,cuisine:null,operator:null,lat,lon,facebook:null,instagram:null,twitter:null,tiktok:null,mapsUrl:`https://www.google.com/maps/place/?q=place_id:${p.place_id}`,osmUrl:null,source:'google',rating:p.rating||null,reviewCount:p.user_ratings_total||0};
-  }
-
-  async function scan({location,preGeo,selectedTypes,radiusKm,maxResults,rules,dataSource,skipChains,onEvent}){
-    stopFlag=false;
-    const emit=(type,data={})=>onEvent({type,...data});
-    try{
-      let geo;
-      if(preGeo){geo=preGeo;emit('geocoded',{display:geo.display});}
-      else{emit('status',{message:`Locating "${location}"…`});geo=await geocode(location);if(stopFlag){emit('stopped',{reason:'user'});return;}emit('geocoded',{display:geo.display});}
-      const radiusM=Math.round(radiusKm*1000);
-      const gmapsKey=(typeof window.getGmapsKey==='function')?window.getGmapsKey():null;
-      const useGoogle=(dataSource==='both'||dataSource==='google')&&!!gmapsKey;
-
-      // ── Query data sources ──
-      let osmEls=[];
-      if(dataSource==='osm'||dataSource==='both'){
-        try{
-          emit('status',{message:'Querying OpenStreetMap…'});
-          const osmResult=await overpass(buildQuery(geo.lat,geo.lon,radiusM,selectedTypes));
-          if(stopFlag){emit('stopped',{});return;}
-          osmEls=dedupe(osmResult.elements||[]);
-          emit('status',{message:`OpenStreetMap: ${osmEls.length} businesses found`});
-        }catch(osmErr){
-          emit('status',{message:`OpenStreetMap unavailable — ${useGoogle?'using Google Places only':'try again later'}`});
-          console.warn('OSM error:',osmErr);
-        }
-      }
-
-      let googleBizzes=[];
-      if(useGoogle){
-        emit('status',{message:'Querying Google Places…'});
-        try{
-          const locName=geo.display.split(',').slice(0,2).join(',').trim();
-          googleBizzes=await fetchGooglePlaces(gmapsKey,geo.lat,geo.lon,radiusM,selectedTypes,locName);
-          if(osmEls.length>0){
-            emit('status',{message:`OSM: ${osmEls.length} · Google: ${googleBizzes.length} — merging…`});
-          } else {
-            emit('status',{message:`Google Places: ${googleBizzes.length} businesses found`});
-          if(googleBizzes.length===0&&osmEls.length===0){
-            emit('error',{message:'Google Places returned 0 results. Check: (1) Places API (New) is enabled in Google Cloud Console, (2) Billing is enabled on your Google Cloud project, (3) your API key has no restrictions blocking it'});
-            return;
-          }
-          }
-        }catch(e){emit('status',{message:'Google Places query failed — check your API key'});console.warn('Google Places error:',e);}
-      }
-
-      if(osmEls.length===0&&googleBizzes.length===0){
-        emit('noResults',{query:location});return;
-      }
-
-      const osmBizzes=osmEls.map(el=>parse(el,geo.display.split(',').slice(0,2).join(',').trim())).filter(Boolean);
-      const seenNames=new Set(osmBizzes.map(b=>b.name.toLowerCase().trim()));
-      const merged=[...osmBizzes,...googleBizzes.filter(b=>b&&!seenNames.has(b.name.toLowerCase().trim()))];
-
-      // Filter chains if enabled
-      // Filter: chains + community-flagged businesses
-      const filtered=merged.filter(function(b){
-        if(skipChains && isLargeChain(b.name,b._osmTags)) return false;
-        return true;
-      });
-      const allBizzes=filtered.slice(0,maxResults);
-      const total=allBizzes.length;
-      if(!total){emit('noResults',{query:location});return;}
-      emit('total',{count:total});
-
-      const locLabel=geo.display.split(',').slice(0,2).join(',').trim();
-      let scanned=0,leadsFound=0,skipped=0;
-      for(let i=0;i<total;i++){
-        if(stopFlag){emit('stopped',{scanned,leadsFound,skipped});return;}
-        const biz={...allBizzes[i],locationName:locLabel};
-        scanned++;
-        const gap=score(biz,rules);
-        emit('progress',{pct:Math.round(((i+1)/total)*100),label:`${i+1}/${total}`,scanned,leadsFound,skipped});
-        if(gap.isLead){leadsFound++;emit('lead',{business:{...biz,gapScore:gap.score,gapTags:gap.tags,scoreLabel:gap.label,gapBreakdown:gap.breakdown},scanned,leadsFound,skipped});}
-        else{skipped++;emit('scanned',{name:biz.name,scanned,leadsFound,skipped});}
-        if(i%10===9)await new Promise(r=>setTimeout(r,0));
-      }
-      emit('complete',{scanned,leadsFound,skipped,total,location:locLabel,geo});
-    }catch(err){emit('error',{message:err.message||'Unknown error'});}
-  }
-
+  
   return{scan,stop:()=>{stopFlag=true;},TYPE_MAP};
 })();
 </script>
@@ -2087,6 +2075,8 @@ function switchTab(id){
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===`panel-${id}`));
   document.querySelectorAll('.mnav[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
   if(id==='crm')renderCRM();
+  if(id==='analytics')renderAnalytics();
+  if(id==='heatmap')renderHeatmap();
   if(id==='team'&&typeof window._initTeamPanel==='function')window._initTeamPanel();
   // Update active state in team sidebar if present
   document.querySelectorAll('.tsidebar-btn').forEach(function(b){
