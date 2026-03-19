@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)app.html -->
+<!-- saved from url=(0045)app -->
 <html lang="en" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -619,30 +619,6 @@
     /* Scan panel — single unified layout, no sidebar split */
     #mobile-scan-scroll{display:flex;flex-direction:column;flex:1;}
     #desktop-scan-area{display:none !important;}
-
-    /* Analytics */
-    .an-card{background:var(--surf);border:1.5px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
-    .an-val{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;line-height:1;margin-bottom:4px;}
-    .an-lbl{font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;}
-    .funnel-row{display:flex;align-items:center;gap:10px;padding:8px 0;}
-    .funnel-bar-wrap{flex:1;height:28px;background:var(--surf2);border-radius:6px;overflow:hidden;}
-    .funnel-bar{height:100%;border-radius:6px;transition:width .4s;}
-    .funnel-lbl{font-size:0.76rem;min-width:90px;color:var(--text);}
-    .funnel-count{font-family:'JetBrains Mono',monospace;font-size:0.74rem;min-width:30px;text-align:right;color:var(--muted);}
-    .suburb-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;font-size:0.8rem;}
-    .won-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;}
-    .won-row input.deal-val{width:100px;background:var(--surf2);border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text);text-align:right;}
-    .email-modal{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
-    .email-modal.show{display:flex;}
-    .email-box{background:var(--surf);border:1.5px solid var(--border2);border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
-    .email-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-    .email-body{padding:18px 20px;display:flex;flex-direction:column;gap:12px;}
-    .email-field{display:flex;flex-direction:column;gap:4px;}
-    .email-field label{font-size:0.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-    .email-field input,.email-field textarea{background:var(--surf2);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.84rem;outline:none;transition:border-color .15s;}
-    .email-field input:focus,.email-field textarea:focus{border-color:var(--accent);}
-    .email-field textarea{min-height:160px;resize:vertical;line-height:1.6;}
-    .email-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
   </style>
 </head>
 <body>
@@ -656,7 +632,7 @@
 
 <!-- Sub warning -->
 <div class="sub-warning" id="sub-warning">
-  Your trial has ended. <a href="app.html#" id="billing-link">Add billing details</a> to continue scanning.
+  Your trial has ended. <a href="app#" id="billing-link">Add billing details</a> to continue scanning.
 </div>
 
 <!-- App Shell -->
@@ -670,8 +646,6 @@
     <div class="topbar-nav">
       <button class="tab-btn on" data-tab="scan">Scan</button>
       <button class="tab-btn" data-tab="crm">Leads<span class="tab-badge" id="crm-count" style="display:none"></span></button>
-      <button class="tab-btn" data-tab="analytics">Analytics</button>
-      <button class="tab-btn" data-tab="heatmap">Heat Map</button>
       <button class="tab-btn" data-tab="settings">Settings</button>
       <button class="tab-btn" data-tab="team" id="team-tab-btn" style="display:none">Team</button>
       <button class="tab-btn" data-tab="admin" id="admin-tab-btn" style="display:none;color:var(--red)">Admin</button>
@@ -917,71 +891,6 @@
         </div>
 
 <!-- Settings -->
-        <!-- Analytics Panel -->
-        <div class="panel" id="panel-analytics">
-          <div class="scroll"><div class="scroll-inner">
-
-            <!-- Summary cards -->
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;" id="analytics-summary">
-              <div class="an-card"><div class="an-val" id="an-total">0</div><div class="an-lbl">Total Leads</div></div>
-              <div class="an-card"><div class="an-val" id="an-won" style="color:var(--green)">0</div><div class="an-lbl">Won</div></div>
-              <div class="an-card"><div class="an-val" id="an-winrate" style="color:var(--accent)">0%</div><div class="an-lbl">Win Rate</div></div>
-              <div class="an-card"><div class="an-val" id="an-pipeline" style="color:var(--amber)">0</div><div class="an-lbl">In Pipeline</div></div>
-            </div>
-
-            <!-- Funnel -->
-            <div class="settings-section">
-              <div class="sec-label">Conversion Funnel</div>
-              <div id="an-funnel" style="display:flex;flex-direction:column;gap:8px;margin-top:12px;"></div>
-            </div>
-
-            <!-- Win rate over time -->
-            <div class="settings-section">
-              <div class="sec-label">Leads Over Time</div>
-              <canvas id="an-chart" height="200" style="width:100%;margin-top:12px;"></canvas>
-            </div>
-
-            <!-- Top suburbs -->
-            <div class="settings-section">
-              <div class="sec-label">Top Locations</div>
-              <div id="an-suburbs" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;"></div>
-            </div>
-
-            <!-- Won deals with value -->
-            <div class="settings-section">
-              <div class="sec-label">Won Deals</div>
-              <div style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;">Track deal values on leads you have won to see your total pipeline revenue.</div>
-              <div id="an-won-list" style="display:flex;flex-direction:column;gap:6px;"></div>
-              <div style="margin-top:12px;padding:12px 16px;background:var(--accent-pale);border:1px solid rgba(26,158,110,0.2);border-radius:8px;display:flex;align-items:center;justify-content:space-between;">
-                <span style="font-size:0.82rem;font-weight:600;">Total Won Revenue</span>
-                <span style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent);" id="an-revenue">$0</span>
-              </div>
-            </div>
-
-          </div></div>
-        </div>
-
-        <!-- Heat Map Panel -->
-        <div class="panel" id="panel-heatmap">
-          <div style="position:relative;flex:1;display:flex;flex-direction:column;">
-            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surf);">
-              <div style="font-size:0.82rem;font-weight:600;">Lead Heat Map</div>
-              <div style="display:flex;gap:8px;align-items:center;font-size:0.74rem;color:var(--muted);">
-                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#d63031;"></span>Hot (75+)
-                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#c07800;margin-left:6px;"></span>Good (50+)
-                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1a9e6e;margin-left:6px;"></span>Warm (25+)
-              </div>
-              <button class="btn btn-ghost btn-sm" id="heatmap-fit-btn" style="margin-left:auto;">Fit all leads</button>
-            </div>
-            <div id="heatmap-container" style="flex:1;min-height:400px;"></div>
-            <div id="heatmap-empty" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--muted);">
-              <div style="font-size:2rem;">🗺️</div>
-              <div style="font-size:0.88rem;font-weight:600;">No leads with location data yet</div>
-              <div style="font-size:0.78rem;">Run a scan to start building your map</div>
-            </div>
-          </div>
-        </div>
-
         <div class="panel" id="panel-settings">
           <div class="scroll">
           <div class="scroll-inner">
@@ -1259,36 +1168,6 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- Direct Email Modal -->
-<div class="email-modal" id="email-modal">
-  <div class="email-box">
-    <div class="email-head">
-      <div style="font-weight:700;font-size:0.95rem;">Send Email</div>
-      <button onclick="closeEmailModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;padding:4px;">&#10005;</button>
-    </div>
-    <div class="email-body">
-      <div class="email-field">
-        <label>To</label>
-        <input type="email" id="em-to" placeholder="recipient@example.com"/>
-      </div>
-      <div class="email-field">
-        <label>Subject</label>
-        <input type="text" id="em-subject"/>
-      </div>
-      <div class="email-field">
-        <label>Message</label>
-        <textarea id="em-body"></textarea>
-      </div>
-      <div id="em-status" style="font-size:0.78rem;min-height:16px;"></div>
-    </div>
-    <div class="email-foot">
-      <button class="btn btn-ghost btn-sm" onclick="closeEmailModal()">Cancel</button>
-      <button class="btn btn-ghost btn-sm" onclick="openMailtoFallback()">&#128231; Open in Mail app</button>
-      <button class="btn btn-primary btn-sm" onclick="sendEmailJS()" id="em-send-btn">Send &#8594;</button>
-    </div>
-  </div>
-</div>
-
 <!-- Upgrade Modal -->
 <div id="upgrade-modal" style="display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;">
   <div style="background:var(--surf);border:1.5px solid var(--border2);border-radius:14px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
@@ -1300,14 +1179,11 @@
   </div>
 </div>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-// Apply saved theme immediately  -  default light
+// Apply saved theme immediately — default light
 (function(){
   var t = localStorage.getItem('fp-theme') || 'light';
   document.documentElement.setAttribute('data-theme', t);
@@ -1328,7 +1204,7 @@ _auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
 
 _auth.onAuthStateChanged(function(user){
   if(!user){location.href='login.html';return;}
-  // Note: email verification check removed  -  not required for this app
+  // Note: email verification check removed — not required for this app
   _user=user;
   document.getElementById('auth-gate').style.display='none';
   // Scope all localStorage keys to this user so different accounts don't share data
@@ -1418,7 +1294,7 @@ function updateAcctUI(){
   if(getTierLimit('templates'))loadScanTemplates();
   if(bulkBtn)bulkBtn.style.display=(_tier.bulkPitch)?'inline-flex':'none';
 
-  // Show team tab if on multi-seat plan  -  rename based on tier
+  // Show team tab if on multi-seat plan — rename based on tier
   var teamTab=document.getElementById('team-tab-btn');
   var teamMob=document.getElementById('team-mob-btn');
   if(_tier.seats>1){
@@ -1446,7 +1322,7 @@ function showPlanWelcome(plan){
   var msgs={
     solo:'Welcome to Footprint Solo! Start your first scan to find leads.',
     partnership:'Welcome to Footprint Partnership! Head to the Team tab to invite your teammates.',
-    agency:'Welcome to Footprint Agency! Set up your team in the Team tab  -  you have 10 seats.',
+    agency:'Welcome to Footprint Agency! Set up your team in the Team tab — you have 10 seats.',
     enterprise:'Welcome to Footprint Enterprise! The Team tab is where you manage your 50 seats and shared settings.'
   };
   var msg=msgs[plan]||('Welcome to Footprint '+names[plan]+'!');
@@ -1473,14 +1349,14 @@ function openCheckout(){
       cancelUrl:location.origin+'/app.html'})
   }).then(r=>r.json()).then(d=>{
     if(d.url){location.href=d.url;}
-    else{toast('Billing not configured yet  -  set STRIPE_SECRET_KEY and STRIPE_PRICE_ID in Cloudflare.');}
-  }).catch(()=>toast('Could not open checkout  -  check Cloudflare env vars.'))
+    else{toast('Billing not configured yet — set STRIPE_SECRET_KEY and STRIPE_PRICE_ID in Cloudflare.');}
+  }).catch(()=>toast('Could not open checkout — check Cloudflare env vars.'))
   .finally(()=>{if(btn){btn.disabled=false;btn.textContent='Manage Billing';}});
-  }).catch(()=>toast('Authentication error  -  please refresh and try again.'));
+  }).catch(()=>toast('Authentication error — please refresh and try again.'));
 }
 function saveLeadFS(lead){if(!_user)return;_db.collection('users').doc(_user.uid).collection('leads').doc(lead.id).set(lead).catch(console.warn);}
 
-// -- Community "has website" flagging --
+// ── Community "has website" flagging ──
 // When a user confirms a business HAS a website, we write to a global shared collection.
 // Future scans check this list and skip flagged businesses.
 // The document ID is based on business name + location to be cross-user consistent.
@@ -1505,11 +1381,11 @@ function flagBusinessHasWebsite(lead){
     lastFlagged: firebase.firestore.FieldValue.serverTimestamp(),
     reason: 'has_website',
   }, {merge: true})
-  .then(function(){ toast('Thanks! Marked as having a website  -  helps improve accuracy for everyone.'); })
+  .then(function(){ toast('Thanks! Marked as having a website — helps improve accuracy for everyone.'); })
   .catch(function(e){ console.warn('Flag error:', e); });
 }
 
-// Check community flags before displaying a lead  -  returns true if should be hidden
+// Check community flags before displaying a lead — returns true if should be hidden
 var _communityFlagCache = null;
 var _communityFlagLoaded = false;
 
@@ -1548,8 +1424,8 @@ document.addEventListener('DOMContentLoaded',function(){
     .then(function(d){
       if(d.url){window.open(d.url,'_blank');}
       else if(d.error==='No billing account found'){
-        // User hasn't completed checkout yet  -  send them there
-        toast('No billing account found  -  completing setup…');
+        // User hasn't completed checkout yet — send them there
+        toast('No billing account found — completing setup…');
         openCheckout();
       } else {
         toast('Could not open billing portal. Check Stripe env vars are set in Cloudflare.');
@@ -1563,7 +1439,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 <script>
-// -- Footprint Engine v6 --------------------------------------------------
+// ── Footprint Engine v6 ──────────────────────────────────────────────────
 const Engine = (() => {
   'use strict';
   let stopFlag=false;
@@ -1600,7 +1476,7 @@ const Engine = (() => {
     'Travel':[['shop','travel_agency']],
   };
 
-  // Google Places type map  -  used for keyword-based text search
+  // Google Places type map — used for keyword-based text search
   // Batched into groups to minimise API calls
   const GMAPS_KEYWORD_GROUPS={
     'Restaurants':['restaurants','cafes','coffee shops'],
@@ -1635,10 +1511,10 @@ const Engine = (() => {
   };
 
   // Known large chains to skip (case-insensitive substring match)
-  // Global chains & franchises  -  businesses that definitely have websites
+  // Global chains & franchises — businesses that definitely have websites
   // Covers fast food, retail, hospitality, banking, petrol, pharmacy, fitness globally
   const CHAIN_LIST=[
-    // Fast food  -  global
+    // Fast food — global
     "mcdonald","mcdonalds","subway","starbucks","kfc","burger king","pizza hut","domino",
     "dominos","papa john","little caesar","taco bell","wendys","popeyes","chick-fil-a",
     "five guys","shake shack","chipotle","panda express","wingstop","raising canes",
@@ -1681,7 +1557,7 @@ const Engine = (() => {
     if(!name) return false;
     var n = name.toLowerCase().trim();
 
-    // -- STRONGEST SIGNAL: OSM wikidata tags --
+    // ── STRONGEST SIGNAL: OSM wikidata tags ──
     // Any business with brand:wikidata or operator:wikidata is a known global entity
     if(osmTags){
       if(osmTags['brand:wikidata'] || osmTags['operator:wikidata']) return true;
@@ -1695,7 +1571,7 @@ const Engine = (() => {
       if(opTag && CHAIN_LIST.some(function(c){ return opTag.includes(c.trim()); })) return true;
     }
 
-    // -- NAME MATCHING: clean both sides, no trailing space tricks --
+    // ── NAME MATCHING: clean both sides, no trailing space tricks ──
     // We strip punctuation and check whole-word style
     var nClean = n.replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
     return CHAIN_LIST.some(function(chain){
@@ -1755,42 +1631,178 @@ const Engine = (() => {
   }
 
   function score(biz,rules){
-    let s=0;const tags=[];const breakdown=[];
+    let s=0;const tags=[];
     const hasSoc=!!(biz.facebook||biz.instagram||biz.twitter||biz.tiktok);
-
-    // Core gaps
+    const breakdown=[];
     if(!biz.website){s+=35;tags.push({text:'No website',cls:'gap-critical'});breakdown.push({label:'No website',pts:35});}
     if(!biz.phone&&rules.noPhone){s+=12;tags.push({text:'No phone',cls:'gap-high'});breakdown.push({label:'No phone',pts:12});}
     if(!biz.email&&rules.noEmail){s+=8;tags.push({text:'No email',cls:'gap-high'});breakdown.push({label:'No email',pts:8});}
     if(!hasSoc&&rules.noSocial){s+=15;tags.push({text:'No social media',cls:'gap-high'});breakdown.push({label:'No social media',pts:15});}
-    if(!biz.website&&!hasSoc){s+=10;tags.push({text:'No online presence',cls:'gap-critical'});breakdown.push({label:'No presence bonus',pts:10});}
-
-    // Rating boost - low rated businesses need more help
-    if(biz.rating&&biz.rating<=3.5){s+=8;breakdown.push({label:'Low rating ('+biz.rating+'★)',pts:8});}
-    else if(biz.rating&&biz.rating<=4.0){s+=4;breakdown.push({label:'Below avg rating ('+biz.rating+'★)',pts:4});}
-
-    // Review count - few reviews means low visibility
-    if(biz.reviewCount!==undefined&&biz.reviewCount<10){s+=6;breakdown.push({label:'Few reviews (<10)',pts:6});}
-
-    // Category weights - some businesses need help more urgently
-    const highValue=['restaurant','cafe','beauty','hair','gym','dentist','doctor'];
-    const cat=(biz.category||'').toLowerCase();
-    if(highValue.some(c=>cat.includes(c))){s+=5;breakdown.push({label:'High-value category',pts:5});}
-
+    if(!biz.website&&!hasSoc){s+=10;tags.push({text:'No online presence at all',cls:'gap-critical'});breakdown.push({label:'No presence bonus',pts:10});}
     s=Math.min(s,100);
     const label=s>=75?'🔥 Hot':s>=50?'⚡ Good':s>=25?'✅ Warm':'❄️ Weak';
     const isLead=(rules.noWebsite&&!biz.website)||(rules.noPhone&&!biz.phone)||(rules.noEmail&&!biz.email)||(rules.noSocial&&!hasSoc);
     return{score:s,tags,label,isLead,breakdown};
   }
 
-  
+  function dedupe(els){
+    const seen=new Set();
+    return els.filter(el=>{const t=el.tags||{};const n=t.name||t['name:en'];if(!n)return false;const k=`${n.toLowerCase().trim()}|${t['addr:street']||''}|${t['addr:housenumber']||''}`;if(seen.has(k))return false;seen.add(k);return true;});
+  }
+
+  async function fetchGooglePlaces(apiKey,lat,lon,radiusM,selectedTypes,locationName){
+    const seen=new Set();
+    const results=[];
+    let lastError=null;
+
+    // Build keyword list from selected types (max 6 calls)
+    const addedKws=new Set();
+    const toFetch=[];
+    for(const t of selectedTypes){
+      const kws=GMAPS_KEYWORD_GROUPS[t]||[t.toLowerCase()];
+      const kw=kws[0];
+      if(!addedKws.has(kw)){addedKws.add(kw);toFetch.push(kw);}
+      if(toFetch.length>=6)break;
+    }
+
+    const place=locationName?locationName.split(',').slice(0,2).join(',').trim():'';
+
+    for(const keyword of toFetch){
+      try{
+        const body={lat,lon,radius:Math.min(radiusM,50000),keyword,locationName:locationName||''};
+        const r=await fetch('/api/places',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','X-Places-Key':apiKey},
+          body:JSON.stringify(body)
+        });
+
+        const d=await r.json();
+
+        // Surface errors properly
+        if(!r.ok||d.error){
+          lastError=d.error||('HTTP '+r.status);
+          if(r.status===403||r.status===503){
+            // Fatal — bad key or not configured — stop immediately
+            throw new Error(lastError);
+          }
+          continue;
+        }
+
+        const batch=d.results||[];
+        for(const p of batch){
+          if(seen.has(p.place_id))continue;
+          seen.add(p.place_id);
+          const b=parseGPlace(p);
+          if(b)results.push(b);
+        }
+
+        if(toFetch.indexOf(keyword)<toFetch.length-1){
+          await new Promise(r=>setTimeout(r,200));
+        }
+      }catch(e){
+        // Re-throw fatal errors so scan() can emit them
+        throw e;
+      }
+    }
+    return results;
+  }
+
+
+  function parseGPlace(p){
+    if(!p.name)return null;
+    const lat=p.geometry?.location?.lat;const lon=p.geometry?.location?.lng;
+    const cat=(p.types||[]).find(t=>!['point_of_interest','establishment'].includes(t))||null;
+    let _web=p.website||null;
+    if(_web&&!/^https?:\/\//i.test(_web))_web='https://'+_web;
+    return{id:`gp_${p.place_id}`,name:p.name,website:_web,phone:p.phone||null,email:null,address:p.vicinity||null,category:cat?cat.replace(/_/g,' '):null,hours:null,cuisine:null,operator:null,lat,lon,facebook:null,instagram:null,twitter:null,tiktok:null,mapsUrl:`https://www.google.com/maps/place/?q=place_id:${p.place_id}`,osmUrl:null,source:'google',rating:p.rating||null,reviewCount:p.user_ratings_total||0};
+  }
+
+  async function scan({location,preGeo,selectedTypes,radiusKm,maxResults,rules,dataSource,skipChains,onEvent}){
+    stopFlag=false;
+    const emit=(type,data={})=>onEvent({type,...data});
+    try{
+      let geo;
+      if(preGeo){geo=preGeo;emit('geocoded',{display:geo.display});}
+      else{emit('status',{message:`Locating "${location}"…`});geo=await geocode(location);if(stopFlag){emit('stopped',{reason:'user'});return;}emit('geocoded',{display:geo.display});}
+      const radiusM=Math.round(radiusKm*1000);
+      const gmapsKey=(typeof window.getGmapsKey==='function')?window.getGmapsKey():null;
+      const useGoogle=(dataSource==='both'||dataSource==='google')&&!!gmapsKey;
+
+      // ── Query data sources ──
+      let osmEls=[];
+      if(dataSource==='osm'||dataSource==='both'){
+        try{
+          emit('status',{message:'Querying OpenStreetMap…'});
+          const osmResult=await overpass(buildQuery(geo.lat,geo.lon,radiusM,selectedTypes));
+          if(stopFlag){emit('stopped',{});return;}
+          osmEls=dedupe(osmResult.elements||[]);
+          emit('status',{message:`OpenStreetMap: ${osmEls.length} businesses found`});
+        }catch(osmErr){
+          emit('status',{message:`OpenStreetMap unavailable — ${useGoogle?'using Google Places only':'try again later'}`});
+          console.warn('OSM error:',osmErr);
+        }
+      }
+
+      let googleBizzes=[];
+      if(useGoogle){
+        emit('status',{message:'Querying Google Places…'});
+        try{
+          const locName=geo.display.split(',').slice(0,2).join(',').trim();
+          googleBizzes=await fetchGooglePlaces(gmapsKey,geo.lat,geo.lon,radiusM,selectedTypes,locName);
+          if(osmEls.length>0){
+            emit('status',{message:`OSM: ${osmEls.length} · Google: ${googleBizzes.length} — merging…`});
+          } else {
+            emit('status',{message:`Google Places: ${googleBizzes.length} businesses found`});
+          if(googleBizzes.length===0&&osmEls.length===0){
+            emit('error',{message:'Google Places returned 0 results. Check: (1) Places API (New) is enabled in Google Cloud Console, (2) Billing is enabled on your Google Cloud project, (3) your API key has no restrictions blocking it'});
+            return;
+          }
+          }
+        }catch(e){emit('status',{message:'Google Places query failed — check your API key'});console.warn('Google Places error:',e);}
+      }
+
+      if(osmEls.length===0&&googleBizzes.length===0){
+        emit('noResults',{query:location});return;
+      }
+
+      const osmBizzes=osmEls.map(el=>parse(el,geo.display.split(',').slice(0,2).join(',').trim())).filter(Boolean);
+      const seenNames=new Set(osmBizzes.map(b=>b.name.toLowerCase().trim()));
+      const merged=[...osmBizzes,...googleBizzes.filter(b=>b&&!seenNames.has(b.name.toLowerCase().trim()))];
+
+      // Filter chains if enabled
+      // Filter: chains + community-flagged businesses
+      const filtered=merged.filter(function(b){
+        if(skipChains && isLargeChain(b.name,b._osmTags)) return false;
+        return true;
+      });
+      const allBizzes=filtered.slice(0,maxResults);
+      const total=allBizzes.length;
+      if(!total){emit('noResults',{query:location});return;}
+      emit('total',{count:total});
+
+      const locLabel=geo.display.split(',').slice(0,2).join(',').trim();
+      let scanned=0,leadsFound=0,skipped=0;
+      for(let i=0;i<total;i++){
+        if(stopFlag){emit('stopped',{scanned,leadsFound,skipped});return;}
+        const biz={...allBizzes[i],locationName:locLabel};
+        scanned++;
+        const gap=score(biz,rules);
+        emit('progress',{pct:Math.round(((i+1)/total)*100),label:`${i+1}/${total}`,scanned,leadsFound,skipped});
+        if(gap.isLead){leadsFound++;emit('lead',{business:{...biz,gapScore:gap.score,gapTags:gap.tags,scoreLabel:gap.label,gapBreakdown:gap.breakdown},scanned,leadsFound,skipped});}
+        else{skipped++;emit('scanned',{name:biz.name,scanned,leadsFound,skipped});}
+        if(i%10===9)await new Promise(r=>setTimeout(r,0));
+      }
+      emit('complete',{scanned,leadsFound,skipped,total,location:locLabel,geo});
+    }catch(err){emit('error',{message:err.message||'Unknown error'});}
+  }
+
   return{scan,stop:()=>{stopFlag=true;},TYPE_MAP};
 })();
 </script>
 
 <script>
-// -- App State -----------------------------------------------------------
-// -- Tier Definitions --
+// ── App State ───────────────────────────────────────────────────────────
+// ── Tier Definitions ──
 const TIERS = {
   solo:        { name:'Solo',        price:19,  seats:1,   maxResults:100,  maxLeads:500,   history:8,    shared:false, territories:false, bulkPitch:false, templates:false, whitelabel:false, api:false },
   partnership: { name:'Partnership', price:39,  seats:3,   maxResults:200,  maxLeads:2000,  history:30,   shared:true,  territories:false, bulkPitch:false, templates:true,  whitelabel:false, api:false },
@@ -1813,7 +1825,7 @@ let activeMissFilters=new Set();
 let _theme=localStorage.getItem('fp-theme')||'light';
 let _dataSource='osm'; // will be loaded from scoped storage in initApp
 
-// -- Scoped localStorage helpers  -  keys prefixed with user UID --
+// ── Scoped localStorage helpers — keys prefixed with user UID ──
 // Prevents different accounts on same browser sharing recent scans, settings etc.
 function lsKey(k){return(window._lsPrefix||'fp_anon_')+k;}
 function lsGet(k){try{return localStorage.getItem(lsKey(k));}catch{return null;}}
@@ -1823,7 +1835,7 @@ const isMobile=()=>window.innerWidth<=768;
 
 document.documentElement.setAttribute('data-theme',_theme);
 
-// -- Detect layout --
+// ── Detect layout ──
 function isDesktop(){return window.innerWidth>768;}
 
 function initApp(){
@@ -1846,7 +1858,7 @@ function initApp(){
   // Tab buttons
   document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
 
-  // Chips  -  both sidebar and mobile
+  // Chips — both sidebar and mobile
   ['tchips','tchips-mob'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c)c.classList.toggle('on');});
@@ -1890,7 +1902,7 @@ function initApp(){
 }
 window.initApp=initApp;
 
-// -- Source selectors (sidebar + mobile) --
+// ── Source selectors (sidebar + mobile) ──
 function initSourceSelectors(){
   ['source-selector-mob'].forEach(function(selId){
     const container=document.getElementById(selId);
@@ -1913,7 +1925,7 @@ function initSourceSelectors(){
   if(keyArea)keyArea.style.display=(_dataSource==='both'||_dataSource==='google')?'block':'none';
 }
 
-// -- Google Maps key --
+// ── Google Maps key ──
 function initGmapsKey(){
   // Key is stored in Firestore (not localStorage) so it's shared across devices
   // and across team members on the same plan
@@ -1996,7 +2008,7 @@ function initSettingsGmaps(){
     updateSourceNotice();
   });
 }
-// -- Google API key stored in Firestore  -  shared across devices and team members --
+// ── Google API key stored in Firestore — shared across devices and team members ──
 async function loadGmapsKeyFromFirestore(){
   if(!_user)return null;
   try{
@@ -2038,14 +2050,14 @@ async function saveGmapsKeyToFirestore(key){
 function updateSourceNotice(){
   var key=lsGet('gmaps-key');
   var usingGoogle=_dataSource==='both'&&!!key;
-  // Update sidebar notice visibility  -  we use the notice in mobile only
+  // Update sidebar notice visibility — we use the notice in mobile only
   var n=document.getElementById('osm-notice');
   if(n&&isMobile())n.style.display='flex';
   var t=document.getElementById('osm-notice-text');
-  if(t)t.textContent=usingGoogle?'Using OpenStreetMap + Google Places. Google results won\'t have website/phone  -  verify before pitching.':'Powered by OpenStreetMap. Verify businesses on Google Maps before pitching.';
+  if(t)t.textContent=usingGoogle?'Using OpenStreetMap + Google Places. Google results won\'t have website/phone — verify before pitching.':'Powered by OpenStreetMap. Verify businesses on Google Maps before pitching.';
 }
 
-// -- Theme --
+// ── Theme ──
 function setTheme(t){
   _theme=t;localStorage.setItem('fp-theme',t);
   document.documentElement.setAttribute('data-theme',t);
@@ -2057,7 +2069,7 @@ function syncThemeToggle(){
   if(toggle)toggle.checked=(_theme==='dark'||_theme==='midnight'||_theme==='warm');
 }
 
-// -- Rules --
+// ── Rules ──
 function loadRules(){
   const r=JSON.parse(lsGet('rules')||'{}');
   if(r.noWebsite!==undefined)document.getElementById('r-web').checked=r.noWebsite;
@@ -2069,14 +2081,12 @@ function loadRules(){
 function getRules(){return{noWebsite:document.getElementById('r-web').checked,noPhone:document.getElementById('r-phone').checked,noSocial:document.getElementById('r-social').checked,noEmail:document.getElementById('r-email').checked,skipChains:document.getElementById('r-skipchains').checked};}
 function saveRules(){lsSet('rules',JSON.stringify(getRules()));}
 
-// -- Tabs --
+// ── Tabs ──
 function switchTab(id){
   document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===`panel-${id}`));
   document.querySelectorAll('.mnav[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
   if(id==='crm')renderCRM();
-  if(id==='analytics')renderAnalytics();
-  if(id==='heatmap')renderHeatmap();
   if(id==='team'&&typeof window._initTeamPanel==='function')window._initTeamPanel();
   // Update active state in team sidebar if present
   document.querySelectorAll('.tsidebar-btn').forEach(function(b){
@@ -2086,7 +2096,7 @@ function switchTab(id){
 }
 window.switchTab=switchTab;
 
-// -- Chips --
+// ── Chips ──
 const DEFAULT_ON=['Restaurants','Cafés','Retail','Bars'];
 function setAllChips(on){
   document.querySelectorAll('#tchips-mob .chip').forEach(c=>c.classList.toggle('on',on));
@@ -2099,7 +2109,7 @@ function selectedTypes(){
   return[...document.querySelectorAll('#tchips-mob .chip.on')].map(c=>c.dataset.t);
 }
 
-// -- Autocomplete --
+// ── Autocomplete ──
 function initAC(inputId,dropId,mob){
   const inp=document.getElementById(inputId);
   const drop=document.getElementById(dropId);
@@ -2131,7 +2141,7 @@ function pickAC(i,inputId,dropId,mob){
   acResults=[];acIdx=-1;
 }
 
-// -- Recently Scanned --
+// ── Recently Scanned ──
 const MAX_RECENT=8;
 function loadRecent(){
   const arr=JSON.parse(lsGet('recent')||'[]');
@@ -2146,7 +2156,7 @@ function renderRecent(arr){
     if(!arr.length){sec.style.display='none';return;}
     sec.style.display='block';
     list.innerHTML=arr.map((r,i)=>`<div class="ri" data-i="${i}"><span class="ri-icon">📍</span><div class="ri-main"><div class="ri-name">${esc(r.label)}</div><div class="ri-meta">${(r.types||[]).slice(0,3).join(', ')} · ${r.radius}km · ${fmtDate(r.date)}</div></div><span class="ri-leads">${r.leads} leads</span><span class="ri-del" data-i="${i}">✕</span></div>`).join('');
-    list.querySelectorAll('.ri').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ri-del'))return;const rec=arr[parseInt(el.dataset.i)];['loc','loc-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.label;});['rv','rv-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.radius;});selectedGeo=rec.geo||null;['tchips','tchips-mob'].forEach(cid=>{document.querySelectorAll(`#${cid} .chip`).forEach(c=>c.classList.toggle('on',(rec.types||[]).includes(c.dataset.t)));});toast('Loaded  -  press Start Scan');});});
+    list.querySelectorAll('.ri').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ri-del'))return;const rec=arr[parseInt(el.dataset.i)];['loc','loc-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.label;});['rv','rv-mob'].forEach(id=>{const inp=document.getElementById(id);if(inp)inp.value=rec.radius;});selectedGeo=rec.geo||null;['tchips','tchips-mob'].forEach(cid=>{document.querySelectorAll(`#${cid} .chip`).forEach(c=>c.classList.toggle('on',(rec.types||[]).includes(c.dataset.t)));});toast('Loaded — press Start Scan');});});
     list.querySelectorAll('.ri-del').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();arr.splice(parseInt(el.dataset.i),1);lsSet('recent',JSON.stringify(arr));renderRecent(arr);});});
   });
 }
@@ -2158,7 +2168,7 @@ function saveRecentFS(label,geo,types,radius,leadsFound){
   // Also persist to Firestore
   if(typeof saveScanHistoryFS==='function')saveScanHistoryFS(entry);
 }
-// -- Saved Scan Templates -----------------------------------------
+// ── Saved Scan Templates ─────────────────────────────────────────
 function loadScanTemplates(){
   if(!_user||!getTierLimit('templates'))return;
   _db.collection('users').doc(_user.uid).collection('scan_templates')
@@ -2193,7 +2203,7 @@ function saveTemplate(){
   if(!_user||!getTierLimit('templates')){toast('Upgrade to Partnership or above to save templates');return;}
   var loc=(document.getElementById('loc-mob').value||'').trim();
   if(!loc){toast('Enter a location first');return;}
-  var name=loc+'  -  '+selectedTypes().slice(0,2).join(', ');
+  var name=loc+' — '+selectedTypes().slice(0,2).join(', ');
   var template={
     name:name,location:loc,
     types:selectedTypes(),
@@ -2217,7 +2227,7 @@ function loadTemplate(id){
       if(t.dataSource){_dataSource=t.dataSource;document.querySelectorAll('#source-selector-mob .source-opt').forEach(function(o){o.classList.toggle('active',o.dataset.source===t.dataSource);});}
       document.querySelectorAll('#tchips-mob .chip').forEach(function(c){c.classList.toggle('on',(t.types||[]).includes(c.dataset.t));});
       selectedGeo=null;
-      toast('Template loaded  -  press Start Scan');
+      toast('Template loaded — press Start Scan');
     }).catch(console.warn);
 }
 function deleteTemplate(id){
@@ -2228,9 +2238,9 @@ function deleteTemplate(id){
 
 function fmtDate(iso){if(!iso)return'';const diff=Date.now()-new Date(iso);if(diff<60000)return'just now';if(diff<3600000)return`${Math.floor(diff/60000)}m ago`;if(diff<86400000)return`${Math.floor(diff/3600000)}h ago`;return new Date(iso).toLocaleDateString('en-AU',{day:'numeric',month:'short'});}
 
-// -- Scan --
+// ── Scan ──
 async function startScan(){
-  // unified  -  always use the single scan form
+  // unified — always use the single scan form
   const locId='loc-mob';
   const rvId='rv-mob';
   const maxrId='maxr-mob';
@@ -2278,7 +2288,7 @@ function resetScanDesktop(){resetScanMobile();}
 function resetScanMobile(){document.getElementById('mob-scan-form').style.display='block';const p=document.getElementById('psec-mob');if(p)p.classList.remove('on');document.getElementById('mini-sec-mob').style.display='none';}
 
 function handleEvent(ev){
-  // Now unified  -  always use the single scan panel elements
+  // Now unified — always use the single scan panel elements
   const fi='feed-mob';
   const pbi='pbarf-mob';
   const pli='pml-mob';
@@ -2287,7 +2297,7 @@ function handleEvent(ev){
   switch(ev.type){
     case 'status':setProg2(pbi,pli,ppi,null,esc(ev.message));feedLnId(fi,'·',esc(ev.message),'t-skip');break;
     case 'geocoded':setNText('ploc-mob',ev.display.split(',').slice(0,3).join(','));feedLnId(fi,'📍',`<span class="fnm">${esc(ev.display.split(',').slice(0,3).join(','))}</span>`);break;
-    case 'total':setPillId(pilo,'run','SCANNING');feedLnId(fi,'◎',`<span class="fnm">${ev.count}</span> businesses found  -  scanning…`);break;
+    case 'total':setPillId(pilo,'run','SCANNING');feedLnId(fi,'◎',`<span class="fnm">${ev.count}</span> businesses found — scanning…`);break;
     case 'progress':
       setProg2(pbi,pli,ppi,ev.pct,ev.label);
       scanN=ev.scanned;leadN=ev.leadsFound;skipN=ev.skipped;
@@ -2304,7 +2314,7 @@ function handleEvent(ev){
       // Duplicate detection: check if same name+address already saved
       const isDup=leads.some(l=>(l.id===b.id)||(l.name===b.name&&l.address===b.address&&l.locationName===b.locationName));
       if(!isDup){const lead={...b,status:'new',notes:'',savedAt:new Date().toISOString()};leads.unshift(lead);saveLead(lead);refreshBadge();}
-      else{feedLnId(fi,'⚠',`<span class="fmsg">${esc(b.name)}  -  duplicate, skipped</span>`,'t-skip');}
+      else{feedLnId(fi,'⚠',`<span class="fmsg">${esc(b.name)} — duplicate, skipped</span>`,'t-skip');}
       break;
     }
     case 'complete':{
@@ -2340,7 +2350,7 @@ function renderMiniMob(){
 }
 function miniHtml(top){return top.map(l=>{const tier=scoreTier(l.gapScore);const hs=!!(l.facebook||l.instagram||l.twitter||l.tiktok);const flags=[!l.website&&'<span class="mf mf-ns">NO SITE</span>',!l.phone&&'<span class="mf mf-np">NO PHONE</span>',!hs&&'<span class="mf mf-nm">NO SOCIAL</span>'].filter(Boolean).slice(0,2).join('');return`<div class="mrow ${tier}" onclick="switchTab('crm')"><div class="msco" style="color:${scoreColor(l.gapScore)}">${l.gapScore}</div><div class="minf"><div class="mnm">${esc(l.name)}</div><div class="mad">${l.address?esc(l.address.split(',').slice(0,2).join(',').trim()):esc(l.locationName||'')}</div></div><div class="mflgs">${flags}</div></div>`;}).join('');}
 
-// -- Upgrade Modal ------------------------------------------------
+// ── Upgrade Modal ────────────────────────────────────────────────
 var PLAN_INFO=[
   {key:'solo',name:'Solo',price:'$19',desc:'For freelancers',seats:1,maxResults:100,maxLeads:500},
   {key:'partnership',name:'Partnership',price:'$39',desc:'For small teams',seats:3,maxResults:200,maxLeads:2000},
@@ -2417,7 +2427,7 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 
-// -- CRM --
+// ── CRM ──
 function renderCRM(){
   const q=document.getElementById('cq').value.toLowerCase();
   const sf=document.getElementById('csf').value;
@@ -2468,12 +2478,12 @@ function renderCard(l){
   const bdRows=(l.gapBreakdown||[]).map(b=>`<div class="st-row"><span>${b.label}</span><span class="st-val">+${b.pts}</span></div>`).join('');
   const scoreEl=`<div class="score-wrap lsco-wrap"><div class="lsco" style="color:${color}">${l.gapScore||0}</div><div class="lsco-lbl">score</div><div class="score-tooltip"><div class="st-row"><span>Gap Score</span><span class="st-val">${l.gapScore||0}/100</span></div>${bdRows}</div></div>`;
 
-  const webDisplay=l.website?`<a href="${esc(l.website)}" target="_blank" class="dr-link">${esc(l.website)}</a>`:'<span class="dr-miss">Not in OSM  -  verify on Maps</span>';
-  const phoneDisplay=l.phone?`<a href="tel:${esc(l.phone)}" class="dr-link">${esc(l.phone)}</a>`:'<span class="dr-miss">Not found  -  add below</span>';
-  const emailDisplay=l.email?`<a href="mailto:${esc(l.email)}" class="dr-link">${esc(l.email)}</a>`:'<span class="dr-miss">Not found  -  add below</span>';
+  const webDisplay=l.website?`<a href="${esc(l.website)}" target="_blank" class="dr-link">${esc(l.website)}</a>`:'<span class="dr-miss">Not in OSM — verify on Maps</span>';
+  const phoneDisplay=l.phone?`<a href="tel:${esc(l.phone)}" class="dr-link">${esc(l.phone)}</a>`:'<span class="dr-miss">Not found — add below</span>';
+  const emailDisplay=l.email?`<a href="mailto:${esc(l.email)}" class="dr-link">${esc(l.email)}</a>`:'<span class="dr-miss">Not found — add below</span>';
 
   // Note templates
-  const TEMPLATES=['Left voicemail','Sent email  -  no reply','Follow up in 1 week','Meeting booked','Quote sent','Not interested'];
+  const TEMPLATES=['Left voicemail','Sent email — no reply','Follow up in 1 week','Meeting booked','Quote sent','Not interested'];
   const tmplHtml=TEMPLATES.map(t=>`<span class="note-tmpl" data-tmpl="${esc(t)}" data-lead="${l.id}">${t}</span>`).join('');
 
   return`<div class="lcard ${tier}" id="lc-${l.id}">
@@ -2543,7 +2553,7 @@ function renderCard(l){
 </div>`;
 }
 
-function ef(lid,field,label,value){return`<div class="ef-row"><span class="ef-label">${label}</span><input class="ef-inp" type="text" id="ef-${lid}-${field}" value="${esc(value||'')}" placeholder="${!value?'Not found  -  add here':''}"/></div>`;}
+function ef(lid,field,label,value){return`<div class="ef-row"><span class="ef-label">${label}</span><input class="ef-inp" type="text" id="ef-${lid}-${field}" value="${esc(value||'')}" placeholder="${!value?'Not found — add here':''}"/></div>`;}
 
 function attachCardListeners(){
   document.querySelectorAll('.lctop').forEach(top=>{top.addEventListener('click',()=>{const id=top.id.replace('ltop-','');const exp=document.getElementById(`lexp-${id}`);const chev=document.getElementById(`chev-${id}`);if(!exp)return;const open=exp.style.display==='block';exp.style.display=open?'none':'block';chev.style.transform=open?'':'rotate(180deg)';});});
@@ -2571,7 +2581,7 @@ function attachCardListeners(){
   document.querySelectorAll('.enrich-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();enrichLead(btn.dataset.lead,btn.dataset.name,btn.dataset.addr);});});
 }
 
-// -- AI Pitch Generator --
+// ── AI Pitch Generator ──
 function generatePitch(leadId){
   const idx=leads.findIndex(l=>l.id===leadId);if(idx===-1)return;
   const l=leads[idx];
@@ -2601,7 +2611,7 @@ function buildPitchEmail(l){
   const subjects=[
     noSite?`Quick question about ${name}\'s online presence`:`A small idea for ${name}`,
     `Helping local businesses in ${area} get found online`,
-    `${name}  -  I think I can help`,
+    `${name} — I think I can help`,
     `More customers for ${name}?`,
   ];
 
@@ -2613,11 +2623,11 @@ function buildPitchEmail(l){
   ];
 
   const valueLines=[
-    noSite?`Most potential customers search online before visiting anywhere  -  and without a website, ${name} might be missing out on a lot of them.`
+    noSite?`Most potential customers search online before visiting anywhere — and without a website, ${name} might be missing out on a lot of them.`
           :`Having a stronger online presence can help more local customers find ${name} before they find a competitor.`,
-    noSite?`A simple, clean website can make a big difference  -  letting customers find your hours, location, and contact details instantly.`
+    noSite?`A simple, clean website can make a big difference — letting customers find your hours, location, and contact details instantly.`
           :`Even small improvements to your digital presence can bring a steady stream of new customers through the door.`,
-    noSocial?`A lot of ${cat}s in ${area} are now getting new customers through Instagram and Facebook  -  and it\'s simpler to set up than most people think.`
+    noSocial?`A lot of ${cat}s in ${area} are now getting new customers through Instagram and Facebook — and it\'s simpler to set up than most people think.`
             :`Showing up consistently online helps build trust with new customers before they\'ve even walked in the door.`,
     noSite?`Right now, customers searching for a ${cat} in ${area} might walk straight past ${name} because they can\'t find you online.`
           :`A bit of work on your online presence could meaningfully increase foot traffic and enquiries.`,
@@ -2637,7 +2647,7 @@ ${openings[v]}
 
 ${valueLines[v]}
 
-I specialise in ${serviceStr} for local businesses  -  keeping things simple, affordable, and jargon-free.
+I specialise in ${serviceStr} for local businesses — keeping things simple, affordable, and jargon-free.
 
 If you\'d be open to a quick 10-minute chat, I\'d love to show you what\'s possible. No obligation at all.
 
@@ -2669,7 +2679,7 @@ function copyPitch(leadId){const out=document.getElementById(`pitch-out-${leadId
 function openMailto(leadId,email){const out=document.getElementById(`pitch-out-${leadId}`);if(!out||!out.textContent)return;const lines=out.textContent.split('\n');const subject=lines.find(l=>l.toLowerCase().startsWith('subject:'));const body=lines.filter(l=>!l.toLowerCase().startsWith('subject:')).join('\n');window.location.href=`mailto:${email||''}?subject=${encodeURIComponent(subject?subject.replace(/^subject:\s*/i,''):'')}&body=${encodeURIComponent(body)}`;}
 function clearPitch(leadId){const out=document.getElementById(`pitch-out-${leadId}`);const actions=document.getElementById(`pitch-actions-${leadId}`);const btn=document.getElementById(`pitch-btn-${leadId}`);if(out){out.textContent='';out.classList.remove('show');}if(actions)actions.style.display='none';if(btn)btn.style.display='inline-flex';}
 
-// -- Lead Enrichment (opens Google searches in new tabs) --
+// ── Lead Enrichment (opens Google searches in new tabs) ──
 async function enrichLead(leadId,name,addr){
   const el=document.getElementById(`enrich-${leadId}`);
   const btn=document.querySelector(`.enrich-btn[data-lead="${leadId}"]`);
@@ -2680,23 +2690,23 @@ async function enrichLead(leadId,name,addr){
   // Open three targeted searches
   window.open(`https://www.google.com/search?q=${q}`,'_blank');
   setTimeout(()=>window.open(`https://www.facebook.com/search/pages/?q=${encodeURIComponent(name)}`,'_blank'),400);
-  if(el)el.textContent='Opened 2 search tabs  -  check results for phone, email & social';
+  if(el)el.textContent='Opened 2 search tabs — check results for phone, email & social';
   if(btn){setTimeout(()=>{btn.disabled=false;},3000);}
 }
 
-// -- Clear / Export --
+// ── Clear / Export ──
 function clearLeads(){if(!confirm('Clear all leads?'))return;leads=[];clearAllLeads();renderCRM();refreshBadge();toast('Cleared');}
 function buildCSV(){const hdr=['Name','Score','Type','Website','Phone','Email','Address','Category','Hours','Cuisine','Facebook','Instagram','Twitter','TikTok','Rating','Status','Notes','Location','Saved','Google Maps'];const rows=leads.map(l=>[`"${q(l.name)}"`,l.gapScore||0,`"${q(l.scoreLabel||'')}"`,`"${q(l.website||'')}"`,`"${q(l.phone||'')}"`,`"${q(l.email||'')}"`,`"${q(l.address||'')}"`,`"${q(l.category||'')}"`,`"${q(l.hours||'')}"`,`"${q(l.cuisine||'')}"`,`"${q(l.facebook||'')}"`,`"${q(l.instagram||'')}"`,`"${q(l.twitter||'')}"`,`"${q(l.tiktok||'')}"`,l.rating||'',`"${q(l.status||'new')}"`,`"${q(l.notes||'')}"`,`"${q(l.locationName||'')}"`,`"${q(l.savedAt||'')}"`,`"${q(l.mapsUrl||'')}"`].join(','));return[hdr.join(',')+'\n',...rows].join('\n');}
 const q=s=>(s||'').replace(/"/g,'""');
 function exportCSV(){if(!leads.length){toast('No leads to export');return;}const b=new Blob([buildCSV()],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`footprint-${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('CSV downloaded');}
 function exportSheets(){if(!leads.length){toast('No leads');return;}exportCSV();setTimeout(()=>toast('Open Sheets → File → Import → Upload the CSV'),800);}
 
-// -- Helpers --
+// ── Helpers ──
 function saveLead(lead){
   // Enforce tier lead limit
   var max=getTierLimit('maxLeads');
   if(leads.length>max){
-    // Already over  -  don't save more, show warning once
+    // Already over — don't save more, show warning once
     if(!window._leadLimitWarned){
       window._leadLimitWarned=true;
       toast('Lead limit reached ('+max+' on '+getTier().name+' plan). Upgrade to save more.');
@@ -2727,14 +2737,14 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
 <!-- Admin Panel Logic -->
 <script>
 
-// -- Team Management ---------------------------------------------------------
+// ── Team Management ─────────────────────────────────────────────────────────
 (function(){
 
-  // -- Shared lead loading for team plans --
+  // ── Shared lead loading for team plans ──
   window._loadTeamLeads = async function(){
     if(!_user||!_udoc)return;
     const teamId=_udoc.teamId;
-    if(!teamId)return; // Solo plan  -  uses own leads only
+    if(!teamId)return; // Solo plan — uses own leads only
 
     // Load leads from the team shared collection
     try{
@@ -2762,7 +2772,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
         savedByEmail:_user.email
       }).catch(console.warn);
     } else {
-      // Solo  -  save to user collection
+      // Solo — save to user collection
       _db.collection('users').doc(_user.uid).collection('leads').doc(lead.id).set(lead).catch(console.warn);
     }
   };
@@ -2790,7 +2800,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
     }).catch(console.warn);
   };
 
-  // -- Team Panel Logic --
+  // ── Team Panel Logic ──
   var _teamData=null;
   var _isTeamOwner=false;
 
@@ -2812,7 +2822,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
     const teamId=_udoc.teamId;
 
     if(!teamId){
-      // No team yet  -  this is the head account, create team on first visit
+      // No team yet — this is the head account, create team on first visit
       await createTeam();
     } else {
       await loadTeam(teamId);
@@ -2872,7 +2882,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
     if(bar)bar.style.width=Math.min(100,Math.round((seatsUsed/seatsTotal)*100))+'%';
     var sc=document.getElementById('seats-count-label');if(sc)sc.textContent=seatsUsed+' / '+seatsTotal;
     var sr=document.getElementById('seats-remaining-label');
-    if(sr)sr.textContent=seatsLeft>0?seatsLeft+' seat'+(seatsLeft!==1?'s':'')+' remaining':'All seats filled  -  upgrade for more';
+    if(sr)sr.textContent=seatsLeft>0?seatsLeft+' seat'+(seatsLeft!==1?'s':'')+' remaining':'All seats filled — upgrade for more';
 
     // Buttons
     var renBtn=document.getElementById('rename-team-btn');if(renBtn)renBtn.style.display=isOwner?'inline-flex':'none';
@@ -2902,7 +2912,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
       if(kc)kc.style.display=key?'inline-flex':'none';
     }
 
-    // Territory locking  -  populate owner dropdown
+    // Territory locking — populate owner dropdown
     if(t.territories&&canManage){
       var ownerSel=document.getElementById('territory-owner-sel');
       if(ownerSel){
@@ -3121,7 +3131,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
     const tbody=document.getElementById('seats-tbody');
     if(!tbody)return;
     if(!members.length){
-      tbody.innerHTML='<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--muted);">No members yet  -  invite your team</td></tr>';
+      tbody.innerHTML='<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--muted);">No members yet — invite your team</td></tr>';
       return;
     }
     tbody.innerHTML=members.map(function(m){
@@ -3129,11 +3139,11 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
       const roleBadge=memberRoleBadge(m.role);
       const actions=(_isTeamOwner&&!isMe&&m.role!=='owner')
         ?`<button onclick="removeMember('${m.uid}','${esc(m.email)}')" style="font-size:0.72rem;background:none;border:none;color:var(--red);cursor:pointer;padding:3px 6px;border-radius:5px;" title="Remove">✕ Remove</button>`
-        :(isMe?'<span style="font-size:0.72rem;color:var(--muted);">You</span>':' - ');
+        :(isMe?'<span style="font-size:0.72rem;color:var(--muted);">You</span>':'—');
       return`<tr style="border-bottom:1px solid var(--border);">
         <td style="padding:10px 13px;font-size:0.82rem;">${esc(m.email)}</td>
         <td style="padding:10px 13px;">${roleBadge}</td>
-        <td style="padding:10px 13px;font-size:0.76rem;color:var(--muted);">${m.joinedAt?new Date(m.joinedAt).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}):' - '}</td>
+        <td style="padding:10px 13px;font-size:0.76rem;color:var(--muted);">${m.joinedAt?new Date(m.joinedAt).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}):'—'}</td>
         <td style="padding:10px 13px;">${actions}</td>
       </tr>`;
     }).join('');
@@ -3163,7 +3173,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
     }catch(e){toast("Error: "+e.message);}
   };
 
-  // -- Check and link pending invite on login --
+  // ── Check and link pending invite on login ──
   window._checkPendingInvite=async function(){
     if(!_user||!_user.email)return;
     try{
@@ -3232,7 +3242,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
     document.getElementById('admin-lookup-btn')?.addEventListener('click',async function(){
       var email=(document.getElementById('admin-lookup-email').value||'').trim();if(!email)return;
       this.disabled=true;this.textContent='…';
-      try{var u=await findByEmail(email);var res=document.getElementById('admin-lookup-result');var body=document.getElementById('admin-lookup-body');if(!u){body.innerHTML='<div style="color:var(--muted);font-size:.8rem">No user found.</div>';res.style.display='block';return;}var d=u.data;var pb=d.plan==='gifted'?'apb-gifted':d.plan==='pro'||d.subscriptionStatus==='active'?'apb-active':d.subscriptionStatus==='trialing'?'apb-trial':'apb-free';body.innerHTML=`<div style="display:flex;flex-direction:column;gap:7px;font-size:.8rem"><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">UID</span><br/><code style="font-size:.72rem;color:var(--text2)">${esc(u.id)}</code></div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Plan / Status</span><br/><span class="admin-plan-badge ${pb}">${esc(d.plan||'free')}</span> · ${esc(d.subscriptionStatus||' - ')}</div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Stripe ID</span><br/><code style="font-size:.72rem">${esc(d.stripeCustomerId||' - ')}</code></div></div>`;res.style.display='block';}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='Search';}
+      try{var u=await findByEmail(email);var res=document.getElementById('admin-lookup-result');var body=document.getElementById('admin-lookup-body');if(!u){body.innerHTML='<div style="color:var(--muted);font-size:.8rem">No user found.</div>';res.style.display='block';return;}var d=u.data;var pb=d.plan==='gifted'?'apb-gifted':d.plan==='pro'||d.subscriptionStatus==='active'?'apb-active':d.subscriptionStatus==='trialing'?'apb-trial':'apb-free';body.innerHTML=`<div style="display:flex;flex-direction:column;gap:7px;font-size:.8rem"><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">UID</span><br/><code style="font-size:.72rem;color:var(--text2)">${esc(u.id)}</code></div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Plan / Status</span><br/><span class="admin-plan-badge ${pb}">${esc(d.plan||'free')}</span> · ${esc(d.subscriptionStatus||'—')}</div><div><span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Stripe ID</span><br/><code style="font-size:.72rem">${esc(d.stripeCustomerId||'—')}</code></div></div>`;res.style.display='block';}catch(e){adminMsg('Error: '+e.message,true);}finally{this.disabled=false;this.textContent='Search';}
     });
   }
 
@@ -3246,7 +3256,7 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
         var d=doc.data();
         var pb=d.plan==='gifted'?'apb-gifted':d.plan==='pro'||d.subscriptionStatus==='active'?'apb-active':d.subscriptionStatus==='trialing'?'apb-trial':'apb-free';
         var pl=d.plan==='gifted'?'Gifted':d.plan==='pro'?'Pro':d.subscriptionStatus==='trialing'?'Trial':'Free';
-        rows+=`<tr><td style="font-size:.8rem">${esc(d.email||' - ')}</td><td><span class="admin-plan-badge ${pb}">${pl}</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted)">${d.createdAt?new Date(d.createdAt.seconds*1000).toLocaleDateString():' - '}</td><td><div class="admin-actions"><button class="btn btn-green btn-xs agrant" data-email="${esc(d.email||'')}">Grant</button><button class="btn btn-danger btn-xs arevoke" data-email="${esc(d.email||'')}">Revoke</button></div></td></tr>`;
+        rows+=`<tr><td style="font-size:.8rem">${esc(d.email||'—')}</td><td><span class="admin-plan-badge ${pb}">${pl}</span></td><td style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted)">${d.createdAt?new Date(d.createdAt.seconds*1000).toLocaleDateString():'—'}</td><td><div class="admin-actions"><button class="btn btn-green btn-xs agrant" data-email="${esc(d.email||'')}">Grant</button><button class="btn btn-danger btn-xs arevoke" data-email="${esc(d.email||'')}">Revoke</button></div></td></tr>`;
       });
       container.innerHTML=`<div style="overflow-x:auto;border-radius:9px;border:1px solid var(--border)"><table class="admin-table"><thead><tr><th>Email</th><th>Plan</th><th>Joined</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div>`;
       container.querySelectorAll('.agrant').forEach(function(btn){btn.addEventListener('click',async function(){var email=btn.dataset.email;if(!email||!confirm('Grant to '+email+'?'))return;btn.disabled=true;try{var u=await findByEmail(email);if(!u){adminMsg('Not found',true);return;}await _db.collection('users').doc(u.id).update({plan:'gifted',subscriptionStatus:'active',giftedBy:'admin',giftedAt:firebase.firestore.FieldValue.serverTimestamp()});adminMsg('✓ Granted to '+email);loadAdminUsers();}catch(e){adminMsg('Error: '+e.message,true);}finally{btn.disabled=false;}});});
