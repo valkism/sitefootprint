@@ -1902,9 +1902,14 @@ const Engine = (() => {
     for(const keyword of toFetch){
       try{
         const body={lat,lon,radius:Math.min(radiusM,50000),keyword,locationName:locationName||''};
+        // Get a fresh Firebase ID token to authenticate the request
+        const idToken=_user?await _user.getIdToken():null;
+        const headers={'Content-Type':'application/json'};
+        if(idToken)headers['Authorization']='Bearer '+idToken;
+        if(apiKey)headers['X-Places-Key']=apiKey;
         const r=await fetch('/api/places',{
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers,
           body:JSON.stringify(body)
         });
 

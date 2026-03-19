@@ -5,6 +5,10 @@
 //   1. "Places API (New)" enabled
 //   2. An API key with "Places API (New)" in its allowed APIs
 //   3. Billing enabled on the project (required even for free tier)
+//
+// API key strategy: users supply their own Google Places key (stored in Firestore,
+// sent via Authorization + X-Places-Key). The server verifies the Firebase ID token
+// before accepting a client-supplied key — so only authenticated users can use the proxy.
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -19,7 +23,7 @@ export async function onRequestPost(context) {
   const cors = {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Places-Key',
   };
 
   const allowed = allowedOrigin.split(',').map(s => s.trim());
@@ -37,14 +41,32 @@ export async function onRequestPost(context) {
     });
   }
 
-  // Only use the server-side key — never accept keys from the client
-  const apiKey = env.GOOGLE_PLACES_KEY;
+  // ── API key resolution ────────────────────────────────────────────────────
+  // Priority: server env key (free for all) → user-supplied key (authenticated only)
+  let apiKey = env.GOOGLE_PLACES_KEY || null;
 
   if (!apiKey) {
-    return new Response(JSON.stringify({
-      error: 'NO_KEY',
-      results: []
-    }), { status: 503, headers: { ...cors, 'Content-Type': 'application/json' } });
+    // No server key — require an authenticated user supplying their own key
+    const authHeader = request.headers.get('Authorization');
+    const idToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    const clientKey = request.headers.get('X-Places-Key');
+
+    if (!idToken || !clientKey) {
+      return new Response(JSON.stringify({
+        error: 'NO_KEY',
+        results: []
+      }), { status: 503, headers: { ...cors, 'Content-Type': 'application/json' } });
+    }
+
+    // Verify the Firebase ID token before trusting the client-supplied key
+    const uid = await verifyFirebaseToken(idToken, env.FIREBASE_WEB_API_KEY);
+    if (!uid) {
+      return new Response(JSON.stringify({ error: 'Unauthorized', results: [] }), {
+        status: 401, headers: { ...cors, 'Content-Type': 'application/json' }
+      });
+    }
+
+    apiKey = clientKey;
   }
 
   const { lat, lon, radius, keyword, locationName } = body;
@@ -143,5 +165,26 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: err.message, results: [] }), {
       status: 500, headers: { ...cors, 'Content-Type': 'application/json' }
     });
+  }
+}
+
+// ── Verify Firebase ID token via Google's accounts:lookup endpoint ────────
+async function verifyFirebaseToken(idToken, webApiKey) {
+  try {
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${webApiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const user = data.users?.[0];
+    if (!user?.localId) return null;
+    return user.localId;
+  } catch {
+    return null;
   }
 }
