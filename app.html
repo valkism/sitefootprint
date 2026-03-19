@@ -619,6 +619,34 @@
     /* Scan panel — single unified layout, no sidebar split */
     #mobile-scan-scroll{display:flex;flex-direction:column;flex:1;}
     #desktop-scan-area{display:none !important;}
+
+    /* Analytics panel */
+    .an-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+    .an-card{background:var(--surf);border:1.5px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+    .an-val{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;line-height:1;margin-bottom:4px;}
+    .an-lbl{font-size:0.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;}
+    .funnel-row{display:flex;align-items:center;gap:10px;padding:6px 0;}
+    .funnel-bar-wrap{flex:1;height:26px;background:var(--surf2);border-radius:6px;overflow:hidden;}
+    .funnel-bar{height:100%;border-radius:6px;transition:width .5s ease;}
+    .funnel-lbl{font-size:0.76rem;min-width:88px;}
+    .funnel-count{font-family:'JetBrains Mono',monospace;font-size:0.74rem;min-width:28px;text-align:right;color:var(--muted);}
+    .suburb-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;font-size:0.8rem;margin-bottom:5px;}
+    .won-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;margin-bottom:5px;}
+    .deal-val{width:90px;background:var(--surf2);border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text);text-align:right;outline:none;}
+    .deal-val:focus{border-color:var(--accent);}
+    @media(max-width:768px){.an-grid{grid-template-columns:repeat(2,1fr);}}
+    #heatmap-container{flex:1;min-height:400px;}
+    .email-modal{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
+    .email-modal.show{display:flex;}
+    .email-box{background:var(--surf);border:1.5px solid var(--border);border-radius:14px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
+    .email-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .email-body-wrap{padding:16px 20px;display:flex;flex-direction:column;gap:11px;}
+    .email-field{display:flex;flex-direction:column;gap:4px;}
+    .email-field label{font-size:0.67rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+    .email-field input,.email-field textarea{background:var(--surf2);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.84rem;outline:none;transition:border-color .15s;width:100%;}
+    .email-field input:focus,.email-field textarea:focus{border-color:var(--accent);}
+    .email-field textarea{min-height:150px;resize:vertical;line-height:1.6;}
+    .email-foot{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
   </style>
 </head>
 <body>
@@ -646,6 +674,8 @@
     <div class="topbar-nav">
       <button class="tab-btn on" data-tab="scan">Scan</button>
       <button class="tab-btn" data-tab="crm">Leads<span class="tab-badge" id="crm-count" style="display:none"></span></button>
+      <button class="tab-btn" data-tab="analytics">Analytics</button>
+      <button class="tab-btn" data-tab="heatmap">Map</button>
       <button class="tab-btn" data-tab="settings">Settings</button>
       <button class="tab-btn" data-tab="team" id="team-tab-btn" style="display:none">Team</button>
       <button class="tab-btn" data-tab="admin" id="admin-tab-btn" style="display:none;color:var(--red)">Admin</button>
@@ -891,6 +921,60 @@
         </div>
 
 <!-- Settings -->
+        <!-- Analytics Panel -->
+        <div class="panel" id="panel-analytics">
+          <div class="scroll"><div class="scroll-inner">
+            <div class="an-grid" id="an-summary">
+              <div class="an-card"><div class="an-val" id="an-total">0</div><div class="an-lbl">Total Leads</div></div>
+              <div class="an-card"><div class="an-val" id="an-won" style="color:var(--green)">0</div><div class="an-lbl">Won</div></div>
+              <div class="an-card"><div class="an-val" id="an-winrate" style="color:var(--accent)">0%</div><div class="an-lbl">Win Rate</div></div>
+              <div class="an-card"><div class="an-val" id="an-pipeline" style="color:var(--amber)">0</div><div class="an-lbl">In Pipeline</div></div>
+            </div>
+            <div class="settings-section">
+              <div class="sec-label">Conversion Funnel</div>
+              <div id="an-funnel" style="margin-top:12px;"></div>
+            </div>
+            <div class="settings-section">
+              <div class="sec-label">Leads Found Over Time</div>
+              <canvas id="an-chart" height="180" style="width:100%;margin-top:12px;"></canvas>
+            </div>
+            <div class="settings-section">
+              <div class="sec-label">Top Locations</div>
+              <div id="an-suburbs" style="margin-top:10px;"></div>
+            </div>
+            <div class="settings-section">
+              <div class="sec-label">Won Deals - Revenue Tracker</div>
+              <div style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;">Log the value of each won deal to track your total revenue.</div>
+              <div id="an-won-list"></div>
+              <div style="margin-top:12px;padding:12px 16px;background:var(--accent-pale);border:1px solid rgba(26,158,110,0.2);border-radius:8px;display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:0.82rem;font-weight:600;">Total Revenue</span>
+                <span id="an-revenue" style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent);">$0</span>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <!-- Heatmap Panel -->
+        <div class="panel" id="panel-heatmap">
+          <div style="height:100%;display:flex;flex-direction:column;">
+            <div style="padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--surf);flex-shrink:0;">
+              <div style="font-size:0.82rem;font-weight:600;">Lead Heat Map</div>
+              <div class="heatmap-legend" style="display:flex;gap:12px;">
+                <span><span class="legend-dot" style="background:#d63031;"></span> Hot (75+)</span>
+                <span><span class="legend-dot" style="background:#c07800;"></span> Good (50+)</span>
+                <span><span class="legend-dot" style="background:#1a9e6e;"></span> Warm</span>
+              </div>
+              <button class="btn btn-ghost btn-sm" id="heatmap-fit-btn" style="margin-left:auto;">Fit all leads</button>
+            </div>
+            <div id="heatmap-container"></div>
+            <div id="heatmap-empty" style="display:none;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--muted);">
+              <div style="font-size:2rem;">🗺️</div>
+              <div style="font-size:0.88rem;font-weight:600;">No leads with location data</div>
+              <div style="font-size:0.78rem;">Run a scan to start building your map</div>
+            </div>
+          </div>
+        </div>
+
         <div class="panel" id="panel-settings">
           <div class="scroll">
           <div class="scroll-inner">
@@ -1160,12 +1244,34 @@
   <div class="mob-nav-inner">
     <button class="mnav on" data-tab="scan" onclick="switchTab(&#39;scan&#39;)"><span class="mnav-icon">⌕</span><span>Scan</span></button>
     <button class="mnav" data-tab="crm" onclick="switchTab(&#39;crm&#39;)"><span class="mnav-icon">🗂</span><span>Leads</span><span class="mnav-badge" id="mnav-badge" style="display: none;"></span></button>
+    <button class="mnav" data-tab="analytics" onclick="switchTab(&#39;analytics&#39;)"><span class="mnav-icon">📊</span><span>Analytics</span></button>
+    <button class="mnav" data-tab="heatmap" onclick="switchTab(&#39;heatmap&#39;)"><span class="mnav-icon">🗺️</span><span>Map</span></button>
     <button class="mnav" data-tab="settings" onclick="switchTab(&#39;settings&#39;)"><span class="mnav-icon">⚙</span><span>Settings</span></button>
     <button class="mnav" data-tab="team" onclick="switchTab(&#39;team&#39;)" id="team-mob-btn" style="display:none"><span class="mnav-icon">👥</span><span>Team</span></button>
     <button class="mnav" data-tab="admin" onclick="switchTab(&#39;admin&#39;)" id="admin-mob-btn" style="display:none"><span class="mnav-icon">🔐</span><span>Admin</span></button>
   </div>
 </div>
 
+<!-- Email Modal -->
+<div class="email-modal" id="email-modal">
+  <div class="email-box">
+    <div class="email-head">
+      <div style="font-weight:700;font-size:0.95rem;">Send Email</div>
+      <button onclick="closeEmailModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.3rem;line-height:1;">&#10005;</button>
+    </div>
+    <div class="email-body-wrap">
+      <div class="email-field"><label>To</label><input type="email" id="em-to" placeholder="recipient@example.com"/></div>
+      <div class="email-field"><label>Subject</label><input type="text" id="em-subject"/></div>
+      <div class="email-field"><label>Message</label><textarea id="em-body"></textarea></div>
+      <div id="em-status" style="font-size:0.78rem;color:var(--accent);min-height:16px;"></div>
+    </div>
+    <div class="email-foot">
+      <button class="btn btn-ghost btn-sm" onclick="closeEmailModal()">Cancel</button>
+      <button class="btn btn-ghost btn-sm" onclick="openMailtoFallback()">Open in Mail app</button>
+      <button class="btn btn-primary btn-sm" onclick="sendEmailJS()">Send &rarr;</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <!-- Upgrade Modal -->
@@ -1179,6 +1285,9 @@
   </div>
 </div>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -2087,6 +2196,8 @@ function switchTab(id){
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===`panel-${id}`));
   document.querySelectorAll('.mnav[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
   if(id==='crm')renderCRM();
+  if(id==='analytics')renderAnalytics();
+  if(id==='heatmap')renderHeatmap();
   if(id==='team'&&typeof window._initTeamPanel==='function')window._initTeamPanel();
   // Update active state in team sidebar if present
   document.querySelectorAll('.tsidebar-btn').forEach(function(b){
@@ -2510,6 +2621,7 @@ function renderCard(l){
       <div class="pitch-actions" id="pitch-actions-${l.id}" style="display:none">
         <button class="btn btn-ghost btn-xs" onclick="copyPitch('${l.id}')">📋 Copy</button>
         <button class="btn btn-ghost btn-xs" onclick="openMailto('${l.id}','${esc(l.email||'')}')">✉ Open in Mail</button>
+        <button class="btn btn-ghost btn-xs" onclick="openEmailModal('${l.id}')">&#128231; Send Email</button>
         <button class="btn btn-danger btn-xs" onclick="clearPitch('${l.id}')">✕ Clear</button>
       </div>
     </div>
@@ -2732,6 +2844,180 @@ function clearFeedId(id){const f=document.getElementById(id);if(f)f.innerHTML=''
 function feedLnId(fid,ic,html,cls){const f=document.getElementById(fid);if(!f)return;const t=new Date();const ts=`${t.getMinutes().toString().padStart(2,'0')}:${t.getSeconds().toString().padStart(2,'0')}`;const d=document.createElement('div');d.className='fline';d.innerHTML=`<span class="fts">${ts}</span><span>${ic}</span><span class="fmsg ${cls||''}">${html}</span>`;f.appendChild(d);f.scrollTop=f.scrollHeight;}
 function setStat(dc,st){const chip=document.getElementById('status-chip');const dot=document.getElementById('status-dot');const txt=document.getElementById('status-text');if(!chip)return;dot.className='sp-dot'+(dc==='on'?' pulse':'');txt.textContent=st;chip.className='status-pill'+(dc==='on'?' active':'');}
 function refreshBadge(){const b=document.getElementById('crm-count');const mb=document.getElementById('mnav-badge');if(leads.length){b.style.display='inline-flex';b.textContent=leads.length;if(mb){mb.style.display='flex';mb.textContent=leads.length;}}else{b.style.display='none';if(mb)mb.style.display='none';}}
+
+// Analytics
+var _analyticsChart=null;
+function renderAnalytics(){
+  var total=leads.length;
+  var won=leads.filter(function(l){return l.status==='won';}).length;
+  var contacted=leads.filter(function(l){return l.status==='contacted';}).length;
+  var pitched=leads.filter(function(l){return l.status==='pitched';}).length;
+  var pipeline=contacted+pitched;
+  var winRate=total>0?Math.round((won/total)*100):0;
+  var el;
+  el=document.getElementById('an-total');if(el)el.textContent=total;
+  el=document.getElementById('an-won');if(el)el.textContent=won;
+  el=document.getElementById('an-winrate');if(el)el.textContent=winRate+'%';
+  el=document.getElementById('an-pipeline');if(el)el.textContent=pipeline;
+  // Funnel
+  var stages=[
+    {label:'New',count:leads.filter(function(l){return l.status==='new';}).length,color:'var(--blue)'},
+    {label:'Contacted',count:contacted,color:'var(--amber)'},
+    {label:'Pitched',count:pitched,color:'var(--accent)'},
+    {label:'Won',count:won,color:'var(--green)'}
+  ];
+  var maxCount=Math.max.apply(null,stages.map(function(s){return s.count;}).concat([1]));
+  var funnelEl=document.getElementById('an-funnel');
+  if(funnelEl){
+    funnelEl.innerHTML=stages.map(function(s){
+      return '<div class="funnel-row"><div class="funnel-lbl">'+s.label+'</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:'+Math.round((s.count/maxCount)*100)+'%;background:'+s.color+';"></div></div><div class="funnel-count">'+s.count+'</div></div>';
+    }).join('');
+  }
+  // Chart
+  var byDay={};
+  leads.forEach(function(l){
+    var d=new Date(l.savedAt||0);
+    var day=d.toISOString().slice(0,10);
+    byDay[day]=(byDay[day]||0)+1;
+  });
+  var sortedDates=Object.keys(byDay).sort().slice(-14);
+  var ctx=document.getElementById('an-chart');
+  if(ctx&&typeof Chart!=='undefined'){
+    if(_analyticsChart)_analyticsChart.destroy();
+    _analyticsChart=new Chart(ctx,{
+      type:'bar',
+      data:{
+        labels:sortedDates.map(function(d){return d.slice(5);}),
+        datasets:[{label:'Leads',data:sortedDates.map(function(d){return byDay[d];}),backgroundColor:'rgba(26,158,110,0.7)',borderRadius:4}]
+      },
+      options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:1}}}}
+    });
+  }
+  // Top suburbs
+  var bySub={};
+  leads.forEach(function(l){
+    var s=l.locationName||(l.address||'').split(',')[0].trim()||'Unknown';
+    if(!bySub[s])bySub[s]={total:0,won:0};
+    bySub[s].total++;
+    if(l.status==='won')bySub[s].won++;
+  });
+  var topSubs=Object.entries(bySub).sort(function(a,b){return b[1].total-a[1].total;}).slice(0,6);
+  var subEl=document.getElementById('an-suburbs');
+  if(subEl){
+    subEl.innerHTML=topSubs.length?topSubs.map(function(entry){
+      return '<div class="suburb-row"><span>'+esc(entry[0])+'</span><span style="display:flex;gap:12px;"><span style="font-size:.74rem;color:var(--muted);">'+entry[1].total+' leads</span><span style="font-size:.74rem;color:var(--green);font-weight:600;">'+entry[1].won+' won</span></span></div>';
+    }).join(''):'<div style="color:var(--muted);font-size:.82rem;">No data yet</div>';
+  }
+  // Won deals
+  var wonLeads=leads.filter(function(l){return l.status==='won';});
+  var wonEl=document.getElementById('an-won-list');
+  if(wonEl){
+    wonEl.innerHTML=wonLeads.length?wonLeads.map(function(l){
+      return '<div class="won-row"><span style="font-size:.82rem;font-weight:600;">'+esc(l.name)+'</span><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:.74rem;color:var(--muted);">$</span><input class="deal-val" type="number" placeholder="0" value="'+(l.dealValue||'')+'" data-id="'+l.id+'" onchange="saveDealValue(this.dataset.id,this.value)"/></div></div>';
+    }).join(''):'<div style="color:var(--muted);font-size:.82rem;padding:8px 0;">No won deals yet.</div>';
+  }
+  var totalRev=leads.filter(function(l){return l.status==='won'&&l.dealValue;}).reduce(function(s,l){return s+parseFloat(l.dealValue||0);},0);
+  var revEl=document.getElementById('an-revenue');
+  if(revEl)revEl.textContent='$'+totalRev.toLocaleString('en-AU',{minimumFractionDigits:0});
+}
+function saveDealValue(id,value){
+  var lead=leads.find(function(l){return l.id===id;});
+  if(!lead)return;
+  lead.dealValue=parseFloat(value)||0;
+  saveLead(lead);
+  var totalRev=leads.filter(function(l){return l.status==='won'&&l.dealValue;}).reduce(function(s,l){return s+parseFloat(l.dealValue||0);},0);
+  var revEl=document.getElementById('an-revenue');
+  if(revEl)revEl.textContent='$'+totalRev.toLocaleString('en-AU',{minimumFractionDigits:0});
+}
+
+// Heatmap
+var _map=null,_mapMarkers=[];
+function renderHeatmap(){
+  var geoLeads=leads.filter(function(l){return l.lat&&l.lon;});
+  var emptyEl=document.getElementById('heatmap-empty');
+  var containerEl=document.getElementById('heatmap-container');
+  if(!geoLeads.length){
+    if(emptyEl){emptyEl.style.display='flex';}
+    return;
+  }
+  if(emptyEl)emptyEl.style.display='none';
+  if(typeof L==='undefined')return;
+  if(!_map){
+    _map=L.map('heatmap-container',{zoomControl:true});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OpenStreetMap',maxZoom:19}).addTo(_map);
+  }
+  _mapMarkers.forEach(function(m){_map.removeLayer(m);});
+  _mapMarkers=[];
+  geoLeads.forEach(function(l){
+    var sc=l.gapScore||0;
+    var color=sc>=75?'#d63031':sc>=50?'#c07800':sc>=25?'#1a9e6e':'#6a8c80';
+    var sz=sc>=75?14:sc>=50?12:10;
+    var icon=L.divIcon({className:'',html:'<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+color+';border:2px solid rgba(255,255,255,.85);box-shadow:0 1px 5px rgba(0,0,0,.35);"></div>',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
+    var marker=L.marker([l.lat,l.lon],{icon:icon}).addTo(_map);
+    marker.bindPopup('<div style="font-family:sans-serif;min-width:150px;"><strong>'+esc(l.name)+'</strong><br><small style="color:#666">'+esc(l.address||'')+'</small><br>Score: <strong style="color:'+color+'">'+sc+'</strong></div>');
+    _mapMarkers.push(marker);
+  });
+  var fitBtn=document.getElementById('heatmap-fit-btn');
+  if(fitBtn)fitBtn.onclick=fitHeatmap;
+  fitHeatmap();
+  setTimeout(function(){if(_map)_map.invalidateSize();},200);
+}
+function fitHeatmap(){
+  if(!_map||!_mapMarkers.length)return;
+  var group=L.featureGroup(_mapMarkers);
+  _map.fitBounds(group.getBounds().pad(0.1));
+}
+
+// Email modal
+var _emailLeadId=null;
+function openEmailModal(leadId){
+  var lead=leads.find(function(l){return l.id===leadId;});
+  if(!lead)return;
+  _emailLeadId=leadId;
+  var toEl=document.getElementById('em-to');
+  var subEl=document.getElementById('em-subject');
+  var bodyEl=document.getElementById('em-body');
+  if(toEl)toEl.value=lead.email||'';
+  if(subEl)subEl.value='Quick question about '+(lead.name||'your business');
+  var pitchEl=document.getElementById('pitch-out-'+leadId);
+  var pitchText=pitchEl?pitchEl.textContent.trim():'';
+  if(bodyEl)bodyEl.value=pitchText||buildDefaultEmailBody(lead);
+  var statusEl=document.getElementById('em-status');
+  if(statusEl)statusEl.textContent='';
+  var modal=document.getElementById('email-modal');
+  if(modal)modal.classList.add('show');
+}
+function buildDefaultEmailBody(lead){
+  var missing=[];
+  if(!lead.website)missing.push('a website');
+  var hasSoc=!!(lead.facebook||lead.instagram||lead.twitter||lead.tiktok);
+  if(!hasSoc)missing.push('social media');
+  var gaps=missing.length?'I noticed you currently do not have '+missing.join(' or ')+'.':'';
+  return 'Hi there,\n\n'+gaps+' I help local businesses build their online presence and would love to have a quick chat about how I can help.\n\nWould you be open to a 15-minute call this week?\n\nBest regards';
+}
+function closeEmailModal(){
+  var modal=document.getElementById('email-modal');
+  if(modal)modal.classList.remove('show');
+  _emailLeadId=null;
+}
+function openMailtoFallback(){
+  var to=(document.getElementById('em-to').value||'').trim();
+  var sub=encodeURIComponent(document.getElementById('em-subject').value||'');
+  var body=encodeURIComponent(document.getElementById('em-body').value||'');
+  window.open('mailto:'+to+'?subject='+sub+'&body='+body);
+}
+function sendEmailJS(){
+  var to=(document.getElementById('em-to').value||'').trim();
+  var statusEl=document.getElementById('em-status');
+  if(!to){if(statusEl)statusEl.textContent='Please enter an email address.';return;}
+  openMailtoFallback();
+  if(statusEl)statusEl.textContent='Opening your mail app...';
+  setTimeout(closeEmailModal,1500);
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var emailModal=document.getElementById('email-modal');
+  if(emailModal)emailModal.addEventListener('click',function(e){if(e.target===emailModal)closeEmailModal();});
+});
 </script>
 
 <!-- Admin Panel Logic -->
