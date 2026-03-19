@@ -1044,7 +1044,7 @@
             <div class="an-grid" id="an-summary">
               <div class="an-card"><div class="an-val" id="an-total">0</div><div class="an-lbl">Total Leads</div></div>
               <div class="an-card"><div class="an-val" id="an-won" style="color:var(--green)">0</div><div class="an-lbl">Won</div></div>
-              <div class="an-card"><div class="an-val" id="an-winrate" style="color:var(--accent)">0%</div><div class="an-lbl">Win Rate</div></div>
+              <div class="an-card"><div class="an-val" id="an-winrate" style="color:var(--accent)">0%</div><div class="an-lbl">Win Rate</div><div id="an-winrate-note" style="font-size:0.65rem;color:var(--muted);margin-top:4px;">No closed deals yet</div></div>
               <div class="an-card"><div class="an-val" id="an-pipeline" style="color:var(--amber)">0</div><div class="an-lbl">In Pipeline</div></div>
             </div>
             <div class="settings-section">
@@ -2889,7 +2889,7 @@ function attachCardListeners(){
   document.querySelectorAll('.lctop').forEach(top=>{top.addEventListener('click',()=>{const id=top.id.replace('ltop-','');const exp=document.getElementById(`lexp-${id}`);const chev=document.getElementById(`chev-${id}`);if(!exp)return;const open=exp.style.display==='block';
     exp.style.display=open?'none':'block';
     top.closest('.lcard').classList.toggle('open',!open);;});});
-  document.querySelectorAll('.pip-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.lead,stage=btn.dataset.stage;const idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;leads[idx].status=leads[idx].status===stage?'new':stage;saveLead(leads[idx]);const pip=document.getElementById(`pip-${id}`);pip.querySelectorAll('.pip-btn').forEach(b=>b.className=`pip-btn${leads[idx].status===b.dataset.stage?' active-'+b.dataset.stage:''}`);const stag=document.getElementById(`stag-${id}`);const st=statusStyle(leads[idx].status);if(stag){stag.textContent=st.label;stag.style.background=st.bg;stag.style.color=st.c;stag.style.border=`1px solid ${st.bd}`;}document.getElementById('cs-w').textContent=leads.filter(l=>l.status==='won').length;});});
+  document.querySelectorAll('.pip-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.lead,stage=btn.dataset.stage;const idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;leads[idx].status=stage;saveLead(leads[idx]);const pip=document.getElementById('pip-'+id);if(pip)pip.querySelectorAll('.pip-btn').forEach(b=>b.className='pip-btn'+(leads[idx].status===b.dataset.stage?' active-'+b.dataset.stage:''));const stag=document.getElementById('stag-'+id);const st=statusStyle(leads[idx].status);if(stag){stag.textContent=st.label;stag.style.background=st.bg;stag.style.color=st.c;stag.style.border='1px solid '+st.bd;}document.getElementById('cs-w').textContent=leads.filter(l=>l.status==='won').length;if(typeof renderPipelineSection==='function')renderPipelineSection();if(typeof refreshPipelineBadge==='function')refreshPipelineBadge();});});
   document.querySelectorAll('.save-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.lead,idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;['website','phone','email','hours','category'].forEach(f=>{const el=document.getElementById(`ef-${id}-${f}`);if(!el)return;leads[idx][f]=el.value.trim()||null;});saveLead(leads[idx]);const ind=document.getElementById(`sind-${id}`);if(ind){ind.textContent='✓ Saved';ind.style.color='var(--green)';setTimeout(()=>ind.textContent='',2000);}toast('Saved');});});
   document.querySelectorAll('.nt').forEach(ta=>{ta.addEventListener('blur',()=>{const id=ta.id.replace('nt-',''),idx=leads.findIndex(l=>l.id===id);if(idx!==-1){leads[idx].notes=ta.value;saveLead(leads[idx]);}});});
   document.querySelectorAll('.del-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();if(!confirm('Delete this lead?'))return;const id=btn.dataset.lead;leads=leads.filter(l=>l.id!==id);removeLead(id);renderCRM();refreshBadge();toast('Deleted');});});
@@ -3071,15 +3071,21 @@ var _analyticsChart=null;
 function renderAnalytics(){
   var total=leads.length;
   var won=leads.filter(function(l){return l.status==='won';}).length;
+  var lost=leads.filter(function(l){return l.status==='lost';}).length;
   var contacted=leads.filter(function(l){return l.status==='contacted';}).length;
   var pitched=leads.filter(function(l){return l.status==='pitched';}).length;
   var pipeline=contacted+pitched;
-  var winRate=total>0?Math.round((won/total)*100):0;
+  // Win rate = wins / (wins + losses) - only count decided outcomes
+  var decided=won+lost;
+  var winRate=decided>0?Math.round((won/decided)*100):0;
   var el;
   el=document.getElementById('an-total');if(el)el.textContent=total;
   el=document.getElementById('an-won');if(el)el.textContent=won;
   el=document.getElementById('an-winrate');if(el)el.textContent=winRate+'%';
   el=document.getElementById('an-pipeline');if(el)el.textContent=pipeline;
+  // Update win rate subtitle
+  var wrNote=document.getElementById('an-winrate-note');
+  if(wrNote)wrNote.textContent=decided>0?won+' won, '+lost+' lost':'No closed deals yet';
   // Funnel
   var stages=[
     {label:'New',count:leads.filter(function(l){return l.status==='new';}).length,color:'var(--blue)'},
