@@ -108,6 +108,11 @@ async function verifyStripeSignature(payload, sigHeader, secret) {
     const parts    = sigHeader.split(',');
     const timestamp = parts.find(p => p.startsWith('t=')).slice(2);
     const signature = parts.find(p => p.startsWith('v1=')).slice(3);
+
+    // Reject replayed webhooks older than 5 minutes (Stripe's recommendation)
+    const age = Math.floor(Date.now() / 1000) - Number(timestamp);
+    if (age > 300 || age < -60) return false;
+
     const signedPayload = `${timestamp}.${payload}`;
 
     const key = await crypto.subtle.importKey(

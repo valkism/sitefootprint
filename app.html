@@ -1904,7 +1904,7 @@ const Engine = (() => {
         const body={lat,lon,radius:Math.min(radiusM,50000),keyword,locationName:locationName||''};
         const r=await fetch('/api/places',{
           method:'POST',
-          headers:{'Content-Type':'application/json','X-Places-Key':apiKey},
+          headers:{'Content-Type':'application/json'},
           body:JSON.stringify(body)
         });
 
@@ -2094,9 +2094,6 @@ function isDesktop(){return window.innerWidth>768;}
 
 function initApp(){
   leads=[];
-  // Migrate old unscoped gmaps key to scoped storage
-  var _oldKey=localStorage.getItem('fp-gmaps-key');
-  if(_oldKey&&!lsGet('gmaps-key')){lsSet('gmaps-key',_oldKey);localStorage.removeItem('fp-gmaps-key');}
   // Load user-scoped datasource preference
   _dataSource=lsGet('datasource')||'osm';
   loadCommunityFlags();
@@ -2264,13 +2261,10 @@ function initSettingsGmaps(){
 }
 // ── Google API key stored in Firestore — shared across devices and team members ──
 async function loadGmapsKeyFromFirestore(){
-  // First check localStorage (instant, works offline)
-  var lsKey=localStorage.getItem('fp-gmaps-key-'+(_user?_user.uid:'anon'));
-  if(lsKey){window._cachedGmapsKey=lsKey;return lsKey;}
-  // Also check legacy key location
-  var legacyKey=localStorage.getItem('fp-gmaps-key');
-  if(legacyKey){window._cachedGmapsKey=legacyKey;return legacyKey;}
-  // Try Firestore
+  // Check sessionStorage first (tab-scoped, not persisted to disk — safer than localStorage for API keys)
+  var ssKey=sessionStorage.getItem('fp-gmaps-key-'+(_user?_user.uid:'anon'));
+  if(ssKey){window._cachedGmapsKey=ssKey;return ssKey;}
+  // Try Firestore (authoritative source)
   if(!_user)return null;
   try{
     const teamId=_udoc&&_udoc.teamId;
@@ -2278,12 +2272,12 @@ async function loadGmapsKeyFromFirestore(){
     if(teamId){
       snap=await _db.collection('teams').doc(teamId).get();
       const key=snap.data()&&snap.data().gmapsKey||'';
-      if(key){window._cachedGmapsKey=key;localStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
+      if(key){window._cachedGmapsKey=key;sessionStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
       return key||null;
     } else {
       snap=await _db.collection('users').doc(_user.uid).get();
       const key=snap.data()&&snap.data().gmapsKey||'';
-      if(key){window._cachedGmapsKey=key;localStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
+      if(key){window._cachedGmapsKey=key;sessionStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
       return key||null;
     }
   }catch(e){
@@ -2293,13 +2287,13 @@ async function loadGmapsKeyFromFirestore(){
 }
 window.loadGmapsKeyFromFirestore=loadGmapsKeyFromFirestore;
 async function saveGmapsKeyToFirestore(key){
-  // Always save to localStorage first so it works immediately
+  // Cache in sessionStorage (tab-scoped) so it's available immediately
   if(_user){
-    if(key){localStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
-    else{localStorage.removeItem('fp-gmaps-key-'+_user.uid);}
+    if(key){sessionStorage.setItem('fp-gmaps-key-'+_user.uid,key);}
+    else{sessionStorage.removeItem('fp-gmaps-key-'+_user.uid);}
   }
   window._cachedGmapsKey=key||null;
-  // Then try Firestore (best effort)
+  // Persist to Firestore (authoritative store)
   if(!_user)return;
   try{
     const teamId=_udoc&&_udoc.teamId;
@@ -2312,7 +2306,6 @@ async function saveGmapsKeyToFirestore(key){
       await _db.collection('users').doc(_user.uid).update({gmapsKey:key});
     }
   }catch(e){
-    // Firestore failed but localStorage worked - key is still usable
     console.warn('saveGmapsKey Firestore:',e);
   }
 }

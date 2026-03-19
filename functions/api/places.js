@@ -8,20 +8,25 @@
 
 export async function onRequestPost(context) {
   const { request, env } = context;
-  const allowedOrigin = env.ALLOWED_ORIGIN || '*';
+
+  // Fail closed — never fall back to wildcard CORS
+  const allowedOrigin = env.ALLOWED_ORIGIN;
+  if (!allowedOrigin) {
+    return new Response(JSON.stringify({ error: 'Server misconfigured', results: [] }), { status: 500 });
+  }
+
   const requestOrigin = request.headers.get('Origin') || '';
   const cors = {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, X-Places-Key',
+    'Access-Control-Allow-Headers': 'Content-Type',
   };
-  if (allowedOrigin !== '*' && requestOrigin && allowedOrigin !== '*') {
-    const allowed = allowedOrigin.split(',').map(s => s.trim());
-    const originOk = allowed.some(a => requestOrigin.startsWith(a) || a === '*');
-    if (!originOk) {
-      return new Response('Forbidden', { status: 403, headers: cors });
-    }
+
+  const allowed = allowedOrigin.split(',').map(s => s.trim());
+  if (requestOrigin && !allowed.some(a => requestOrigin.startsWith(a))) {
+    return new Response('Forbidden', { status: 403, headers: cors });
   }
+
   if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
   let body;
@@ -32,8 +37,8 @@ export async function onRequestPost(context) {
     });
   }
 
-  const userKey = request.headers.get('X-Places-Key');
-  const apiKey = userKey || env.GOOGLE_PLACES_KEY;
+  // Only use the server-side key — never accept keys from the client
+  const apiKey = env.GOOGLE_PLACES_KEY;
 
   if (!apiKey) {
     return new Response(JSON.stringify({

@@ -12,14 +12,18 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  const allowedOrigin = env.ALLOWED_ORIGIN || '*';
+  const allowedOrigin = env.ALLOWED_ORIGIN;
+  if (!allowedOrigin) {
+    return new Response(JSON.stringify({ error: 'Server misconfigured', url: null }), { status: 500 });
+  }
+
   const requestOrigin = request.headers.get('Origin') || '';
   const corsHeaders = {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
-  if (allowedOrigin !== '*' && requestOrigin && !requestOrigin.startsWith(allowedOrigin)) {
+  if (requestOrigin && !requestOrigin.startsWith(allowedOrigin)) {
     return new Response('Forbidden', { status: 403 });
   }
   if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
@@ -80,10 +84,12 @@ export async function onRequestPost(context) {
   const planPrices = { solo: '$19', partnership: '$39', agency: '$89', enterprise: '$199' };
 
   try {
-    const origin = allowedOrigin !== '*' ? allowedOrigin : new URL(request.url).origin;
+    const origin = allowedOrigin;
 
     // Find or create Stripe customer
-    const searchRes = await stripeRequest(stripeKey, `customers/search?query=email:"${email}"&limit=1`);
+    // Sanitize email before interpolating into the Stripe search query
+    const safeEmail = email.replace(/['"\\]/g, '');
+    const searchRes = await stripeRequest(stripeKey, `customers/search?query=email:"${safeEmail}"&limit=1`);
     let customerId = searchRes.data?.[0]?.id;
     let isExistingCustomer = !!customerId;
 
