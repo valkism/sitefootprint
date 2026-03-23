@@ -2134,11 +2134,25 @@ const Engine = (() => {
     let s=0;const tags=[];
     const hasSoc=!!(biz.facebook||biz.instagram||biz.twitter||biz.tiktok);
     const breakdown=[];
-    if(!biz.website){s+=35;tags.push({text:'No website',cls:'gap-critical'});breakdown.push({label:'No website',pts:35});}
-    if(!biz.phone&&rules.noPhone){s+=12;tags.push({text:'No phone',cls:'gap-high'});breakdown.push({label:'No phone',pts:12});}
-    if(!biz.email&&rules.noEmail){s+=8;tags.push({text:'No email',cls:'gap-high'});breakdown.push({label:'No email',pts:8});}
-    if(!hasSoc&&rules.noSocial){s+=15;tags.push({text:'No social media',cls:'gap-high'});breakdown.push({label:'No social media',pts:15});}
-    if(!biz.website&&!hasSoc){s+=10;tags.push({text:'No online presence at all',cls:'gap-critical'});breakdown.push({label:'No presence bonus',pts:10});}
+
+    // Online presence gaps drive the score — these are the pitch opportunities
+    if(!biz.website){
+      s+=40;tags.push({text:'No website',cls:'gap-critical'});breakdown.push({label:'No website',pts:40});
+    }
+    if(!hasSoc&&rules.noSocial){
+      s+=25;tags.push({text:'No social media',cls:'gap-high'});breakdown.push({label:'No social media',pts:25});
+    }
+    // Fully dark online — no website AND no social is the hottest possible lead
+    if(!biz.website&&!hasSoc){
+      s+=20;tags.push({text:'Fully offline',cls:'gap-critical'});breakdown.push({label:'Fully offline bonus',pts:20});
+    }
+    // Having phone/email does NOT hurt the score — they're easier to pitch.
+    // Only flag when there's truly no way to reach them at all (tiny signal).
+    const hasContact=!!(biz.phone||biz.email);
+    if(!hasContact){
+      s+=5;tags.push({text:'Hard to contact',cls:'gap-medium'});breakdown.push({label:'No contact info',pts:5});
+    }
+
     s=Math.min(s,100);
     const label=s>=75?'🔥 Hot':s>=50?'⚡ Good':s>=25?'✅ Warm':'❄️ Weak';
     const isLead=(rules.noWebsite&&!biz.website)||(rules.noPhone&&!biz.phone)||(rules.noEmail&&!biz.email)||(rules.noSocial&&!hasSoc);
