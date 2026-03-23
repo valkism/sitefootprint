@@ -434,77 +434,130 @@
     @media(max-width:600px){.llist{grid-template-columns:1fr;gap:10px;}}
 
     /* Card tile */
-    .lcard{background:var(--surf);border:1px solid var(--border);border-radius:14px;overflow:hidden;
-      transition:box-shadow .18s,transform .18s,border-color .18s;cursor:pointer;position:relative;}
-    .lcard:hover{box-shadow:0 6px 24px rgba(0,0,0,0.1);transform:translateY(-2px);border-color:var(--border2);}
+    .lcard{
+      background:var(--surf);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+      transition:box-shadow .2s,transform .2s,border-color .2s;cursor:pointer;position:relative;
+      box-shadow:0 2px 8px rgba(79,70,229,0.06);
+    }
+    .lcard:hover{box-shadow:0 8px 24px rgba(79,70,229,0.13);transform:translateY(-2px);border-color:var(--border2);}
+    .lcard.open{border-color:var(--border2);box-shadow:0 8px 32px rgba(79,70,229,0.14);}
     .lcard.hot{border-top:3px solid var(--red);}
     .lcard.good{border-top:3px solid var(--amber);}
     .lcard.warm{border-top:3px solid var(--green);}
 
     /* Card preview (always visible) */
-    .lctop{padding:16px;display:flex;flex-direction:column;gap:10px;}
+    .lctop{padding:16px 16px 12px;display:flex;flex-direction:column;gap:8px;}
 
     /* Score badge top-right */
-    .lcard-score{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;
-      font-size:0.88rem;font-weight:800;border:2px solid;}
-    .lcard-score.sc-hot{background:var(--red-pale);color:var(--red);border-color:rgba(214,48,49,.25);}
-    .lcard-score.sc-good{background:var(--amber-pale);color:var(--amber);border-color:rgba(192,120,0,.25);}
-    .lcard-score.sc-warm{background:var(--green-pale);color:var(--green);border-color:rgba(26,158,110,.25);}
+    .lcard-score{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;
+      font-size:0.9rem;font-weight:800;border:2px solid;}
+    .lcard-score.sc-hot{background:rgba(220,38,38,0.08);color:#DC2626;border-color:rgba(220,38,38,0.22);}
+    .lcard-score.sc-good{background:rgba(217,119,6,0.08);color:#D97706;border-color:rgba(217,119,6,0.22);}
+    .lcard-score.sc-warm{background:rgba(16,185,129,0.08);color:#10B981;border-color:rgba(16,185,129,0.22);}
     .lcard-score.sc-cold{background:var(--surf2);color:var(--muted);border-color:var(--border);}
 
     /* Business name + address */
-    .lnm{font-size:0.92rem;font-weight:700;letter-spacing:-0.02em;line-height:1.3;
-      padding-right:52px;/* space for score badge */}
-    .lmeta{font-size:0.74rem;color:var(--muted);display:flex;align-items:center;gap:4px;}
+    .lnm{font-size:0.95rem;font-weight:700;letter-spacing:-0.02em;line-height:1.3;
+      padding-right:56px;color:var(--text);}
+    .lmeta{font-size:0.76rem;color:var(--muted);display:flex;align-items:center;gap:4px;}
     .lmeta-dot{width:3px;height:3px;border-radius:50%;background:var(--dim);flex-shrink:0;}
 
     /* Gap pills */
-    .lgaps{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px;}
-    .lgap-pill{font-size:0.68rem;font-weight:600;padding:3px 8px;border-radius:99px;border:1px solid;}
-    .lgap-pill.gp-site{background:var(--red-pale);color:var(--red);border-color:rgba(214,48,49,.2);}
-    .lgap-pill.gp-social{background:var(--surf3);color:var(--muted);border-color:var(--border);}
-    .lgap-pill.gp-phone{background:var(--amber-pale);color:var(--amber);border-color:rgba(192,120,0,.2);}
-    .lgap-pill.gp-email{background:var(--blue-pale);color:var(--blue);border-color:rgba(26,111,168,.2);}
+    .lgaps{display:flex;gap:5px;flex-wrap:wrap;}
+    .lgap-pill{font-size:0.68rem;font-weight:600;padding:3px 9px;border-radius:99px;border:1px solid;}
+    .lgap-pill.gp-site{background:#FEF2F2;color:#DC2626;border-color:#FECACA;}
+    .lgap-pill.gp-social{background:#F1F5F9;color:#64748B;border-color:#E2E8F0;}
+    .lgap-pill.gp-phone{background:#FFFBEB;color:#D97706;border-color:#FDE68A;}
+    .lgap-pill.gp-email{background:#EEF2FF;color:#4F46E5;border-color:#C7D2FE;}
+
+    /* Quick action buttons visible on card */
+    .lcard-actions{
+      display:flex;gap:6px;padding:0 16px 12px;flex-wrap:wrap;
+    }
+    .lcard-action-btn{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:6px 12px;border-radius:7px;font-size:0.75rem;font-weight:600;
+      cursor:pointer;transition:all .15s;border:1.5px solid var(--border);
+      background:var(--surf);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;
+      text-decoration:none;
+    }
+    .lcard-action-btn:hover{border-color:var(--border2);color:var(--text);background:var(--surf2);}
+    .lcard-action-btn.primary{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(79,70,229,0.28);}
+    .lcard-action-btn.primary:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(79,70,229,0.4);}
+    .lcard-action-btn.whatsapp{background:#25D366;color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(37,211,102,0.25);}
+    .lcard-action-btn.whatsapp:hover{background:#1eb858;transform:translateY(-1px);}
 
     /* Status + expand row */
     .lcard-footer{display:flex;align-items:center;justify-content:space-between;
-      padding:10px 16px;border-top:1px solid var(--border);background:var(--surf2);}
-    .stag{font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:99px;}
-    .lcard-expand{font-size:0.72rem;color:var(--muted);display:flex;align-items:center;gap:4px;
-      font-weight:500;transition:color .15s;}
-    .lcard.open .lcard-expand{color:var(--accent);}
-    .chev{display:inline-block;transition:transform .2s;font-size:0.7rem;}
-    .lcard.open .chev{transform:rotate(180deg);}
+      padding:10px 16px;border-top:1px solid var(--border);background:var(--bg);}
+    .stag{font-size:0.68rem;font-weight:700;padding:4px 11px;border-radius:99px;letter-spacing:0.02em;}
+    .lcard-expand{
+      font-size:0.74rem;color:var(--muted);display:flex;align-items:center;gap:5px;
+      font-weight:600;transition:color .15s;user-select:none;
+    }
+    .lcard.open .lcard-expand{color:#4F46E5;}
+    .chev{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:18px;height:18px;border-radius:50%;
+      background:var(--surf2);border:1px solid var(--border);
+      transition:transform .25s ease,background .15s,border-color .15s;
+      font-size:0.6rem;
+    }
+    .lcard.open .chev{transform:rotate(180deg);background:#EEF2FF;border-color:#C7D2FE;color:#4F46E5;}
 
     /* Quick stats row */
     .lcard-stats{display:flex;gap:0;border-top:1px solid var(--border);}
-    .lcard-stat{flex:1;text-align:center;padding:8px 4px;border-right:1px solid var(--border);}
+    .lcard-stat{flex:1;text-align:center;padding:9px 4px;border-right:1px solid var(--border);}
     .lcard-stat:last-child{border-right:none;}
-    .lcard-stat-val{font-size:0.8rem;font-weight:700;}
-    .lcard-stat-lbl{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;}
+    .lcard-stat-val{font-size:0.82rem;font-weight:700;}
+    .lcard-stat-lbl{font-size:0.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
 
     /* Expanded detail panel */
-    .lexp{display:none;border-top:1px solid var(--border);background:var(--surf);}
-    .lexp-section{padding:14px 16px;border-bottom:1px solid var(--border);}
+    .lexp{
+      display:none;border-top:2px solid #E0E7FF;
+      background:linear-gradient(180deg,#FAFBFF 0%,var(--surf) 100%);
+      animation:expandIn 0.25s ease-out;
+    }
+    @keyframes expandIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+    .lexp-section{padding:16px 18px;border-bottom:1px solid var(--border);}
     .lexp-section:last-child{border-bottom:none;}
-    .lexp-label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;font-weight:600;
-      color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;}
+    .lexp-label{
+      font-family:'JetBrains Mono',monospace;font-size:0.58rem;font-weight:600;
+      color:#4F46E5;text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .lexp-label::before{content:'';width:12px;height:2px;background:linear-gradient(135deg,#4F46E5,#7C3AED);border-radius:1px;flex-shrink:0;}
 
     /* Pipeline buttons */
     .pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
     .pip-btn{padding:9px 4px;text-align:center;font-size:0.72rem;font-weight:600;cursor:pointer;
-      border:1.5px solid var(--border);background:var(--surf2);color:var(--muted);
-      transition:all .15s;border-radius:8px;font-family:'Sora',sans-serif;}
-    .pip-btn:hover{border-color:var(--border2);color:var(--text);background:var(--surf);}
-    .pip-btn.active-contacted{background:var(--amber-pale);color:var(--amber);border-color:rgba(192,120,0,.3);font-weight:700;}
-    .pip-btn.active-pitched{background:var(--blue-pale);color:var(--blue);border-color:rgba(26,111,168,.3);font-weight:700;}
-    .pip-btn.active-won{background:var(--green-pale);color:var(--green);border-color:rgba(26,158,110,.3);font-weight:700;}
-    .pip-btn.active-lost{background:var(--red-pale);color:var(--red);border-color:rgba(214,48,49,.25);font-weight:700;}
+      border:1.5px solid var(--border);background:var(--surf);color:var(--muted);
+      transition:all .15s;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;}
+    .pip-btn:hover{border-color:var(--border2);color:var(--text);background:var(--surf2);}
+    .pip-btn.active-contacted{background:#FFFBEB;color:#D97706;border-color:#FDE68A;font-weight:700;}
+    .pip-btn.active-pitched{background:#EEF2FF;color:#4F46E5;border-color:#C7D2FE;font-weight:700;}
+    .pip-btn.active-won{background:#ECFDF5;color:#10B981;border-color:#A7F3D0;font-weight:700;}
+    .pip-btn.active-lost{background:#FEF2F2;color:#DC2626;border-color:#FECACA;font-weight:700;}
 
     /* Contact info grid */
-    .cinfo-grid{display:grid;grid-template-columns:56px 1fr;gap:7px;align-items:center;font-size:0.82rem;}
-    .cinfo-lbl{color:var(--muted);font-weight:600;font-size:0.76rem;}
+    .cinfo-grid{display:grid;grid-template-columns:56px 1fr;gap:8px;align-items:center;font-size:0.84rem;}
+    .cinfo-lbl{color:var(--muted);font-weight:600;font-size:0.74rem;}
+
+    /* Contact action buttons in expanded */
+    .lexp-action-row{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap;}
+    .lexp-btn{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:8px 14px;border-radius:8px;font-size:0.78rem;font-weight:600;
+      cursor:pointer;transition:all .15s;border:1.5px solid var(--border);
+      background:var(--surf);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;
+      text-decoration:none;white-space:nowrap;
+    }
+    .lexp-btn:hover{border-color:var(--border2);color:var(--text);background:var(--surf2);transform:translateY(-1px);}
+    .lexp-btn.pitch{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border-color:transparent;box-shadow:0 2px 10px rgba(79,70,229,0.28);}
+    .lexp-btn.pitch:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(79,70,229,0.4);}
+    .lexp-btn.wa{background:#25D366;color:#fff;border-color:transparent;}
+    .lexp-btn.wa:hover{background:#1eb858;transform:translateY(-1px);}
 
     /* Keep old badge classes for any remaining references */
     .mb{font-family:'JetBrains Mono',monospace;font-size:0.56rem;padding:2px 5px;font-weight:700;border-radius:4px;}
@@ -545,16 +598,16 @@
     .dr{display:flex;align-items:flex-start;background:var(--surf2);border:1px solid var(--border);padding:8px 11px;gap:10px;border-radius:7px;}
     .drl{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:60px;flex-shrink:0;padding-top:2px;}
     .drv{font-size:0.84rem;color:var(--text);flex:1;word-break:break-word;}
-    .dr-link{color:var(--accent);text-decoration:none;font-size:0.84rem;}
+    .dr-link{color:#4F46E5;text-decoration:none;font-size:0.84rem;}
     .dr-link:hover{text-decoration:underline;}
     .dr-miss{color:var(--red);font-style:italic;font-size:0.76rem;}
 
     /* Edit fields */
-    .edit-grid{display:flex;flex-direction:column;gap:3px;margin-bottom:9px;}
-    .ef-row{display:flex;align-items:center;border:1.5px solid var(--border);background:var(--surf2);border-radius:7px;overflow:hidden;transition:border-color .15s;}
-    .ef-row:focus-within{border-color:var(--accent);}
-    .ef-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:64px;flex-shrink:0;padding:8px 9px;border-right:1px solid var(--border);}
-    .ef-inp{flex:1;border:none;background:transparent;outline:none;font-family:'Sora',sans-serif;font-size:0.84rem;color:var(--text);padding:8px 10px;}
+    .edit-grid{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+    .ef-row{display:flex;align-items:center;border:1.5px solid var(--border);background:var(--surf);border-radius:8px;overflow:hidden;transition:border-color .15s,box-shadow .15s;}
+    .ef-row:focus-within{border-color:#4F46E5;box-shadow:0 0 0 3px rgba(79,70,229,0.08);}
+    .ef-label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:64px;flex-shrink:0;padding:9px 9px;border-right:1px solid var(--border);}
+    .ef-inp{flex:1;border:none;background:transparent;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.84rem;color:var(--text);padding:9px 10px;}
     .ef-inp::placeholder{color:var(--muted);font-style:italic;font-size:0.76rem;}
     .save-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
     .save-ind{font-family:'JetBrains Mono',monospace;font-size:0.68rem;}
@@ -643,8 +696,8 @@
     .empty p{font-size:0.8rem;line-height:1.7;color:var(--dim);}
 
     /* Toast */
-    .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surf);border:1.5px solid var(--border2);border-top:2px solid var(--accent);color:var(--text);padding:8px 18px;font-size:0.78rem;font-weight:600;z-index:999;transition:transform .22s cubic-bezier(.16,1,.3,1);white-space:nowrap;box-shadow:var(--shadow-lg);border-radius:9px;}
-    .toast.on{transform:translateX(-50%) translateY(0);}
+    .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);border:none;color:#fff;padding:10px 20px;font-size:0.8rem;font-weight:600;z-index:999;transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .3s;white-space:nowrap;box-shadow:0 8px 24px rgba(79,70,229,0.25);border-radius:10px;opacity:0;}
+    .toast.on{transform:translateX(-50%) translateY(0);opacity:1;}
 
     /* Admin */
     .admin-hero{background:var(--red-pale);border:1px solid rgba(214,48,49,.18);border-left:3px solid var(--red);border-radius:9px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:11px;}
@@ -2393,12 +2446,21 @@ async function saveGmapsKeyToFirestore(key){
 
 function updateSourceNotice(){
   var key=lsGet('gmaps-key');
-  var usingGoogle=_dataSource==='both'&&!!key;
-  // Update sidebar notice visibility — we use the notice in mobile only
+  var src=_dataSource||'osm';
   var n=document.getElementById('osm-notice');
-  if(n&&isMobile())n.style.display='flex';
   var t=document.getElementById('osm-notice-text');
-  if(t)t.textContent=usingGoogle?'Using OpenStreetMap + Google Places. Google results won\'t have website/phone — verify before pitching.':'Powered by OpenStreetMap. Verify businesses on Google Maps before pitching.';
+  // Only show the notice when OSM is involved (osm or both), not for google-only
+  if(n){
+    if(src==='google'){
+      n.style.display='none';
+    } else {
+      if(isMobile())n.style.display='flex';
+      var usingBoth=src==='both'&&!!key;
+      if(t)t.textContent=usingBoth
+        ?'Using OpenStreetMap + Google Places. Google results may not include phone or website — verify before pitching.'
+        :'Powered by OpenStreetMap. Verify businesses on Google Maps before pitching.';
+    }
+  }
 }
 
 // ── Theme ──
@@ -2808,6 +2870,13 @@ function renderCRM(){
   const list=document.getElementById('llist');
   if(!ls.length){list.innerHTML=`<div class="empty"><div class="empty-icon">🔍</div><h3>${leads.length?'No matches':'No leads yet'}</h3><p>${leads.length?'Try adjusting filters.':'Run a scan to find businesses.'}</p></div>`;return;}
   list.innerHTML=ls.map(l=>renderCard(l)).join('');
+  // Stagger card entrance animations
+  list.querySelectorAll('.lcard').forEach(function(card, i){
+    card.style.opacity='0';
+    card.style.transform='translateY(12px)';
+    card.style.transition='opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s, border-color 0.2s';
+    setTimeout(function(){ card.style.opacity='1'; card.style.transform='translateY(0)'; }, i*45);
+  });
   attachCardListeners();
 }
 
@@ -2860,8 +2929,17 @@ function renderCard(l){
   <!-- Preview tile (always visible) -->
   <div class="lctop" id="ltop-${l.id}">
     <div class="lnm">${esc(l.name)}</div>
-    ${loc?`<div class="lmeta"><span>&#128205;</span><span>${esc(loc)}</span></div>`:''}
+    ${loc?`<div class="lmeta"><span>📍</span><span>${esc(loc)}</span></div>`:''}
     <div class="lgaps">${gaps.join('')}</div>
+  </div>
+
+  <!-- Quick action buttons always visible -->
+  <div class="lcard-actions">
+    ${l.phone?`<a class="lcard-action-btn whatsapp" href="https://wa.me/${(l.phone||'').replace(/\D/g,'')}" target="_blank" onclick="window.trackOutreach&&window.trackOutreach()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.549 4.09 1.508 5.815L0 24l6.374-1.471A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.658-.513-5.178-1.405l-.371-.22-3.786.873.913-3.696-.241-.383A9.946 9.946 0 0 1 2 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+      WhatsApp</a>`:''}
+    <button class="lcard-action-btn primary" onclick="event.stopPropagation();generatePitch('${l.id}')">✨ Pitch email</button>
+    <button class="lcard-action-btn" onclick="event.stopPropagation();openEmailModal('${l.id}')">✉ Send email</button>
   </div>
 
   <!-- Quick stats strip -->
@@ -2886,8 +2964,8 @@ function renderCard(l){
 
   <!-- Footer with status + expand -->
   <div class="lcard-footer">
-    <div class="stag" style="background:${st.bg};color:${st.c};border:1px solid ${st.bd}">${st.label}</div>
-    <div class="lcard-expand">Details <span class="chev" id="chev-${l.id}">&#9660;</span></div>
+    <div class="stag" id="stag-${l.id}" style="background:${st.bg};color:${st.c};border:1px solid ${st.bd}">${st.label}</div>
+    <div class="lcard-expand">Details <span class="chev" id="chev-${l.id}">▾</span></div>
   </div>
 
   <!-- Expanded panel -->
@@ -2904,14 +2982,15 @@ function renderCard(l){
         <span class="cinfo-lbl">Website</span><span>${webRow}</span>
         <span class="cinfo-lbl">Phone</span><span>${phoneRow}</span>
         <span class="cinfo-lbl">Email</span><span>${emailRow}</span>
-        ${l.rating?`<span class="cinfo-lbl">Rating</span><span style="color:var(--amber)">&#9733; ${l.rating}${l.reviewCount?' ('+l.reviewCount+'  reviews)':''}</span>`:''}
+        ${l.rating?`<span class="cinfo-lbl">Rating</span><span style="color:var(--amber)">★ ${l.rating}${l.reviewCount?' ('+l.reviewCount+' reviews)':''}</span>`:''}
         ${l.category?`<span class="cinfo-lbl">Type</span><span style="font-size:.82rem">${esc(l.category)}</span>`:''}
       </div>
-      <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap;">
-        <a class="btn btn-ghost btn-sm" href="${esc(mapsUrl)}" target="_blank">&#128205; Maps</a>
-        <button class="btn btn-ghost btn-sm" onclick="generatePitch('${l.id}')">&#10024; Pitch email</button>
-        <button class="btn btn-ghost btn-sm" onclick="openEmailModal('${l.id}')">&#128231; Send email</button>
-        <button class="btn btn-ghost btn-sm enrich-btn" data-lead="${l.id}" data-name="${esc(l.name)}" data-addr="${esc(l.address||'')}">&#128269; Find contact</button>
+      <div class="lexp-action-row">
+        <a class="lexp-btn" href="${esc(mapsUrl)}" target="_blank">📍 Maps</a>
+        ${l.phone?`<a class="lexp-btn wa" href="https://wa.me/${(l.phone||'').replace(/\D/g,'')}" target="_blank" onclick="window.trackOutreach&&window.trackOutreach()"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.107.549 4.09 1.508 5.815L0 24l6.374-1.471A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.658-.513-5.178-1.405l-.371-.22-3.786.873.913-3.696-.241-.383A9.946 9.946 0 0 1 2 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg> WhatsApp</a>`:''}
+        <button class="lexp-btn pitch" onclick="generatePitch('${l.id}')">✨ Generate pitch</button>
+        <button class="lexp-btn" onclick="openEmailModal('${l.id}')">✉ Send email</button>
+        <button class="lexp-btn enrich-btn" data-lead="${l.id}" data-name="${esc(l.name)}" data-addr="${esc(l.address||'')}">🔍 Find contact</button>
       </div>
     </div>
 
@@ -2920,10 +2999,10 @@ function renderCard(l){
       <div class="pitch-loading" id="pitch-loading-${l.id}"><div class="mini-spin"></div>Generating...</div>
       <div class="pitch-output" id="pitch-out-${l.id}"></div>
       <div class="pitch-actions" id="pitch-actions-${l.id}" style="display:none">
-        <button class="btn btn-ghost btn-xs" onclick="copyPitch('${l.id}')">&#128203; Copy</button>
+        <button class="btn btn-ghost btn-xs" onclick="copyPitch('${l.id}')">📋 Copy</button>
         <button class="btn btn-ghost btn-xs" onclick="openMailto('${l.id}','${esc(l.email||'')}')">Open in Mail</button>
-        <button class="btn btn-ghost btn-xs" onclick="openEmailModal('${l.id}')">&#128231; Send</button>
-        <button class="btn btn-danger btn-xs" onclick="clearPitch('${l.id}')">&#10005; Clear</button>
+        <button class="btn btn-ghost btn-xs" onclick="openEmailModal('${l.id}')">✉ Send</button>
+        <button class="btn btn-danger btn-xs" onclick="clearPitch('${l.id}')">✕ Clear</button>
       </div>
     </div>
 
@@ -2947,7 +3026,7 @@ function renderCard(l){
       <div class="note-templates">${tmplHtml}</div>
       <textarea class="nt" id="nt-${l.id}" placeholder="Notes, call outcomes, follow-up reminders...">${esc(l.notes||'')}</textarea>
       <div style="margin-top:8px;">
-        <button class="btn btn-danger btn-sm del-btn" data-lead="${l.id}">&#10005; Delete lead</button>
+        <button class="btn btn-danger btn-sm del-btn" data-lead="${l.id}">✕ Delete lead</button>
       </div>
     </div>
 
@@ -2959,9 +3038,32 @@ function renderCard(l){
 function ef(lid,field,label,value){return`<div class="ef-row"><span class="ef-label">${label}</span><input class="ef-inp" type="text" id="ef-${lid}-${field}" value="${esc(value||'')}" placeholder="${!value?'Not found — add here':''}"/></div>`;}
 
 function attachCardListeners(){
-  document.querySelectorAll('.lctop').forEach(top=>{top.addEventListener('click',()=>{const id=top.id.replace('ltop-','');const exp=document.getElementById(`lexp-${id}`);const chev=document.getElementById(`chev-${id}`);if(!exp)return;const open=exp.style.display==='block';
+  // Toggle expand when clicking the card header OR the footer "Details" row
+  function toggleExpand(id){
+    const exp=document.getElementById(`lexp-${id}`);
+    const chev=document.getElementById(`chev-${id}`);
+    const card=document.getElementById(`lc-${id}`);
+    if(!exp)return;
+    const open=exp.style.display==='block';
     exp.style.display=open?'none':'block';
-    top.closest('.lcard').classList.toggle('open',!open);;});});
+    if(card)card.classList.toggle('open',!open);
+  }
+  document.querySelectorAll('.lctop').forEach(top=>{
+    top.addEventListener('click',()=>{
+      const id=top.id.replace('ltop-','');
+      toggleExpand(id);
+    });
+  });
+  document.querySelectorAll('.lcard-footer').forEach(footer=>{
+    footer.addEventListener('click',e=>{
+      // Don't re-fire if clicking a stag pill directly
+      if(e.target.closest('.stag'))return;
+      const card=footer.closest('.lcard');
+      if(!card)return;
+      const id=card.id.replace('lc-','');
+      toggleExpand(id);
+    });
+  });
   document.querySelectorAll('.pip-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.lead,stage=btn.dataset.stage;const idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;leads[idx].status=stage;saveLead(leads[idx]);const pip=document.getElementById('pip-'+id);if(pip)pip.querySelectorAll('.pip-btn').forEach(b=>b.className='pip-btn'+(leads[idx].status===b.dataset.stage?' active-'+b.dataset.stage:''));const stag=document.getElementById('stag-'+id);const st=statusStyle(leads[idx].status);if(stag){stag.textContent=st.label;stag.style.background=st.bg;stag.style.color=st.c;stag.style.border='1px solid '+st.bd;}document.getElementById('cs-w').textContent=leads.filter(l=>l.status==='won').length;if(typeof renderPipelineSection==='function')renderPipelineSection();if(typeof refreshPipelineBadge==='function')refreshPipelineBadge();});});
   document.querySelectorAll('.save-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.lead,idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;['website','phone','email','hours','category'].forEach(f=>{const el=document.getElementById(`ef-${id}-${f}`);if(!el)return;leads[idx][f]=el.value.trim()||null;});saveLead(leads[idx]);const ind=document.getElementById(`sind-${id}`);if(ind){ind.textContent='✓ Saved';ind.style.color='var(--green)';setTimeout(()=>ind.textContent='',2000);}toast('Saved');});});
   document.querySelectorAll('.nt').forEach(ta=>{ta.addEventListener('blur',()=>{const id=ta.id.replace('nt-',''),idx=leads.findIndex(l=>l.id===id);if(idx!==-1){leads[idx].notes=ta.value;saveLead(leads[idx]);}});});
