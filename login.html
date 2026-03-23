@@ -3,104 +3,179 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>Sign in - Footprint</title>
+<title>Sign in — Footprint</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#f4f8f6;--surf:#ffffff;--surf2:#eef3f1;
-  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
-  --text:#0d1f19;--muted:#6a8c80;--dim:#b8cfc8;
-  --accent:#1a9e6e;--accent2:#157a55;--accent-pale:rgba(26,158,110,0.1);
-  --amber:#c07800;--red:#d63031;
+  --bg:#F8FAFC; --surface:#fff;
+  --primary:#4F46E5; --secondary:#7C3AED;
+  --text:#0F172A; --muted:#64748B; --dim:#94A3B8;
+  --border:#E2E8F0; --border2:#C7D2FE;
+  --accent:#10B981;
+  --red:#DC2626; --amber:#D97706;
+  --grad:linear-gradient(135deg,#4F46E5,#7C3AED);
+  --shadow-card:0 4px 20px -2px rgba(79,70,229,0.10);
+  --shadow-btn:0 4px 14px 0 rgba(79,70,229,0.30);
+  --font:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
 }
 html{font-size:16px;-webkit-text-size-adjust:100%;}
-body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;display:flex;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased;}
 .page{flex:1;display:flex;min-height:100dvh;}
-.lp{display:none;width:clamp(340px,30vw,440px);flex-shrink:0;background:linear-gradient(160deg,#f0faf5 0%,#e4f5ec 100%);border-right:1px solid var(--border);padding:44px 40px;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
-.lp::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(26,158,110,0.1) 0%,transparent 70%);pointer-events:none;}
+
+/* ── LEFT PANEL ── */
+.lp{
+  display:none;width:clamp(360px,32vw,460px);flex-shrink:0;
+  background:linear-gradient(135deg,#1e1b4b 0%,#2e1065 100%);
+  padding:48px 44px;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.lp-blob1{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(79,70,229,0.35),transparent 70%);filter:blur(60px);top:-150px;left:-100px;pointer-events:none;}
+.lp-blob2{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.3),transparent 70%);filter:blur(50px);bottom:-80px;right:-60px;pointer-events:none;}
 @media(min-width:860px){.lp{display:flex;}}
-.lp-logo{display:flex;align-items:center;text-decoration:none;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);position:relative;z-index:1;}
-.lp-logo-fp{color:var(--accent);}
-.lp-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;position:relative;top:-1px;margin-left:1px;}
-.lp-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0;position:relative;z-index:1;}
-.lp-h{font-size:clamp(1.4rem,2.2vw,1.75rem);font-weight:700;line-height:1.2;margin-bottom:12px;letter-spacing:-0.04em;}
-.lp-h em{font-style:normal;color:var(--accent);}
-.lp-p{font-size:0.83rem;color:var(--muted);line-height:1.75;margin-bottom:24px;}
-.lp-list{display:flex;flex-direction:column;gap:10px;}
-.lp-item{display:flex;align-items:flex-start;gap:10px;font-size:0.81rem;}
-.lp-check{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(26,158,110,0.12);border:1.5px solid rgba(26,158,110,0.28);display:flex;align-items:center;justify-content:center;font-size:0.58rem;color:var(--accent);}
-.lp-item-txt{color:var(--muted);line-height:1.5;}
-.lp-item-txt strong{color:var(--text);font-weight:600;}
-.lp-trial{padding:14px 16px;background:rgba(192,120,0,0.07);border:1.5px solid rgba(192,120,0,0.18);border-radius:10px;position:relative;z-index:1;}
-.lp-trial-tag{font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:700;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
-.lp-trial-body{font-size:0.79rem;color:var(--muted);line-height:1.6;}
+.lp-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:-0.03em;position:relative;z-index:1;}
+.lp-logo-mark{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;}
+.lp-logo-mark svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.lp-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0;position:relative;z-index:1;}
+.lp-h{font-size:clamp(1.6rem,2.2vw,2rem);font-weight:800;line-height:1.15;margin-bottom:14px;letter-spacing:-0.03em;color:#fff;}
+.lp-h em{font-style:normal;background:linear-gradient(135deg,#a5b4fc,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.lp-p{font-size:0.875rem;color:rgba(255,255,255,0.55);line-height:1.72;margin-bottom:28px;}
+.lp-list{display:flex;flex-direction:column;gap:12px;}
+.lp-item{display:flex;align-items:flex-start;gap:12px;font-size:0.85rem;}
+.lp-check{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(79,70,229,0.3);border:1.5px solid rgba(165,180,252,0.4);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#a5b4fc;}
+.lp-item-txt{color:rgba(255,255,255,0.6);line-height:1.55;}
+.lp-item-txt strong{color:#fff;font-weight:600;}
+.lp-trial{padding:16px 18px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:12px;position:relative;z-index:1;}
+.lp-trial-tag{font-family:var(--mono);font-size:0.64rem;font-weight:500;color:#6ee7b7;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.lp-trial-dot{width:5px;height:5px;border-radius:50%;background:#6ee7b7;}
+.lp-trial-body{font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.6;}
+
+/* ── RIGHT PANEL ── */
 .rp{flex:1;display:flex;align-items:center;justify-content:center;padding:24px clamp(16px,4vw,32px);min-height:100dvh;background:var(--bg);}
-@media(min-width:860px){.rp{min-height:auto;background:#fff;}}
-.form-box{width:100%;max-width:380px;}
-.mob-logo{display:flex;align-items:center;text-decoration:none;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);margin-bottom:26px;}
-.mob-logo-fp{color:var(--accent);}
-.mob-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;position:relative;top:-1px;margin-left:1px;}
+@media(min-width:860px){.rp{min-height:auto;background:var(--surface);}}
+.form-box{width:100%;max-width:400px;}
+
+/* Mobile logo */
+.mob-logo{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-0.03em;margin-bottom:28px;}
+.mob-logo-mark{width:28px;height:28px;border-radius:7px;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-btn);}
+.mob-logo-mark svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
 @media(min-width:860px){.mob-logo{display:none;}}
-.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surf2);border:1.5px solid var(--border);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px;}
-.tab{padding:9px;text-align:center;font-size:0.84rem;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'Sora',sans-serif;border-radius:8px;transition:all .15s;}
-.tab.on{background:#fff;color:var(--text);box-shadow:0 1px 8px rgba(0,0,0,0.08);}
-.alert{padding:10px 13px;border-radius:8px;font-size:0.83rem;margin-bottom:12px;display:none;line-height:1.5;}
+
+/* Tabs */
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#F1F5F9;border:1px solid var(--border);border-radius:10px;padding:3px;gap:3px;margin-bottom:24px;}
+.tab{padding:9px;text-align:center;font-size:0.875rem;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:var(--font);border-radius:8px;transition:all .15s;}
+.tab.on{background:var(--surface);color:var(--primary);box-shadow:0 1px 6px rgba(0,0,0,0.08);}
+
+/* Alerts */
+.alert{padding:11px 14px;border-radius:9px;font-size:0.84rem;margin-bottom:14px;display:none;line-height:1.5;}
 .alert.show{display:block;}
-.a-err{background:rgba(214,48,49,.08);border:1.5px solid rgba(214,48,49,.2);color:var(--red);}
-.a-ok{background:var(--accent-pale);border:1.5px solid rgba(26,158,110,.2);color:var(--accent);}
-.field{margin-bottom:12px;}
-.flabel{display:block;font-size:0.69rem;font-weight:600;color:var(--muted);margin-bottom:4px;letter-spacing:0.04em;text-transform:uppercase;}
-.finput{width:100%;background:var(--surf2);border:1.5px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.9rem;outline:none;appearance:none;transition:border-color .15s,box-shadow .15s;}
-.finput:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,158,110,0.1);}
+.a-err{background:#FEF2F2;border:1px solid #FECACA;color:var(--red);}
+.a-ok{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);color:var(--accent);}
+
+/* Form */
+.field{margin-bottom:14px;}
+.flabel{display:block;font-size:0.72rem;font-weight:700;color:var(--muted);margin-bottom:5px;letter-spacing:0.04em;text-transform:uppercase;}
+.finput{
+  width:100%;background:var(--surface);
+  border:1.5px solid var(--border);border-radius:9px;
+  padding:11px 14px;color:var(--text);
+  font-family:var(--font);font-size:0.9rem;
+  outline:none;appearance:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.finput:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,0.10);}
 .finput::placeholder{color:var(--dim);}
-.row-right{display:flex;justify-content:flex-end;margin-top:-4px;margin-bottom:12px;}
-.text-btn{font-size:0.77rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Sora',sans-serif;padding:3px 0;transition:color .15s;}
-.text-btn:hover{color:var(--accent);}
-.btn-pri{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;box-shadow:0 0 14px rgba(26,158,110,0.18);}
-.btn-pri:hover:not(:disabled){background:var(--accent2);transform:translateY(-1px);}
+.row-right{display:flex;justify-content:flex-end;margin-top:-6px;margin-bottom:14px;}
+.text-btn{font-size:0.8rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:var(--font);padding:3px 0;transition:color .15s;font-weight:500;}
+.text-btn:hover{color:var(--primary);}
+
+/* Buttons */
+.btn-pri{
+  width:100%;padding:13px;
+  background:var(--grad);
+  color:#fff;border:none;border-radius:9px;
+  font-family:var(--font);font-size:0.9rem;font-weight:700;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  min-height:46px;box-shadow:var(--shadow-btn);
+}
+.btn-pri:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,0.4);}
 .btn-pri:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.btn-google{width:100%;padding:10px;background:var(--surf);color:var(--text);border:1.5px solid var(--border2);border-radius:10px;font-family:'Sora',sans-serif;font-size:0.86rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;min-height:46px;margin-top:9px;transition:all .2s;}
-.btn-google:hover{background:var(--surf2);}
-.divider{display:flex;align-items:center;gap:10px;margin:15px 0;color:var(--dim);font-size:0.75rem;}
+.btn-google{
+  width:100%;padding:11px;
+  background:var(--surface);color:var(--text);
+  border:1.5px solid var(--border);border-radius:9px;
+  font-family:var(--font);font-size:0.875rem;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
+  min-height:46px;margin-top:10px;transition:all .2s;
+}
+.btn-google:hover{background:#F8FAFC;border-color:#CBD5E1;}
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--dim);font-size:0.75rem;}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.legal{font-size:0.69rem;color:var(--muted);margin-top:15px;text-align:center;line-height:1.7;}
+.legal{font-size:0.72rem;color:var(--dim);margin-top:16px;text-align:center;line-height:1.7;}
 .legal a{color:var(--muted);text-decoration:underline;}
+
+/* Spinner */
 .spin{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:rot .65s linear infinite;display:none;flex-shrink:0;}
 @keyframes rot{to{transform:rotate(360deg);}}
+
+/* Views */
 .view{display:none;}.view.show{display:block;}
-.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;color:var(--muted);cursor:pointer;margin-bottom:16px;background:none;border:none;font-family:'Sora',sans-serif;padding:0;transition:color .15s;}
-.back-btn:hover{color:var(--text);}
-.f-title{font-size:clamp(1.25rem,2vw,1.5rem);font-weight:700;margin-bottom:3px;line-height:1.2;letter-spacing:-0.04em;}
-.f-sub{font-size:0.83rem;color:var(--muted);margin-bottom:19px;line-height:1.5;}
-.fgt-title{font-size:1.3rem;font-weight:700;margin-bottom:5px;letter-spacing:-0.03em;}
-.fgt-sub{font-size:0.83rem;color:var(--muted);margin-bottom:18px;line-height:1.6;}
+.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:0.8rem;color:var(--muted);cursor:pointer;margin-bottom:18px;background:none;border:none;font-family:var(--font);font-weight:500;padding:0;transition:color .15s;}
+.back-btn:hover{color:var(--primary);}
+.f-title{font-size:clamp(1.3rem,2vw,1.55rem);font-weight:800;margin-bottom:4px;line-height:1.2;letter-spacing:-0.03em;}
+.f-sub{font-size:0.85rem;color:var(--muted);margin-bottom:22px;line-height:1.5;}
+.fgt-title{font-size:1.4rem;font-weight:800;margin-bottom:5px;letter-spacing:-0.03em;}
+.fgt-sub{font-size:0.85rem;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.verify-icon{
+  width:56px;height:56px;border-radius:14px;
+  background:linear-gradient(135deg,#EEF2FF,#EDE9FE);
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;font-size:1.6rem;
+}
 </style>
 </head>
 <body>
 <div class="page">
+
+<!-- LEFT PANEL -->
 <div class="lp">
-  <a href="index.html" class="lp-logo"><span class="lp-logo-fp">foot</span><span>print</span><span class="lp-logo-dot"></span></a>
+  <div class="lp-blob1"></div>
+  <div class="lp-blob2"></div>
+  <a href="index.html" class="lp-logo">
+    <div class="lp-logo-mark">
+      <svg viewBox="0 0 16 16"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.485-2.015-4.5-4.5-4.5z" stroke-linejoin="round"/><circle cx="8" cy="6" r="1.5" fill="#fff" stroke="none"/></svg>
+    </div>
+    Footprint
+  </a>
   <div class="lp-body">
     <h2 class="lp-h">Your next client is already<br/><em>out there</em></h2>
-    <p class="lp-p">Footprint scans any suburb or city and finds local businesses with no website, no Instagram, no social media - a ready-made list of warm prospects.</p>
+    <p class="lp-p">Footprint scans any suburb or city and finds local businesses with no website, no Instagram, no social media — a ready-made list of warm prospects.</p>
     <div class="lp-list">
-      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Find businesses with no website</strong> - perfect for web designers</div></div>
-      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Find businesses with no social media</strong> - perfect for social media managers</div></div>
-      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>AI pitch emails</strong> - written for every lead, free to use</div></div>
-      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Pipeline tracker</strong> - manage contacted, pitched and won deals</div></div>
+      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>Find businesses with no website</strong> — perfect for web designers</div></div>
+      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>Find businesses with no social media</strong> — perfect for social media managers</div></div>
+      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>AI pitch emails</strong> — written for every lead in one click</div></div>
+      <div class="lp-item"><div class="lp-check">✓</div><div class="lp-item-txt"><strong>Pipeline tracker</strong> — manage contacted, pitched and won deals</div></div>
     </div>
   </div>
   <div class="lp-trial">
-    <div class="lp-trial-tag">3-day free trial</div>
+    <div class="lp-trial-tag"><span class="lp-trial-dot"></span>3-day free trial</div>
     <div class="lp-trial-body">Full access for 3 days. No payment required to get started.</div>
   </div>
 </div>
 
+<!-- RIGHT PANEL -->
 <div class="rp">
   <div class="form-box">
-    <a href="index.html" class="mob-logo"><span class="mob-logo-fp">foot</span><span>print</span><span class="mob-logo-dot"></span></a>
+    <a href="index.html" class="mob-logo">
+      <div class="mob-logo-mark">
+        <svg viewBox="0 0 16 16"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.485-2.015-4.5-4.5-4.5z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round" fill="none"/><circle cx="8" cy="6" r="1.5" fill="#fff"/></svg>
+      </div>
+      Footprint
+    </a>
 
     <div id="v-main" class="view show">
       <div class="tabs">
@@ -141,7 +216,7 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
     </div>
 
     <div id="v-forgot" class="view">
-      <button class="back-btn" onclick="showView('main')">Back to sign in</button>
+      <button class="back-btn" onclick="showView('main')">← Back to sign in</button>
       <div class="fgt-title">Reset password</div>
       <div class="fgt-sub">Enter your email and we'll send a reset link.</div>
       <div class="alert a-err" id="fgt-err"></div>
@@ -158,13 +233,13 @@ body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-he
 
     <div id="v-verify" class="view">
       <div style="text-align:center;padding:12px 0 24px">
-        <div style="font-size:2.5rem;margin-bottom:16px">&#128231;</div>
+        <div class="verify-icon">✉️</div>
         <div class="fgt-title">Check your email</div>
         <div class="fgt-sub">We sent a verification link to<br/><strong id="verify-email-addr" style="color:var(--text)"></strong><br/>Click it then come back here.</div>
         <div class="alert a-err" id="verify-err" style="text-align:left"></div>
         <div class="alert a-ok" id="verify-ok" style="text-align:left"></div>
         <button class="btn-pri" id="verify-check-btn" onclick="checkVerified()" style="margin-bottom:10px">
-          <span id="verify-check-lbl">I've verified - continue</span>
+          <span id="verify-check-lbl">I've verified — continue</span>
           <div class="spin" id="verify-check-spin"></div>
         </button>
         <button class="btn-google" onclick="resendVerification()" style="margin-bottom:10px">Resend verification email</button>
@@ -194,7 +269,7 @@ function setMode(m){
   document.getElementById('tab-in').classList.toggle('on',!up);
   document.getElementById('tab-up').classList.toggle('on',up);
   document.getElementById('f-title').textContent=up?'Create your account':'Welcome back';
-  document.getElementById('f-sub').textContent=up?'Free 3-day trial - no card needed':'Sign in to your Footprint account';
+  document.getElementById('f-sub').textContent=up?'Free 3-day trial — no card needed':'Sign in to your Footprint account';
   document.getElementById('name-field').style.display=up?'block':'none';
   document.getElementById('forgot-row').style.display=up?'none':'flex';
   document.getElementById('submit-lbl').textContent=up?'Create account':'Sign in';
@@ -206,7 +281,7 @@ function showA(id,msg){var e=document.getElementById(id);if(e){e.textContent=msg
 function hideA(id){var e=document.getElementById(id);if(e)e.classList.remove('show');}
 function setLoading(on){document.getElementById('submit-btn').disabled=on;document.getElementById('submit-spin').style.display=on?'block':'none';document.getElementById('submit-lbl').style.display=on?'none':'inline';}
 
-var ERRS={'auth/email-already-in-use':'An account with this email already exists.','auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts - please wait a moment.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error - check your connection.','auth/popup-blocked':'Popup blocked - please allow popups for this site.'};
+var ERRS={'auth/email-already-in-use':'An account with this email already exists.','auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts — please wait a moment.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error — check your connection.','auth/popup-blocked':'Popup blocked — please allow popups for this site.'};
 
 function writeUserDoc(user){
   db.collection('users').doc(user.uid).set({
@@ -294,7 +369,7 @@ function checkVerified(){
 
 function resendVerification(){
   var user=auth.currentUser;if(!user)return;
-  user.sendEmailVerification().then(function(){showA('verify-ok','Verification email resent - check your inbox and spam folder.');})
+  user.sendEmailVerification().then(function(){showA('verify-ok','Verification email resent — check your inbox and spam folder.');})
     .catch(function(err){showA('verify-err',ERRS[err.code]||'Could not resend email.');});
 }
 </script>

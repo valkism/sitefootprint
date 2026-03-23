@@ -6,23 +6,23 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>Footprint — Get Clients</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
     /* ── Themes ── */
     :root[data-theme="light"]{
-      --bg:#f7f9f8; --surf:#ffffff; --surf2:#eef3f1; --surf3:#e2eae7;
-      --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.14);
-      --text:#0d1f19; --text2:#3a5a50; --muted:#6a8c80; --dim:#b8cfc8;
-      --accent:#1a9e6e; --accent2:#157a55; --accent-pale:rgba(26,158,110,0.1);
-      --red:#d63031; --red-pale:rgba(214,48,49,0.08);
-      --amber:#c07800; --amber-pale:rgba(192,120,0,0.09);
-      --green:#1a9e6e; --green-pale:rgba(26,158,110,0.09);
-      --blue:#1a6fa8; --blue-pale:rgba(26,111,168,0.09);
+      --bg:#F8FAFC; --surf:#ffffff; --surf2:#EEF2FF; --surf3:#E0E7FF;
+      --border:#E2E8F0; --border2:#C7D2FE;
+      --text:#0F172A; --text2:#1E293B; --muted:#64748B; --dim:#94A3B8;
+      --accent:#4F46E5; --accent2:#4338CA; --accent-pale:rgba(79,70,229,0.08);
+      --red:#DC2626; --red-pale:rgba(220,38,38,0.08);
+      --amber:#D97706; --amber-pale:rgba(217,119,6,0.09);
+      --green:#10B981; --green-pale:rgba(16,185,129,0.09);
+      --blue:#4F46E5; --blue-pale:rgba(79,70,229,0.09);
       --sidebar-bg:#ffffff; --topbar-bg:#ffffff;
-      --shadow:0 1px 8px rgba(0,0,0,0.08); --shadow-lg:0 4px 24px rgba(0,0,0,0.12);
-      --sb-thumb:rgba(26,158,110,0.22); --sb-track:rgba(0,0,0,0.04);
+      --shadow:0 4px 20px -2px rgba(79,70,229,0.10); --shadow-lg:0 10px 25px -5px rgba(79,70,229,0.15);
+      --sb-thumb:rgba(79,70,229,0.22); --sb-track:rgba(0,0,0,0.04);
     }
     :root[data-theme="dark"]{
       --bg:#111615; --surf:#1c2220; --surf2:#232b29; --surf3:#2a3330;
@@ -72,7 +72,7 @@
     html{font-size:16px;height:100%;}
     body{
       background:var(--bg); color:var(--text);
-      font-family:'Sora',sans-serif; font-weight:400; line-height:1.6;
+      font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-weight:400; line-height:1.6;
       height:100vh; overflow:hidden; display:flex; flex-direction:column;
     }
 
@@ -82,11 +82,12 @@
       display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;
     }
     .gate-logo{
-      display:flex;align-items:center;gap:10px;
-      font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:700;color:var(--accent);
+      display:flex;align-items:center;gap:9px;
+      font-family:'Plus Jakarta Sans',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text);
       letter-spacing:-0.03em;
     }
-    .gate-logo span{color:var(--text);}
+    .gate-logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4F46E5,#7C3AED);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,0.4);}
+    .gate-logo-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
     .gate-spinner{width:28px;height:28px;border-radius:50%;border:2px solid var(--border2);border-top-color:var(--accent);animation:spin .8s linear infinite;}
     @keyframes spin{to{transform:rotate(360deg);}}
     .gate-text{font-size:0.82rem;color:var(--muted);font-weight:500;}
@@ -102,24 +103,25 @@
       position:relative;z-index:10;
     }
 
-    /* Logo — clean wordmark with accent dot */
+    /* Logo */
     .logo{
-      display:flex;align-items:center;gap:0;text-decoration:none;
-      font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;
-      letter-spacing:-0.04em;color:var(--text);flex-shrink:0;margin-right:28px;
+      display:flex;align-items:center;gap:8px;text-decoration:none;
+      font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:800;
+      letter-spacing:-0.03em;color:var(--text);flex-shrink:0;margin-right:28px;
     }
-    .logo-fp{color:var(--accent);}
-    .logo-dot{
-      width:7px;height:7px;border-radius:50%;background:var(--accent);
-      margin:0 1px 0 0;flex-shrink:0;position:relative;top:-1px;
+    .logo-mark{
+      width:28px;height:28px;border-radius:7px;
+      background:linear-gradient(135deg,#4F46E5,#7C3AED);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 2px 8px rgba(79,70,229,0.35);flex-shrink:0;
+      transition:box-shadow 0.2s;
     }
-    /* Scan line animation on logo */
-    .logo:hover .logo-dot{animation:ping .6s ease;}
-    @keyframes ping{0%{transform:scale(1);opacity:1;}100%{transform:scale(2.5);opacity:0;}}
+    .logo:hover .logo-mark{box-shadow:0 4px 14px rgba(79,70,229,0.45);}
+    .logo-mark svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 
     .topbar-nav{display:flex;gap:1px;flex:1;}
     .tab-btn{
-      padding:7px 16px;border-radius:7px;font-family:'Sora',sans-serif;
+      padding:7px 16px;border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;
       font-size:0.78rem;font-weight:600;cursor:pointer;border:none;
       background:none;color:var(--muted);transition:all .15s;
     }
@@ -127,7 +129,7 @@
     .tab-btn.on{color:var(--accent);background:var(--accent-pale);}
     .tab-badge{
       display:inline-flex;align-items:center;justify-content:center;
-      background:var(--accent);color:var(--bg);
+      background:var(--accent);color:#fff;
       font-size:0.58rem;font-weight:700;min-width:15px;height:15px;
       border-radius:99px;padding:0 3px;margin-left:5px;vertical-align:middle;
     }
@@ -162,8 +164,8 @@
     /* ── Activation nudge banner ── */
     #activation-banner{
       display:none;flex-shrink:0;
-      background:linear-gradient(90deg,rgba(26,158,110,0.08) 0%,rgba(26,158,110,0.04) 100%);
-      border-bottom:1px solid rgba(26,158,110,0.18);
+      background:linear-gradient(90deg,rgba(79,70,229,0.06) 0%,rgba(124,58,237,0.04) 100%);
+      border-bottom:1px solid rgba(79,70,229,0.15);
       padding:10px 20px;
     }
     #activation-banner.show{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
@@ -173,17 +175,17 @@
       color:var(--muted);padding:4px 10px;border-radius:99px;
       border:1.5px solid var(--border);background:var(--surf);transition:all .2s;
     }
-    .act-step.done{color:var(--accent);border-color:rgba(26,158,110,0.3);background:var(--accent-pale);}
-    .act-step.active{color:var(--text);border-color:var(--accent);background:var(--surf);box-shadow:0 0 0 2px var(--accent-pale);}
+    .act-step.done{color:#4F46E5;border-color:rgba(79,70,229,0.3);background:rgba(79,70,229,0.07);}
+    .act-step.active{color:var(--text);border-color:#4F46E5;background:var(--surf);box-shadow:0 0 0 2px rgba(79,70,229,0.12);}
     .act-step-n{
       width:17px;height:17px;border-radius:50%;background:var(--border);
       display:flex;align-items:center;justify-content:center;
       font-size:0.6rem;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .2s;
     }
-    .act-step.done .act-step-n{background:var(--accent);color:#fff;}
-    .act-step.active .act-step-n{background:var(--accent);color:#fff;}
+    .act-step.done .act-step-n{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;}
+    .act-step.active .act-step-n{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;}
     .act-arrow{color:var(--dim);font-size:0.7rem;flex-shrink:0;}
-    .act-msg{font-size:0.76rem;color:var(--accent);font-weight:700;white-space:nowrap;}
+    .act-msg{font-size:0.76rem;color:#4F46E5;font-weight:700;white-space:nowrap;}
     #act-dismiss{font-size:0.68rem;color:var(--muted);cursor:pointer;border:none;background:none;padding:2px 6px;border-radius:4px;flex-shrink:0;}
     #act-dismiss:hover{color:var(--text);background:var(--surf2);}
 
@@ -320,9 +322,10 @@
       font-weight:700;cursor:pointer;padding:9px 18px;border-radius:8px;
       transition:all .15s;white-space:nowrap;
     }
-    .btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 16px rgba(26,158,110,0.25);}
+    .btn-primary{background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,0.30);}
     [data-theme="dark"] .btn-primary,.btn-primary{color:#fff;}
     [data-theme="light"] .btn-primary{color:#fff;}
+    [data-theme="light"] .btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#4338CA,#6D28D9);transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,0.4);}
     .btn-primary:hover:not(:disabled){background:var(--accent2);transform:translateY(-1px);box-shadow:0 2px 20px rgba(26,158,110,0.3);}
     .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;}
     .btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
@@ -731,7 +734,7 @@
 
 <!-- Auth Gate -->
 <div id="auth-gate" style="display: none;">
-  <div class="gate-logo">foot<span>print</span></div>
+  <div class="gate-logo"><div class="gate-logo-mark"><svg viewBox="0 0 16 16"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z"/><circle cx="8" cy="6" r="1.5" fill="#fff" stroke="none"/></svg></div>Footprint</div>
   <div class="gate-spinner"></div>
   <div class="gate-text">Loading your workspace…</div>
 </div>
@@ -762,7 +765,10 @@
   <!-- Topbar -->
   <div class="topbar">
     <a href="index.html" class="logo">
-      <span class="logo-fp">foot</span><span>print</span><span class="logo-dot"></span>
+      <div class="logo-mark">
+        <svg viewBox="0 0 16 16"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z"/><circle cx="8" cy="6" r="1.5" fill="#fff" stroke="none"/></svg>
+      </div>
+      Footprint
     </a>
     <div class="topbar-nav">
       <button class="tab-btn on" data-tab="scan">Scan</button>
@@ -2424,7 +2430,7 @@ function switchTab(id){
   document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===`panel-${id}`));
   document.querySelectorAll('.mnav[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===id));
-  if(id==='crm')renderCRM();
+  if(id==='crm'){renderCRM(); window.trackLeadViewed && window.trackLeadViewed();}
   if(id==='pipeline')renderPipelineTab();
   if(id==='analytics')renderAnalytics();
   if(id==='heatmap')renderHeatmap();
@@ -2996,7 +3002,6 @@ function generatePitch(leadId){
   if(out){out.textContent=text;out.classList.add('show');}
   if(actions)actions.style.display='flex';
   leads[idx]._pitch=text;saveLead(leads[idx]);
-  window.trackLeadViewed && window.trackLeadViewed();
 }
 
 function buildPitchEmail(l){
@@ -3893,41 +3898,43 @@ document.addEventListener('DOMContentLoaded',function(){
 
     var contacts = s.contacts || 0;
 
-    // All done — hide after celebration
+    // Step 4: All done — celebrate then dismiss
     if(contacts >= 3){
-      if(msg) msg.textContent = '🎉 You\'re in the game — keep pitching!';
+      if(msg) msg.textContent = 'You\'re in the game — keep pitching!';
       if(s1) s1.className = 'act-step done';
       if(s2) s2.className = 'act-step done';
       if(s3) s3.className = 'act-step done';
       if(s4) s4.className = 'act-step active';
       banner.classList.add('show');
-      setTimeout(function(){ localStorage.setItem(DISMISS_KEY,'1'); hideBanner(); }, 5000);
+      setTimeout(function(){ localStorage.setItem(DISMISS_KEY,'1'); hideBanner(); }, 6000);
       return;
     }
 
-    // Step logic
     var hasScan = !!s.firstScan;
-    var hasLead = !!s.firstLead;
+    var hasLeads = !!s.firstLead; // set when user visits Leads tab AND leads exist
 
     if(!hasScan){
+      // Step 1 active — haven't scanned yet
       if(s1) s1.className = 'act-step active';
       if(s2) s2.className = 'act-step';
       if(s3) s3.className = 'act-step';
       if(s4) s4.className = 'act-step';
-      if(msg) msg.textContent = 'Start your first scan →';
-    } else if(!hasLead){
+      if(msg) msg.textContent = 'Start your first scan \u2192';
+    } else if(!hasLeads){
+      // Step 2 active — scanned, now go view leads
       if(s1) s1.className = 'act-step done';
       if(s2) s2.className = 'act-step active';
       if(s3) s3.className = 'act-step';
       if(s4) s4.className = 'act-step';
-      if(msg) msg.textContent = 'Open a lead and send a pitch →';
+      if(msg) msg.textContent = 'Go to Leads tab to see your results \u2192';
     } else {
+      // Step 3 active — contact businesses
       var left = 3 - contacts;
       if(s1) s1.className = 'act-step done';
       if(s2) s2.className = 'act-step done';
       if(s3) s3.className = 'act-step active';
       if(s4) s4.className = 'act-step';
-      if(msg) msg.textContent = 'Contact ' + left + ' more business' + (left===1?'':'es') + ' to complete your launch →';
+      if(msg) msg.textContent = 'Send pitches to ' + left + ' more business' + (left===1?'':'es') + ' \u2192';
     }
 
     banner.classList.add('show');
@@ -3947,7 +3954,7 @@ document.addEventListener('DOMContentLoaded',function(){
     });
   });
 
-  // Expose hooks for other parts of the app
+  // Step 1: scan completed
   window.trackScanComplete = function(){
     if(isDismissed()) return;
     var s = getState();
@@ -3955,24 +3962,30 @@ document.addEventListener('DOMContentLoaded',function(){
     updateBanner();
   };
 
+  // Step 2: user visited Leads tab and leads actually exist
   window.trackLeadViewed = function(){
     if(isDismissed()) return;
     var s = getState();
-    if(!s.firstLead){ s.firstLead = Date.now(); saveState(s); }
+    // Only mark step 2 done if there are actual leads loaded
+    if(!s.firstLead && typeof leads !== 'undefined' && leads.length > 0){
+      s.firstLead = Date.now();
+      saveState(s);
+    }
     updateBanner();
   };
 
+  // Step 3: user sent an email (each send counts toward the 3)
   window.trackOutreach = function(){
     if(isDismissed()) return;
     var s = getState();
-    s.contacts = (s.contacts || 0) + 1;
+    // Ensure step 2 is also marked if not already
     if(!s.firstLead){ s.firstLead = Date.now(); }
+    s.contacts = (s.contacts || 0) + 1;
     saveState(s);
     updateBanner();
   };
 
-  // Init on load — only show for accounts less than 7 days old
-  // (we use a localStorage marker set on first visit)
+  // Init — show banner for first 7 days
   document.addEventListener('DOMContentLoaded', function(){
     var SEEN_KEY = 'fp_first_visit';
     if(!localStorage.getItem(SEEN_KEY)){
