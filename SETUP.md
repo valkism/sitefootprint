@@ -1,138 +1,120 @@
-# Footprint — Setup Guide
+# Footprint Web — Setup Guide (Cloudflare Pages)
 
-## What's New in This Version
-- ✅ New SVG logo (location pin + signal waves)
-- ✅ 3-day free trial (was 10 days)
-- ✅ Google Maps API key field in Settings (optional, stored browser-side)
-- ✅ Admin panel (hidden tab, visible only to admin email)
-- ✅ Max-width layout — no more stretching on wide screens
-- ✅ Instrument Serif font replacing Fraunces
-- ✅ Stripe payment fully wired (see env vars below)
+## IMPORTANT — Cloudflare build settings
 
----
+When connecting your GitHub repo in Cloudflare Pages, use these exact settings:
 
-## 1. Stripe Setup
+  Framework preset:       None
+  Build command:          (leave completely empty)
+  Build output directory: /
+  Root directory:         /
 
-In your Stripe dashboard:
-1. Create a product → recurring price at **$19.95/month**
-2. Copy the `price_xxxx` ID
-3. Create a webhook endpoint pointing to: `https://YOUR_DOMAIN/api/stripe-webhook`
-   - Events to listen for:
-     - `customer.subscription.created`
-     - `customer.subscription.updated`
-     - `customer.subscription.deleted`
-     - `invoice.payment_succeeded`
-     - `invoice.payment_failed`
-4. Copy the webhook signing secret (`whsec_xxxx`)
+Do NOT let Cloudflare auto-detect the build — leave the build command blank.
+This is a static site with Pages Functions, no build step needed.
 
 ---
 
-## 2. Cloudflare Environment Variables
+## Testing locally
 
-Set these in: **Cloudflare Dashboard → Pages → Your Project → Settings → Environment Variables**
-
-| Variable | Value |
-|---|---|
-| `STRIPE_SECRET_KEY` | `sk_live_xxxx` (or `sk_test_xxxx` for testing) |
-| `STRIPE_PRICE_ID` | `price_xxxx` |
-| `STRIPE_WEBHOOK_SECRET` | `whsec_xxxx` |
-| `FIREBASE_PROJECT_ID` | `footprint-eb752` |
-| `FIREBASE_SERVICE_ACCOUNT` | *(full JSON of your Firebase service account key)* |
-| `ALLOWED_ORIGIN` | `https://yourdomain.com` |
-| `GEMINI_API_KEY` | `AIza...` — free key from aistudio.google.com (enables AI pitch generation, completely free) |
-
-> **Firebase Service Account**: Go to Firebase Console → Project Settings → Service Accounts → Generate new private key. Paste the entire JSON as the value.
+Drag any .html file straight into Chrome. Scan and CRM work immediately
+since all OSM calls go directly from your browser. Auth and billing need
+the full setup below.
 
 ---
 
-## 3. Admin Account
+## Step 1 — Firebase (15 min)
 
-The admin panel is **only visible** to the account signed in with this email:
+1. https://console.firebase.google.com → New project
+2. Authentication → Sign-in method → Enable Email/Password + Google
+3. Firestore → Create database → Production mode → pick a region
+4. Firestore Security Rules:
 
-```
-footprint.admin.9x7z@proton.me
-```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       match /users/{userId} {
+         allow read, write: if request.auth != null && request.auth.uid == userId;
+         match /leads/{leadId} {
+           allow read, write: if request.auth != null && request.auth.uid == userId;
+         }
+       }
+     }
+   }
 
-**Admin password**: Set this yourself when you first create the account via the Sign Up page. The admin email is verified by SHA-256 hash comparison in the browser — it's never stored in plain text in the JS bundle.
-
-> To change the admin email: compute `sha256(your_email.toLowerCase())` and replace the `ADMIN_EMAIL_HASH` constant in `app.html` near the bottom.
-
-### What the admin can do:
-- **Grant free subscription** — sets `plan: 'gifted'`, `subscriptionStatus: 'active'` for any user. They get full Pro access with no billing.
-- **Revoke subscription** — sets `plan: 'free'`, `subscriptionStatus: 'cancelled'`. You'll also need to cancel in Stripe dashboard if they were paying.
-- **Look up any user** by email — see their UID, plan, Stripe customer ID, trial end date.
-- **View all users** — paginated list of up to 50 most recent users.
-
----
-
-## 4. Firestore Security Rules
-
-Add these rules in Firebase Console → Firestore → Rules:
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // Users can read/write their own doc and subcollections
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-
-      match /leads/{leadId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-      match /scans/{scanId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-    }
-
-    // Community flags — any logged-in user can read and write
-    // Used to collectively flag businesses that actually have websites
-    // improving accuracy for all users
-    match /community_flags/{flagId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
-    }
-
-    // Admin can read/write all users — replace ADMIN_UID_HERE
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == 'ADMIN_UID_HERE';
-      match /leads/{leadId} {
-        allow read: if request.auth != null && request.auth.uid == 'ADMIN_UID_HERE';
-      }
-    }
-  }
-}
-```
-
-> **Find your admin UID**: Sign in to the app with your admin email, open browser DevTools → Application → IndexedDB → firebaseLocalStorage → look for `uid`.
+5. Project Settings → Add app (Web) → copy firebaseConfig
+   → paste into login.html AND app.html (6 YOUR_... values each)
+6. Project Settings → Service accounts → Generate new private key → download JSON
+7. Note your Project ID
 
 ---
 
-## 5. Google Maps API Key (Optional, per-user)
+## Step 2 — Stripe (10 min)
 
-Users can add their own Google Places API key in **Settings → Google Maps API**. The key is:
-- Stored in `localStorage` only (browser-side, never sent to your servers)
-- Used to query Google Places alongside OpenStreetMap for richer business data
-- Fully optional — OSM works without it
+Stay in Test Mode until everything works.
 
-To get a key: [console.cloud.google.com](https://console.cloud.google.com) → Enable "Places API" → Create credentials → API Key → Restrict to your domain.
+1. https://dashboard.stripe.com → Products → Add product
+   Name: Footprint Pro, Price: $19.95/month recurring
+   Copy the Price ID (price_...)
+2. Developers → API keys:
+   - Publishable key (pk_test_...) → paste into login.html
+   - Secret key (sk_test_...) → goes into Cloudflare env vars
 
 ---
 
-## 6. Deploy to Cloudflare Pages
+## Step 3 — Deploy to Cloudflare Pages
 
-```bash
-# Install Wrangler CLI
-npm install -g wrangler
+1. Push this folder to a GitHub repo (private is fine)
+2. https://pages.cloudflare.com → Create project → Connect to Git
+3. Build settings — CRITICAL, use exactly these:
+   - Framework preset: None
+   - Build command: (empty — delete anything in this field)
+   - Build output directory: /
+4. Environment variables → Add all of these:
 
-# Login
-wrangler login
+   STRIPE_SECRET_KEY        = sk_test_xxxx
+   STRIPE_WEBHOOK_SECRET    = whsec_xxxx   (add after step 4)
+   STRIPE_PRICE_ID          = price_xxxx
+   FIREBASE_PROJECT_ID      = your-project-id
+   FIREBASE_SERVICE_ACCOUNT = (entire service account JSON as one line)
+   ALLOWED_ORIGIN           = https://your-site.pages.dev
 
-# Deploy
-cd footprint-web
-wrangler pages deploy . --project-name footprint
-```
+5. Save and Deploy
 
-Or connect your GitHub repo in the Cloudflare Pages dashboard for auto-deploy on push.
+---
 
+## Step 4 — Stripe Webhook (after deploying)
+
+1. Stripe → Developers → Webhooks → Add endpoint
+   URL: https://your-project.pages.dev/api/stripe-webhook
+2. Events to select:
+   customer.subscription.created
+   customer.subscription.updated
+   customer.subscription.deleted
+   invoice.payment_succeeded
+   invoice.payment_failed
+3. Copy Signing secret (whsec_...) → add to Cloudflare env vars
+   as STRIPE_WEBHOOK_SECRET → redeploy
+
+---
+
+## Step 5 — Test
+
+Test card: 4242 4242 4242 4242, any future date, any CVV.
+Sign up → complete checkout → Firestore should show subscriptionStatus = trialing.
+
+Switch to Live Mode in Stripe when ready, update keys in Cloudflare.
+
+---
+
+## File structure
+
+  index.html                  Homepage
+  login.html                  Auth
+  app.html                    Full Footprint app
+  wrangler.toml               Tells Cloudflare this is a Pages project
+  .gitignore                  Keeps node_modules out of the repo
+  functions/
+    api/
+      create-checkout.js      POST /api/create-checkout
+      create-portal.js        POST /api/create-portal
+      stripe-webhook.js       POST /api/stripe-webhook

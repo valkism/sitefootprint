@@ -5,57 +5,25 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  // Fail closed — never fall back to wildcard CORS
-  const allowedOrigin = env.ALLOWED_ORIGIN;
-  if (!allowedOrigin) {
-    return new Response(JSON.stringify({ error: 'Server misconfigured' }), { status: 500 });
-  }
-
   const corsHeaders = {
-    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-Type',
   };
 
   if (request.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // ── Require a valid Firebase ID token ───────────────────────────────────
-  const authHeader = request.headers.get('Authorization');
-  const idToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-  if (!idToken) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-  }
-
-  // Verify the token with Firebase Auth REST API (cryptographic server-side check)
-  const verifiedUid = await verifyFirebaseToken(idToken, env.FIREBASE_WEB_API_KEY);
-  if (!verifiedUid) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-  }
-
   let body;
   try { body = await request.json(); } catch {
-    return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-      status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: corsHeaders });
   }
 
   const { uid } = body;
   if (!uid) {
     return new Response(JSON.stringify({ error: 'uid required' }), {
       status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-  }
-
-  // ── Confirm the token belongs to the uid being requested ────────────────
-  if (verifiedUid !== uid) {
-    return new Response(JSON.stringify({ error: 'Forbidden' }), {
-      status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 
@@ -86,6 +54,8 @@ export async function onRequestPost(context) {
       });
     }
 
+    const origin = env.ALLOWED_ORIGIN || new URL(request.url).origin;
+
     // Create portal session
     const portalRes = await fetch('https://api.stripe.com/v1/billing_portal/sessions', {
       method: 'POST',
@@ -93,7 +63,7 @@ export async function onRequestPost(context) {
         'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `customer=${stripeCustomerId}&return_url=${encodeURIComponent(allowedOrigin + '/app.html')}`
+      body: `customer=${stripeCustomerId}&return_url=${encodeURIComponent(origin + '/app.html')}`
     });
 
     const portal = await portalRes.json();
@@ -110,30 +80,7 @@ export async function onRequestPost(context) {
   }
 }
 
-// ── Verify Firebase ID token via Google's accounts:lookup endpoint ────────
-// Sends the raw token to Google, which validates signature, expiry, audience,
-// and issuer — returns the uid if valid, null otherwise.
-async function verifyFirebaseToken(idToken, webApiKey) {
-  try {
-    const res = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${webApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
-      }
-    );
-    if (!res.ok) return null;
-    const data = await res.json();
-    const user = data.users?.[0];
-    if (!user?.localId) return null;
-    return user.localId;
-  } catch {
-    return null;
-  }
-}
-
-// ── Get a short-lived Firebase Admin access token from service account ────
+// Get a short-lived Firebase Admin access token from service account credentials
 async function getFirebaseAccessToken(serviceAccountJson) {
   const sa = JSON.parse(serviceAccountJson);
 
@@ -147,6 +94,7 @@ async function getFirebaseAccessToken(serviceAccountJson) {
     scope: 'https://www.googleapis.com/auth/datastore https://www.googleapis.com/auth/cloud-platform'
   };
 
+  // Sign JWT with service account private key
   const header = btoa(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
   const body   = btoa(JSON.stringify(payload)).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
   const input  = `${header}.${body}`;
@@ -156,6 +104,7 @@ async function getFirebaseAccessToken(serviceAccountJson) {
   const sig = btoa(String.fromCharCode(...new Uint8Array(signature))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
   const jwt = `${input}.${sig}`;
 
+  // Exchange JWT for access token
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
