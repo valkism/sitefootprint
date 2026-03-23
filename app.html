@@ -786,7 +786,14 @@
     #mobile-scan-scroll{display:flex;flex-direction:column;flex:1;}
     #desktop-scan-area{display:none !important;}
 
-    /* Analytics panel */
+    /* Follow-up overdue badge */
+    .overdue-badge{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:50%;width:8px;height:8px;position:absolute;top:6px;right:6px;}
+    .fc-easywins{transition:all .15s;}
+    .fc-easywins.on{background:var(--amber)!important;color:#fff!important;border-color:var(--amber)!important;}
+    /* Primary contact action */
+    .contact-primary-btn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 16px;font-family:'Sora',sans-serif;font-size:0.84rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s;box-shadow:0 2px 8px rgba(26,158,110,0.25);}
+    .contact-primary-btn:hover{background:var(--accent2);transform:translateY(-1px);}
+    /* Analytics panel *
     /* ── Shared dashboard header ── */
     .dash-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
     .dash-title{font-size:1.2rem;font-weight:800;letter-spacing:-0.03em;color:var(--text);}
@@ -925,9 +932,9 @@
       Footprint
     </a>
     <div class="topbar-nav">
-      <button class="tab-btn on" data-tab="scan">Scan</button>
-      <button class="tab-btn" data-tab="crm">Leads<span class="tab-badge" id="crm-count" style="display:none"></span></button>
-      <button class="tab-btn" data-tab="pipeline">Outreach</button>
+      <button class="tab-btn on" data-tab="scan">Find Clients</button>
+      <button class="tab-btn" data-tab="crm">Prospects<span class="tab-badge" id="crm-count" style="display:none"></span></button>
+      <button class="tab-btn" data-tab="pipeline">Deals<span class="tab-badge" id="pipeline-count" style="display:none"></span></button>
       <button class="tab-btn" data-tab="analytics">Analytics</button>
       <button class="tab-btn" data-tab="heatmap">Map</button>
       <button class="tab-btn" data-tab="settings">Settings</button>
@@ -1140,9 +1147,8 @@
                 <option value="">All Status</option>
                 <option value="new">New</option>
                 <option value="contacted">Contacted</option>
-                <option value="pitched">Pitched</option>
+                <option value="replied">Replied</option>
                 <option value="won">Won</option>
-                <option value="lost">Lost</option>
               </select>
               <select class="sel" id="csort" style="width:160px">
                 <option value="score">Gap Score ↓</option>
@@ -1164,6 +1170,7 @@
             <!-- Active filter chips -->
             <div class="filter-bar" id="filter-bar">
               <span class="filter-lbl">Filter:</span>
+              <div class="fc fc-easywins" id="fc-easywins" onclick="toggleEasyWins(this)" style="background:var(--amber-pale);border-color:rgba(192,120,0,.3);color:var(--amber);font-weight:700;">⚡ Easy Wins</div>
               <div class="fc" data-m="website"><span class="fc-dot" style="background:var(--red)"></span>No Website</div>
               <div class="fc" data-m="phone"><span class="fc-dot" style="background:var(--amber)"></span>No Phone</div>
               <div class="fc" data-m="email"><span class="fc-dot" style="background:var(--blue)"></span>No Email</div>
@@ -2504,6 +2511,7 @@ function initApp(){
   ['r-web','r-phone','r-social','r-email','r-skipchains'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',saveRules);});
 
   renderCRM();
+  checkOverdueFollowups();
 }
 window.initApp=initApp;
 
@@ -3065,6 +3073,8 @@ function renderCRM(){
   let ls=[...leads];
   if(q)ls=ls.filter(l=>l.name.toLowerCase().includes(q)||(l.address||'').toLowerCase().includes(q)||(l.phone||'').toLowerCase().includes(q)||(l.email||'').toLowerCase().includes(q));
   if(sf)ls=ls.filter(l=>l.status===sf);
+  // Easy Wins filter - no website + has contact info + high score
+  if(_easyWinsOn){ls=ls.filter(function(l){return !l.website&&!!(l.phone||l.email)&&(l.gapScore||0)>=50;});}
   if(activeMissFilters.size){ls=ls.filter(l=>{const hs=!!(l.facebook||l.instagram||l.twitter||l.tiktok);for(const m of activeMissFilters){if(m==='website'&&!!l.website)return false;if(m==='phone'&&!!l.phone)return false;if(m==='email'&&!!l.email)return false;if(m==='social'&&hs)return false;if(m==='alloffline'&&(!!l.website||hs))return false;}return true;});}
   const hasSoc=l=>!!(l.facebook||l.instagram||l.twitter||l.tiktok);
   const sm={'date':(a,b)=>new Date(b.savedAt||0)-new Date(a.savedAt||0),'score':(a,b)=>(b.gapScore||0)-(a.gapScore||0),'name':(a,b)=>a.name.localeCompare(b.name),'no-website':(a,b)=>(!a.website?-1:1)-(!b.website?-1:1),'no-phone':(a,b)=>(!a.phone?-1:1)-(!b.phone?-1:1),'no-email':(a,b)=>(!a.email?-1:1)-(!b.email?-1:1),'no-social':(a,b)=>(hasSoc(a)?1:-1)-(hasSoc(b)?1:-1),'rating-low':(a,b)=>(a.rating||99)-(b.rating||99)};
@@ -3309,6 +3319,8 @@ function attachCardListeners(){
   });});
   document.querySelectorAll('.note-tmpl').forEach(t=>{t.addEventListener('click',e=>{e.stopPropagation();const ta=document.getElementById(`nt-${t.dataset.lead}`);if(!ta)return;ta.value=ta.value?(ta.value+'\n'+t.dataset.tmpl):t.dataset.tmpl;ta.dispatchEvent(new Event('blur'));});});
   document.querySelectorAll('.enrich-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();enrichLead(btn.dataset.lead,btn.dataset.name,btn.dataset.addr);});});
+  document.querySelectorAll('.followup-save-btn').forEach(btn=>{btn.addEventListener('click',function(e){e.stopPropagation();const id=btn.dataset.lead;const inp=document.getElementById('fu-'+id);if(!inp)return;const idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;leads[idx].followupDate=inp.value||null;saveLead(leads[idx]);checkOverdueFollowups();toast(inp.value?'Reminder set for '+new Date(inp.value).toLocaleDateString('en-AU',{day:'numeric',month:'short'}):'Reminder cleared');renderCRM();});});
+  document.querySelectorAll('.followup-clear-btn').forEach(btn=>{btn.addEventListener('click',function(e){e.stopPropagation();const id=btn.dataset.lead;const idx=leads.findIndex(l=>l.id===id);if(idx===-1)return;leads[idx].followupDate=null;saveLead(leads[idx]);checkOverdueFollowups();renderCRM();});});
 }
 
 // ── AI Pitch Generator ──
@@ -3451,7 +3463,7 @@ function removeLead(id){if(typeof delLeadFS==='function')delLeadFS(id);}
 function clearAllLeads(){if(typeof clearLeadsFS==='function')clearLeadsFS();}
 function scoreTier(s){if(s>=75)return'hot';if(s>=50)return'good';if(s>=25)return'warm';return'';}
 function scoreColor(s){if(s>=75)return'var(--red)';if(s>=50)return'var(--amber)';if(s>=25)return'var(--green)';return'var(--muted)';}
-function statusStyle(s){const m={new:{bg:'var(--blue-pale)',c:'var(--blue)',bd:'rgba(26,111,168,.2)',label:'NEW'},contacted:{bg:'var(--amber-pale)',c:'var(--amber)',bd:'rgba(192,120,0,.2)',label:'CONTACTED'},pitched:{bg:'var(--blue-pale)',c:'var(--blue)',bd:'rgba(26,111,168,.2)',label:'PITCHED'},won:{bg:'var(--green-pale)',c:'var(--green)',bd:'rgba(26,158,110,.2)',label:'WON'},lost:{bg:'var(--red-pale)',c:'var(--red)',bd:'rgba(214,48,49,.18)',label:'LOST'}};return m[s]||m.new;}
+function statusStyle(s){const m={new:{bg:'var(--blue-pale)',c:'var(--blue)',bd:'rgba(26,111,168,.2)',label:'NEW'},contacted:{bg:'var(--amber-pale)',c:'var(--amber)',bd:'rgba(192,120,0,.2)',label:'CONTACTED'},replied:{bg:'var(--accent-pale)',c:'var(--accent)',bd:'rgba(26,158,110,.2)',label:'REPLIED'},won:{bg:'var(--green-pale)',c:'var(--green)',bd:'rgba(26,158,110,.2)',label:'WON ✓'}};return m[s]||m.new;}
 function quickLinks(name,addr){const enc=encodeURIComponent(name);const a=addr?` ${addr.split(',')[0]}`:'';return[{label:'Google',url:`https://www.google.com/search?q=${encodeURIComponent(name+a)}`},{label:'Facebook',url:`https://www.facebook.com/search/pages/?q=${enc}`},{label:'Instagram',url:`https://www.instagram.com/${name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,28)}/`},{label:'TikTok',url:`https://www.tiktok.com/@${name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,28)}`},{label:'LinkedIn',url:`https://www.linkedin.com/search/results/companies/?keywords=${enc}`}];}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function toast(msg,ms=2600){const e=document.getElementById('toast');e.textContent=msg;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),ms);}
@@ -3497,7 +3509,7 @@ function renderPipelineTab(){
   var wrBar=document.getElementById('dm-winrate-bar');if(wrBar)wrBar.style.width=(wr||0)+'%';
 
   // Render each column
-  var stages=['contacted','pitched','won','lost'];
+  var stages=['contacted','replied','won'];
   stages.forEach(function(stage){
     var items=active.filter(function(l){return l.status===stage;});
     var countEl=document.getElementById('ptab-count-'+stage);
