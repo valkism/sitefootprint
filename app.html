@@ -2133,27 +2133,51 @@ const Engine = (() => {
   function score(biz,rules){
     let s=0;const tags=[];
     const hasSoc=!!(biz.facebook||biz.instagram||biz.twitter||biz.tiktok);
+    const hasPhone=!!biz.phone;
+    const hasEmail=!!biz.email;
+    const hasContact=hasPhone||hasEmail;
     const breakdown=[];
 
-    // Online presence gaps drive the score — these are the pitch opportunities
+    // ── Online presence gaps (pitch opportunities) ──
     if(!biz.website){
       s+=40;tags.push({text:'No website',cls:'gap-critical'});breakdown.push({label:'No website',pts:40});
     }
     if(!hasSoc&&rules.noSocial){
       s+=25;tags.push({text:'No social media',cls:'gap-high'});breakdown.push({label:'No social media',pts:25});
     }
-    // Fully dark online — no website AND no social is the hottest possible lead
+    // Fully offline bonus
     if(!biz.website&&!hasSoc){
-      s+=20;tags.push({text:'Fully offline',cls:'gap-critical'});breakdown.push({label:'Fully offline bonus',pts:20});
-    }
-    // Having phone/email does NOT hurt the score — they're easier to pitch.
-    // Only flag when there's truly no way to reach them at all (tiny signal).
-    const hasContact=!!(biz.phone||biz.email);
-    if(!hasContact){
-      s+=5;tags.push({text:'Hard to contact',cls:'gap-medium'});breakdown.push({label:'No contact info',pts:5});
+      s+=15;tags.push({text:'Fully offline',cls:'gap-critical'});breakdown.push({label:'Fully offline bonus',pts:15});
     }
 
-    s=Math.min(s,100);
+    // ── Reachability boost ──
+    // A business with no web/social presence BUT a phone or email is the
+    // ideal lead — you can actually reach them to make your pitch.
+    // Phone is slightly better than email since it enables a direct call.
+    if(!biz.website&&!hasSoc&&hasPhone){
+      s+=12;breakdown.push({label:'Has phone - easy to reach',pts:12});
+      tags.push({text:'Has phone',cls:'gap-good'});
+    } else if(!biz.website&&!hasSoc&&hasEmail){
+      s+=8;breakdown.push({label:'Has email - easy to reach',pts:8});
+      tags.push({text:'Has email',cls:'gap-good'});
+    } else if(!biz.website&&hasContact){
+      // Has web gap + contact info (even if they have social)
+      s+=6;breakdown.push({label:'Has contact info',pts:6});
+    }
+
+    // ── No contact at all = harder to pitch, slight penalty ──
+    if(!hasContact){
+      s-=5;breakdown.push({label:'No contact info (hard to reach)'  ,pts:-5});
+      tags.push({text:'Hard to reach',cls:'gap-medium'});
+    }
+
+    // ── Rating signal ──
+    // Low rated businesses are more likely to need help
+    if(biz.rating&&biz.rating<=3.5&&biz.reviewCount>=5){
+      s+=5;breakdown.push({label:'Low rating ('+biz.rating+'★)',pts:5});
+    }
+
+    s=Math.min(Math.max(s,0),100);
     const label=s>=75?'🔥 Hot':s>=50?'⚡ Good':s>=25?'✅ Warm':'❄️ Weak';
     const isLead=(rules.noWebsite&&!biz.website)||(rules.noPhone&&!biz.phone)||(rules.noEmail&&!biz.email)||(rules.noSocial&&!hasSoc);
     return{score:s,tags,label,isLead,breakdown};
