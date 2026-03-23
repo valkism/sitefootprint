@@ -430,8 +430,40 @@
     .fc.on{background:var(--text);color:var(--bg);border-color:var(--text);}
     .fc-dot{width:5px;height:5px;border-radius:50%;}
     /* Lead grid */
-    .llist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;align-items:start;}
-    @media(max-width:600px){.llist{grid-template-columns:1fr;gap:10px;}}
+    .llist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;align-items:start;transition:all 0.2s;}
+    .llist.list-view{grid-template-columns:1fr;gap:8px;}
+    .llist.list-view .lcard{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:0;border-radius:10px;}
+    .llist.list-view .lcard-score{position:static;width:36px;height:36px;font-size:0.8rem;margin:12px 0 12px 14px;flex-shrink:0;}
+    .llist.list-view .lctop{padding:12px 14px;flex-direction:row;align-items:center;gap:10px;flex:1;min-width:0;}
+    .llist.list-view .lnm{padding-right:0;font-size:0.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .llist.list-view .lmeta{display:none;}
+    .llist.list-view .lgaps{margin-top:0;flex-shrink:0;}
+    .llist.list-view .lcard-actions{padding:8px 12px 8px 0;flex-direction:row;align-items:center;gap:6px;flex-shrink:0;}
+    .llist.list-view .lcard-stats{display:none;}
+    .llist.list-view .lcard-footer{border-left:1px solid var(--border);padding:0 14px;min-width:100px;}
+    .llist.list-view .lexp{grid-column:1/-1;}
+    @media(max-width:600px){.llist{grid-template-columns:1fr;gap:10px;}.llist.list-view .lcard{display:block;}}
+
+    /* View toggle button */
+    .view-toggle-btn{
+      display:inline-flex;align-items:center;gap:3px;
+      border:1.5px solid var(--border);border-radius:8px;
+      background:var(--surf);overflow:hidden;padding:0;
+    }
+    .vt-opt{
+      padding:7px 10px;cursor:pointer;color:var(--muted);
+      border:none;background:transparent;font-size:0.85rem;
+      transition:all 0.15s;line-height:1;
+    }
+    .vt-opt.active{background:var(--surf2);color:#4F46E5;}
+    .vt-opt:hover:not(.active){background:var(--surf2);}
+
+    /* Scan celebration confetti */
+    #fp-confetti{position:fixed;inset:0;pointer-events:none;z-index:9999;}
+    @keyframes confettiFall{
+      0%{transform:translateY(-10px) rotate(0deg);opacity:1;}
+      100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+    }
 
     /* Card tile */
     .lcard{
@@ -755,20 +787,89 @@
     #desktop-scan-area{display:none !important;}
 
     /* Analytics panel */
-    .an-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
-    .an-card{background:var(--surf);border:1.5px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
-    .an-val{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:700;line-height:1;margin-bottom:4px;}
-    .an-lbl{font-size:0.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;}
-    .funnel-row{display:flex;align-items:center;gap:10px;padding:6px 0;}
-    .funnel-bar-wrap{flex:1;height:26px;background:var(--surf2);border-radius:6px;overflow:hidden;}
-    .funnel-bar{height:100%;border-radius:6px;transition:width .5s ease;}
-    .funnel-lbl{font-size:0.76rem;min-width:88px;}
-    .funnel-count{font-family:'JetBrains Mono',monospace;font-size:0.74rem;min-width:28px;text-align:right;color:var(--muted);}
+    /* ── Shared dashboard header ── */
+    .dash-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+    .dash-title{font-size:1.2rem;font-weight:800;letter-spacing:-0.03em;color:var(--text);}
+    .dash-sub{font-size:0.8rem;color:var(--muted);margin-top:3px;}
+    /* ── Outreach metric strip ── */
+    .dash-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px;}
+    .dash-metric{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(79,70,229,0.06);}
+    .dash-metric-n{font-size:2rem;font-weight:800;line-height:1;letter-spacing:-0.04em;margin-bottom:4px;}
+    .dash-metric-l{font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+    .dash-metric-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+    .dash-metric-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
+    @media(max-width:900px){.dash-strip{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:600px){.dash-strip{grid-template-columns:1fr 1fr;}}
+    /* ── Kanban board ── */
+    .kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start;}
+    @media(max-width:900px){.kanban-board{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:540px){.kanban-board{grid-template-columns:1fr;}}
+    .kanban-col{background:var(--bg);border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+    .kanban-header{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--border);background:var(--surf);}
+    .kanban-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .kanban-title{font-size:0.82rem;font-weight:700;flex:1;color:var(--text);}
+    .kanban-count{font-family:'JetBrains Mono',monospace;font-size:0.65rem;background:var(--surf2);border:1px solid var(--border);padding:1px 7px;border-radius:99px;color:var(--muted);}
+    .kanban-cards{padding:10px;display:flex;flex-direction:column;gap:7px;min-height:80px;}
+    .kanban-card{background:var(--surf);border:1px solid var(--border);border-radius:9px;padding:12px 13px;cursor:pointer;transition:all 0.15s;box-shadow:0 1px 4px rgba(79,70,229,0.05);}
+    .kanban-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(79,70,229,0.1);transform:translateY(-1px);}
+    .kanban-card-name{font-size:0.84rem;font-weight:700;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .kanban-card-meta{font-size:0.72rem;color:var(--muted);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .kanban-card-actions{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap;}
+    .kanban-action{font-size:0.7rem;font-weight:600;padding:4px 9px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surf2);color:var(--muted);transition:all 0.12s;font-family:'Plus Jakarta Sans',sans-serif;}
+    .kanban-action:hover{border-color:var(--border2);color:var(--text);}
+    .kanban-action.move{background:#EEF2FF;color:#4F46E5;border-color:#C7D2FE;}
+    .kanban-action.move:hover{background:#E0E7FF;}
+    .kanban-empty{padding:20px 14px;text-align:center;color:var(--muted);font-size:0.78rem;font-style:italic;}
+    /* ── Analytics hero ── */
+    .an-hero-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+    @media(max-width:700px){.an-hero-row{grid-template-columns:repeat(2,1fr);}}
+    .an-hero-card{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:20px 18px;box-shadow:0 2px 8px rgba(79,70,229,0.06);transition:box-shadow 0.2s;}
+    .an-hero-card:hover{box-shadow:0 6px 20px rgba(79,70,229,0.11);}
+    .an-hero-val{font-size:2.4rem;font-weight:800;line-height:1;letter-spacing:-0.04em;margin-bottom:5px;}
+    .an-hero-lbl{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;}
+    .an-hero-sub{font-size:0.72rem;color:var(--dim);margin-top:4px;}
+    .grad-text{background:linear-gradient(135deg,#4F46E5,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    /* Analytics sections */
+    .an-section{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;}
+    .an-section-title{font-size:0.72rem;font-weight:700;color:#4F46E5;text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+    .an-section-title::before{content:'';width:12px;height:2px;background:linear-gradient(90deg,#4F46E5,#7C3AED);border-radius:1px;}
+    /* Funnel */
+    .an-funnel-wrap{display:flex;flex-direction:column;gap:8px;}
+    .funnel-row{display:flex;align-items:center;gap:12px;}
+    .funnel-label{font-size:0.8rem;font-weight:600;color:var(--text);width:80px;flex-shrink:0;}
+    .funnel-track{flex:1;height:28px;background:var(--bg);border-radius:6px;overflow:hidden;}
+    .funnel-fill{height:100%;border-radius:6px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;padding:0 10px;min-width:28px;}
+    .funnel-count{font-family:'JetBrains Mono',monospace;font-size:0.7rem;font-weight:700;color:#fff;}
+    .funnel-pct{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);width:36px;text-align:right;flex-shrink:0;}
+    /* Gap breakdown */
+    .an-gap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+    @media(max-width:540px){.an-gap-grid{grid-template-columns:1fr;}}
+    .gap-bar-row{display:flex;flex-direction:column;gap:6px;}
+    .gap-bar-header{display:flex;justify-content:space-between;align-items:center;}
+    .gap-bar-label{font-size:0.82rem;font-weight:600;color:var(--text);}
+    .gap-bar-pct{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:700;}
+    .gap-track{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;}
+    .gap-fill{height:100%;border-radius:4px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);}
+    /* Locations */
+    .an-locations-table{display:flex;flex-direction:column;gap:6px;}
+    .location-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;}
+    .location-rank{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--dim);width:18px;flex-shrink:0;text-align:center;}
+    .location-name{font-size:0.84rem;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .location-bar-wrap{width:100px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0;}
+    .location-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#4F46E5,#7C3AED);transition:width 0.8s ease;}
+    .location-stats{display:flex;gap:10px;flex-shrink:0;}
+    .location-stat{font-family:'JetBrains Mono',monospace;font-size:0.68rem;}
+    /* Revenue */
+    .won-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;}
+    .deal-val{width:90px;background:var(--surf);border:1.5px solid var(--border);border-radius:7px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text);text-align:right;outline:none;transition:border-color 0.15s;}
+    .deal-val:focus{border-color:#4F46E5;box-shadow:0 0 0 3px rgba(79,70,229,0.08);}
+    .an-revenue-total{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(135deg,#EEF2FF,#EDE9FE);border:1px solid #C7D2FE;border-radius:10px;margin-top:12px;font-weight:700;}
+    .an-revenue-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,#4F46E5,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    /* Legacy compat */
+    .an-grid{display:none;}.an-card{display:none;}.an-val{}.an-lbl{}
+    .funnel-bar-wrap{flex:1;height:20px;background:var(--border);border-radius:4px;overflow:hidden;}
+    .funnel-bar{height:100%;transition:width 0.6s ease;}
     .suburb-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;font-size:0.8rem;margin-bottom:5px;}
-    .won-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surf);border:1px solid var(--border);border-radius:7px;margin-bottom:5px;}
-    .deal-val{width:90px;background:var(--surf2);border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text);text-align:right;outline:none;}
-    .deal-val:focus{border-color:var(--accent);}
-    @media(max-width:768px){.an-grid{grid-template-columns:repeat(2,1fr);}}
     #heatmap-container{flex:1;min-height:400px;}
     .email-modal{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
     .email-modal.show{display:flex;}
@@ -826,7 +927,7 @@
     <div class="topbar-nav">
       <button class="tab-btn on" data-tab="scan">Scan</button>
       <button class="tab-btn" data-tab="crm">Leads<span class="tab-badge" id="crm-count" style="display:none"></span></button>
-      <button class="tab-btn" data-tab="pipeline">Pipeline<span class="tab-badge" id="pipeline-count" style="display:none"></span></button>
+      <button class="tab-btn" data-tab="pipeline">Outreach</button>
       <button class="tab-btn" data-tab="analytics">Analytics</button>
       <button class="tab-btn" data-tab="heatmap">Map</button>
       <button class="tab-btn" data-tab="settings">Settings</button>
@@ -1054,6 +1155,10 @@
                 <option value="rating-low">Lowest rating first</option>
               </select>
               <button class="btn btn-ghost btn-sm" id="bulk-pitch-btn" style="display:none" onclick="runBulkPitch()" title="Generate pitch emails for all visible leads">✨ Bulk Pitch</button>
+              <div class="view-toggle-btn" id="view-toggle" title="Switch layout">
+                <button class="vt-opt active" id="vt-grid" title="Grid view">⊞</button>
+                <button class="vt-opt" id="vt-list" title="List view">☰</button>
+              </div>
             </div>
 
             <!-- Active filter chips -->
@@ -1078,98 +1183,159 @@
 
 <!-- Settings -->
         <!-- Pipeline Tracking Panel -->
-        <div class="panel" id="panel-pipeline">
-          <div class="scroll"><div class="scroll-inner">
+        <!-- OUTREACH DASHBOARD (replaces pipeline) -->
+        <div class="panel panel-wide" id="panel-pipeline">
+          <div class="scroll"><div class="scroll-inner" style="max-width:1100px;">
 
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+            <div class="dash-header">
               <div>
-                <div style="font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;">Active Pipeline</div>
-                <div style="font-size:0.78rem;color:var(--muted);margin-top:2px;">Businesses you are actively working with</div>
+                <div class="dash-title">Outreach Dashboard</div>
+                <div class="dash-sub">Track every business from first contact to closed deal</div>
               </div>
-              <div style="display:flex;gap:8px;">
-                <select class="sel" id="pipeline-sort" onchange="renderPipelineTab()">
-                  <option value="date">Recently added</option>
-                  <option value="score">Gap score</option>
-                  <option value="name">Name A-Z</option>
-                </select>
+              <select class="sel" id="pipeline-sort" onchange="renderPipelineTab()" style="width:160px">
+                <option value="date">Recently added</option>
+                <option value="score">Gap score ↓</option>
+                <option value="name">Name A–Z</option>
+              </select>
+            </div>
+
+            <!-- Summary strip -->
+            <div class="dash-strip" id="dash-strip">
+              <div class="dash-metric">
+                <div class="dash-metric-n" id="dm-contacted" style="color:#D97706">0</div>
+                <div class="dash-metric-l">Contacted</div>
+                <div class="dash-metric-bar"><div class="dash-metric-fill" id="dm-contacted-bar" style="background:#D97706;width:0%"></div></div>
+              </div>
+              <div class="dash-metric">
+                <div class="dash-metric-n" id="dm-pitched" style="color:#4F46E5">0</div>
+                <div class="dash-metric-l">Pitched</div>
+                <div class="dash-metric-bar"><div class="dash-metric-fill" id="dm-pitched-bar" style="background:#4F46E5;width:0%"></div></div>
+              </div>
+              <div class="dash-metric">
+                <div class="dash-metric-n" id="dm-won" style="color:#10B981">0</div>
+                <div class="dash-metric-l">Won</div>
+                <div class="dash-metric-bar"><div class="dash-metric-fill" id="dm-won-bar" style="background:#10B981;width:0%"></div></div>
+              </div>
+              <div class="dash-metric">
+                <div class="dash-metric-n" id="dm-lost" style="color:#DC2626">0</div>
+                <div class="dash-metric-l">Lost</div>
+                <div class="dash-metric-bar"><div class="dash-metric-fill" id="dm-lost-bar" style="background:#DC2626;width:0%"></div></div>
+              </div>
+              <div class="dash-metric dash-metric-winrate">
+                <div class="dash-metric-n" id="dm-winrate" style="background:linear-gradient(135deg,#4F46E5,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">—</div>
+                <div class="dash-metric-l">Win Rate</div>
+                <div class="dash-metric-bar"><div class="dash-metric-fill" id="dm-winrate-bar" style="background:linear-gradient(90deg,#4F46E5,#7C3AED);width:0%"></div></div>
               </div>
             </div>
 
-            <!-- Three columns -->
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;" id="pipeline-tab-grid">
+            <!-- Kanban columns -->
+            <div class="kanban-board" id="pipeline-tab-grid">
 
-              <div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                  <div style="width:10px;height:10px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>
-                  <div style="font-weight:700;font-size:0.82rem;">Contacted</div>
-                  <div id="ptab-count-contacted" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);margin-left:auto;"></div>
+              <div class="kanban-col">
+                <div class="kanban-header" style="border-top:3px solid #D97706">
+                  <span class="kanban-dot" style="background:#D97706"></span>
+                  <span class="kanban-title">Contacted</span>
+                  <span class="kanban-count" id="ptab-count-contacted">0</span>
                 </div>
-                <div id="ptab-col-contacted" class="ptab-col"></div>
+                <div class="kanban-cards" id="ptab-col-contacted"></div>
               </div>
 
-              <div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                  <div style="width:10px;height:10px;border-radius:50%;background:var(--blue);flex-shrink:0;"></div>
-                  <div style="font-weight:700;font-size:0.82rem;">Pitched</div>
-                  <div id="ptab-count-pitched" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);margin-left:auto;"></div>
+              <div class="kanban-col">
+                <div class="kanban-header" style="border-top:3px solid #4F46E5">
+                  <span class="kanban-dot" style="background:#4F46E5"></span>
+                  <span class="kanban-title">Pitched</span>
+                  <span class="kanban-count" id="ptab-count-pitched">0</span>
                 </div>
-                <div id="ptab-col-pitched" class="ptab-col"></div>
+                <div class="kanban-cards" id="ptab-col-pitched"></div>
               </div>
 
-              <div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                  <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
-                  <div style="font-weight:700;font-size:0.82rem;">Won</div>
-                  <div id="ptab-count-won" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);margin-left:auto;"></div>
+              <div class="kanban-col">
+                <div class="kanban-header" style="border-top:3px solid #10B981">
+                  <span class="kanban-dot" style="background:#10B981"></span>
+                  <span class="kanban-title">Won</span>
+                  <span class="kanban-count" id="ptab-count-won">0</span>
                 </div>
-                <div id="ptab-col-won" class="ptab-col"></div>
+                <div class="kanban-cards" id="ptab-col-won"></div>
               </div>
 
-            </div>
-
-            <!-- Lost section -->
-            <div style="margin-top:24px;">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                <div style="width:10px;height:10px;border-radius:50%;background:var(--red);flex-shrink:0;"></div>
-                <div style="font-weight:700;font-size:0.82rem;">Lost</div>
-                <div id="ptab-count-lost" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);margin-left:auto;"></div>
+              <div class="kanban-col">
+                <div class="kanban-header" style="border-top:3px solid #DC2626">
+                  <span class="kanban-dot" style="background:#DC2626"></span>
+                  <span class="kanban-title">Lost</span>
+                  <span class="kanban-count" id="ptab-count-lost">0</span>
+                </div>
+                <div class="kanban-cards" id="ptab-col-lost"></div>
               </div>
-              <div id="ptab-col-lost" class="ptab-col" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;"></div>
+
             </div>
 
           </div></div>
         </div>
 
-        <!-- Analytics Panel -->
+        <!-- ANALYTICS PANEL — clean metrics, no Chart.js -->
         <div class="panel" id="panel-analytics">
-          <div class="scroll"><div class="scroll-inner">
-            <div class="an-grid" id="an-summary">
-              <div class="an-card"><div class="an-val" id="an-total">0</div><div class="an-lbl">Total Leads</div></div>
-              <div class="an-card"><div class="an-val" id="an-won" style="color:var(--green)">0</div><div class="an-lbl">Won</div></div>
-              <div class="an-card"><div class="an-val" id="an-winrate" style="color:var(--accent)">0%</div><div class="an-lbl">Win Rate</div><div id="an-winrate-note" style="font-size:0.65rem;color:var(--muted);margin-top:4px;">No closed deals yet</div></div>
-              <div class="an-card"><div class="an-val" id="an-pipeline" style="color:var(--amber)">0</div><div class="an-lbl">In Pipeline</div></div>
-            </div>
-            <div class="settings-section">
-              <div class="sec-label">Conversion Funnel</div>
-              <div id="an-funnel" style="margin-top:12px;"></div>
-            </div>
-            <div class="settings-section">
-              <div class="sec-label">Leads Found Over Time</div>
-              <canvas id="an-chart" height="180" style="width:100%;margin-top:12px;"></canvas>
-            </div>
-            <div class="settings-section">
-              <div class="sec-label">Top Locations</div>
-              <div id="an-suburbs" style="margin-top:10px;"></div>
-            </div>
-            <div class="settings-section">
-              <div class="sec-label">Won Deals - Revenue Tracker</div>
-              <div style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;">Log the value of each won deal to track your total revenue.</div>
-              <div id="an-won-list"></div>
-              <div style="margin-top:12px;padding:12px 16px;background:var(--accent-pale);border:1px solid rgba(26,158,110,0.2);border-radius:8px;display:flex;align-items:center;justify-content:space-between;">
-                <span style="font-size:0.82rem;font-weight:600;">Total Revenue</span>
-                <span id="an-revenue" style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent);">$0</span>
+          <div class="scroll"><div class="scroll-inner" style="max-width:900px;">
+
+            <div class="dash-header">
+              <div>
+                <div class="dash-title">Analytics</div>
+                <div class="dash-sub">Your prospecting performance at a glance</div>
               </div>
             </div>
+
+            <!-- Big metric row -->
+            <div class="an-hero-row" id="an-summary">
+              <div class="an-hero-card">
+                <div class="an-hero-val" id="an-total">0</div>
+                <div class="an-hero-lbl">Total Leads</div>
+                <div class="an-hero-sub" id="an-pipeline-sub">0 in pipeline</div>
+              </div>
+              <div class="an-hero-card">
+                <div class="an-hero-val" id="an-won" style="color:#10B981">0</div>
+                <div class="an-hero-lbl">Clients Won</div>
+                <div class="an-hero-sub" id="an-winrate-note">No closed deals yet</div>
+              </div>
+              <div class="an-hero-card">
+                <div class="an-hero-val grad-text" id="an-winrate">—</div>
+                <div class="an-hero-lbl">Win Rate</div>
+                <div class="an-hero-sub">Wins ÷ decided deals</div>
+              </div>
+              <div class="an-hero-card">
+                <div class="an-hero-val" id="an-revenue" style="color:#10B981">$0</div>
+                <div class="an-hero-lbl">Revenue Tracked</div>
+                <div class="an-hero-sub">From won deals</div>
+              </div>
+            </div>
+
+            <!-- Funnel viz -->
+            <div class="an-section">
+              <div class="an-section-title">Conversion Funnel</div>
+              <div class="an-funnel-wrap" id="an-funnel"></div>
+            </div>
+
+            <!-- Gap breakdown donut-style bars -->
+            <div class="an-section">
+              <div class="an-section-title">Lead Gap Breakdown</div>
+              <div class="an-gap-grid" id="an-gaps"></div>
+            </div>
+
+            <!-- Top suburbs table -->
+            <div class="an-section">
+              <div class="an-section-title">Top Locations</div>
+              <div class="an-locations-table" id="an-suburbs"></div>
+            </div>
+
+            <!-- Won deals revenue logger -->
+            <div class="an-section">
+              <div class="an-section-title">Revenue Tracker</div>
+              <div style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">Log deal value for each won client to track total earnings.</div>
+              <div id="an-won-list"></div>
+              <div class="an-revenue-total">
+                <span>Total Revenue</span>
+                <span class="an-revenue-val" id="an-revenue-total">$0</span>
+              </div>
+            </div>
+
           </div></div>
         </div>
 
@@ -1462,7 +1628,7 @@
   <div class="mob-nav-inner">
     <button class="mnav on" data-tab="scan" onclick="switchTab(&#39;scan&#39;)"><span class="mnav-icon">⌕</span><span>Scan</span></button>
     <button class="mnav" data-tab="crm" onclick="switchTab(&#39;crm&#39;)"><span class="mnav-icon">🗂</span><span>Leads</span><span class="mnav-badge" id="mnav-badge" style="display: none;"></span></button>
-    <button class="mnav" data-tab="pipeline" onclick="switchTab(&#39;pipeline&#39;)"><span class="mnav-icon">📋</span><span>Pipeline</span></button>
+    <button class="mnav" data-tab="pipeline" onclick="switchTab('pipeline')"><span class="mnav-icon">📬</span><span>Outreach</span></button>
     <button class="mnav" data-tab="analytics" onclick="switchTab(&#39;analytics&#39;)"><span class="mnav-icon">📊</span><span>Analytics</span></button>
     <button class="mnav" data-tab="heatmap" onclick="switchTab(&#39;heatmap&#39;)"><span class="mnav-icon">🗺️</span><span>Map</span></button>
     <button class="mnav" data-tab="settings" onclick="switchTab(&#39;settings&#39;)"><span class="mnav-icon">⚙</span><span>Settings</span></button>
@@ -2275,6 +2441,23 @@ function initApp(){
   document.getElementById('clear-all-btn').addEventListener('click',clearLeads);
   document.getElementById('export-all-btn').addEventListener('click',exportCSV);
 
+  // ── View toggle (grid / list) ──
+  var _listView = lsGet('leads-view')==='list';
+  function applyViewMode(){
+    var llist=document.getElementById('llist');
+    if(!llist)return;
+    llist.classList.toggle('list-view',_listView);
+    document.getElementById('vt-grid').classList.toggle('active',!_listView);
+    document.getElementById('vt-list').classList.toggle('active',_listView);
+  }
+  applyViewMode();
+  document.getElementById('vt-grid').addEventListener('click',function(){
+    _listView=false; lsSet('leads-view','grid'); applyViewMode();
+  });
+  document.getElementById('vt-list').addEventListener('click',function(){
+    _listView=true; lsSet('leads-view','list'); applyViewMode();
+  });
+
   // Theme
   document.getElementById('theme-toggle').addEventListener('change',e=>setTheme(e.target.checked?'dark':'light'));
   document.getElementById('theme-btn').addEventListener('click',()=>{const order=['light','dark','midnight','warm'];const cur=localStorage.getItem('fp-theme')||'light';setTheme(order[(order.indexOf(cur)+1)%order.length]);});
@@ -2497,7 +2680,6 @@ function switchTab(id){
   if(id==='analytics')renderAnalytics();
   if(id==='heatmap')renderHeatmap();
   if(id==='team'&&typeof window._initTeamPanel==='function')window._initTeamPanel();
-  // Update active state in team sidebar if present
   document.querySelectorAll('.tsidebar-btn').forEach(function(b){
     b.classList.toggle('active', b.dataset.tab===id);
   });
@@ -2731,6 +2913,7 @@ function handleEvent(ev){
       feedLnId(fi,'✓',`<span class="fnm">${ev.leadsFound} leads</span> from ${ev.scanned} scanned.`);
       document.getElementById('vcrm-btn-mob').disabled=false;document.getElementById('stop-btn-mob').disabled=true;document.getElementById('new-scan-btn-mob').style.display='block';renderMiniMob();
       window.trackScanComplete && window.trackScanComplete();
+      if(ev.leadsFound>=10) launchConfetti(ev.leadsFound);
       const loc=document.getElementById('loc-mob').value.trim();
       saveRecentFS(loc,selectedGeo,selectedTypes(),parseFloat(document.getElementById('rv-mob').value)||2,ev.leadsFound);
       renderCRM();
@@ -2877,6 +3060,8 @@ function renderCRM(){
     card.style.transition='opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s, border-color 0.2s';
     setTimeout(function(){ card.style.opacity='1'; card.style.transform='translateY(0)'; }, i*45);
   });
+  // Re-apply view mode after render
+  if(typeof _listView!=='undefined'){var l2=document.getElementById('llist');if(l2)l2.classList.toggle('list-view',_listView);}
   attachCardListeners();
 }
 
@@ -3243,74 +3428,152 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
 
 // Analytics
 var _analyticsChart=null;
+
+// ── renderPipelineTab: Outreach Dashboard ──
+function renderPipelineTab(){
+  var sort=document.getElementById('pipeline-sort');
+  var sortVal=sort?sort.value:'date';
+  var active=leads.filter(function(l){return l.status&&l.status!=='new';});
+  var sm={'date':function(a,b){return new Date(b.savedAt||0)-new Date(a.savedAt||0);},'score':function(a,b){return (b.gapScore||0)-(a.gapScore||0);},'name':function(a,b){return a.name.localeCompare(b.name);}};
+  active.sort(sm[sortVal]||sm.date);
+
+  // Update metric strip
+  var total=leads.length;
+  var contacted=leads.filter(function(l){return l.status==='contacted';}).length;
+  var pitched=leads.filter(function(l){return l.status==='pitched';}).length;
+  var won=leads.filter(function(l){return l.status==='won';}).length;
+  var lost=leads.filter(function(l){return l.status==='lost';}).length;
+  var decided=won+lost;
+  var wr=decided>0?Math.round((won/decided)*100):null;
+  var maxStage=Math.max(contacted,pitched,won,lost,1);
+
+  function setMetric(id,barId,val,max){
+    var el=document.getElementById(id);if(el)el.textContent=val;
+    var bar=document.getElementById(barId);if(bar)bar.style.width=Math.round((Math.min(val,max)/max)*100)+'%';
+  }
+  setMetric('dm-contacted','dm-contacted-bar',contacted,maxStage);
+  setMetric('dm-pitched','dm-pitched-bar',pitched,maxStage);
+  setMetric('dm-won','dm-won-bar',won,maxStage);
+  setMetric('dm-lost','dm-lost-bar',lost,maxStage);
+  var wrEl=document.getElementById('dm-winrate');if(wrEl)wrEl.textContent=wr!==null?wr+'%':'—';
+  var wrBar=document.getElementById('dm-winrate-bar');if(wrBar)wrBar.style.width=(wr||0)+'%';
+
+  // Render each column
+  var stages=['contacted','pitched','won','lost'];
+  stages.forEach(function(stage){
+    var items=active.filter(function(l){return l.status===stage;});
+    var countEl=document.getElementById('ptab-count-'+stage);
+    if(countEl)countEl.textContent=items.length;
+    var col=document.getElementById('ptab-col-'+stage);
+    if(!col)return;
+    if(!items.length){col.innerHTML='<div class="kanban-empty">None yet</div>';return;}
+
+    // Next stages for move buttons
+    var nextStages={contacted:['pitched','won','lost'],pitched:['won','lost','contacted'],won:[],lost:['contacted']};
+    var stageLabels={contacted:'Contacted',pitched:'Pitched',won:'Won',lost:'Lost'};
+    var scoreColors={sc:l=>l.gapScore>=75?'#DC2626':l.gapScore>=50?'#D97706':l.gapScore>=25?'#10B981':'#94A3B8'};
+
+    col.innerHTML=items.map(function(l){
+      var loc=l.address?(l.address.split(',').slice(0,2).join(', ')):(l.locationName||'');
+      var sc=l.gapScore||0;
+      var scCol=sc>=75?'#DC2626':sc>=50?'#D97706':sc>=25?'#10B981':'#94A3B8';
+      var moveBtns=(nextStages[stage]||[]).map(function(s){
+        return '<button class="kanban-action move" onclick="event.stopPropagation();moveLead(\''+l.id+'\',\''+s+'\')">→ '+stageLabels[s]+'</button>';
+      }).join('');
+      var waBtn=l.phone?'<a class="kanban-action" href="https://wa.me/'+(l.phone||'').replace(/\D/g,'')+'" target="_blank" onclick="event.stopPropagation();window.trackOutreach&&window.trackOutreach()" style="background:#ECFDF5;color:#10B981;border-color:#A7F3D0;text-decoration:none">WhatsApp</a>':'';
+      var emailBtn='<button class="kanban-action" onclick="event.stopPropagation();openEmailModal(\''+l.id+'\')">Email</button>';
+      return '<div class="kanban-card" onclick="switchTab(\'crm\');setTimeout(function(){var c=document.getElementById(\'lc-'+l.id+'\');if(c){c.scrollIntoView({behavior:\'smooth\',block:\'center\'});}},300)">'
+        +'<div class="kanban-card-name">'+esc(l.name)+'</div>'
+        +(loc?'<div class="kanban-card-meta">'+esc(loc)+'</div>':'')
+        +'<div style="display:flex;align-items:center;gap:6px;"><span style="font-family:\'JetBrains Mono\',monospace;font-size:0.68rem;font-weight:700;color:'+scCol+';padding:2px 7px;border-radius:99px;border:1px solid '+scCol+'20;background:'+scCol+'10">'+sc+'</span>'
+        +(l.phone?'<span style="font-family:\'JetBrains Mono\',monospace;font-size:0.65rem;color:var(--muted)">'+esc(l.phone)+'</span>':'')+'</div>'
+        +'<div class="kanban-card-actions">'+moveBtns+waBtn+emailBtn+'</div>'
+        +'</div>';
+    }).join('');
+  });
+}
+
+function moveLead(id,stage){
+  var idx=leads.findIndex(function(l){return l.id===id;});
+  if(idx===-1)return;
+  leads[idx].status=stage;
+  saveLead(leads[idx]);
+  renderPipelineTab();
+  renderCRM();
+  toast('Moved to '+stage);
+  if(stage==='contacted'||stage==='pitched')window.trackOutreach&&window.trackOutreach();
+}
+
+// ── renderAnalytics: clean metrics, no charts ──
 function renderAnalytics(){
   var total=leads.length;
   var won=leads.filter(function(l){return l.status==='won';}).length;
   var lost=leads.filter(function(l){return l.status==='lost';}).length;
   var contacted=leads.filter(function(l){return l.status==='contacted';}).length;
   var pitched=leads.filter(function(l){return l.status==='pitched';}).length;
+  var newL=leads.filter(function(l){return !l.status||l.status==='new';}).length;
   var pipeline=contacted+pitched;
-  // Win rate = wins / (wins + losses) - only count decided outcomes
   var decided=won+lost;
-  var winRate=decided>0?Math.round((won/decided)*100):0;
-  var el;
-  el=document.getElementById('an-total');if(el)el.textContent=total;
-  el=document.getElementById('an-won');if(el)el.textContent=won;
-  el=document.getElementById('an-winrate');if(el)el.textContent=winRate+'%';
-  el=document.getElementById('an-pipeline');if(el)el.textContent=pipeline;
-  // Update win rate subtitle
-  var wrNote=document.getElementById('an-winrate-note');
-  if(wrNote)wrNote.textContent=decided>0?won+' won, '+lost+' lost':'No closed deals yet';
+  var winRate=decided>0?Math.round((won/decided)*100):null;
+
+  function set(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  set('an-total',total);
+  set('an-won',won);
+  set('an-winrate',winRate!==null?winRate+'%':'—');
+  set('an-pipeline-sub',pipeline+' in pipeline');
+  var wnote=document.getElementById('an-winrate-note');
+  if(wnote)wnote.textContent=decided>0?won+' won, '+lost+' lost':'No closed deals yet';
+
+  // Revenue
+  var totalRev=leads.filter(function(l){return l.status==='won'&&l.dealValue;}).reduce(function(s,l){return s+parseFloat(l.dealValue||0);},0);
+  set('an-revenue','$'+totalRev.toLocaleString('en-AU',{minimumFractionDigits:0}));
+
   // Funnel
   var stages=[
-    {label:'New',count:leads.filter(function(l){return l.status==='new';}).length,color:'var(--blue)'},
-    {label:'Contacted',count:contacted,color:'var(--amber)'},
-    {label:'Pitched',count:pitched,color:'var(--accent)'},
-    {label:'Won',count:won,color:'var(--green)'}
+    {label:'New',count:newL,color:'#6366F1',bg:'linear-gradient(90deg,#6366F1,#818CF8)'},
+    {label:'Contacted',count:contacted,color:'#D97706',bg:'linear-gradient(90deg,#D97706,#FBBF24)'},
+    {label:'Pitched',count:pitched,color:'#4F46E5',bg:'linear-gradient(90deg,#4F46E5,#7C3AED)'},
+    {label:'Won',count:won,color:'#10B981',bg:'linear-gradient(90deg,#10B981,#34D399)'}
   ];
-  var maxCount=Math.max.apply(null,stages.map(function(s){return s.count;}).concat([1]));
-  var funnelEl=document.getElementById('an-funnel');
-  if(funnelEl){
-    funnelEl.innerHTML=stages.map(function(s){
-      return '<div class="funnel-row"><div class="funnel-lbl">'+s.label+'</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:'+Math.round((s.count/maxCount)*100)+'%;background:'+s.color+';"></div></div><div class="funnel-count">'+s.count+'</div></div>';
+  var maxF=Math.max.apply(null,stages.map(function(s){return s.count;}));
+  maxF=Math.max(maxF,1);
+  var fEl=document.getElementById('an-funnel');
+  if(fEl){
+    fEl.innerHTML=stages.map(function(s,i){
+      var w=Math.round((s.count/maxF)*100);
+      var pct=total>0?Math.round((s.count/total)*100):0;
+      return '<div class="funnel-row"><div class="funnel-label">'+s.label+'</div>'
+        +'<div class="funnel-track"><div class="funnel-fill" style="width:'+w+'%;background:'+s.bg+'"><span class="funnel-count">'+s.count+'</span></div></div>'
+        +'<div class="funnel-pct">'+pct+'%</div></div>';
     }).join('');
   }
-  // Chart
-  // Build per-day counts by status
-  var byDayStatus={};
-  leads.forEach(function(l){
-    var d=new Date(l.savedAt||0);
-    var day=d.toISOString().slice(0,10);
-    if(!byDayStatus[day])byDayStatus[day]={new:0,contacted:0,pitched:0,won:0};
-    var st=l.status||'new';
-    if(byDayStatus[day][st]!==undefined)byDayStatus[day][st]++;
-    else byDayStatus[day]['new']++;
-  });
-  var sortedDates=Object.keys(byDayStatus).sort().slice(-14);
-  var ctx=document.getElementById('an-chart');
-  if(ctx&&typeof Chart!=='undefined'){
-    if(_analyticsChart)_analyticsChart.destroy();
-    _analyticsChart=new Chart(ctx,{
-      type:'bar',
-      data:{
-        labels:sortedDates.map(function(d){return d.slice(5);}),
-        datasets:[
-          {label:'New',data:sortedDates.map(function(d){return byDayStatus[d].new;}),backgroundColor:'rgba(26,111,168,0.7)',borderRadius:3},
-          {label:'Contacted',data:sortedDates.map(function(d){return byDayStatus[d].contacted;}),backgroundColor:'rgba(192,120,0,0.75)',borderRadius:3},
-          {label:'Pitched',data:sortedDates.map(function(d){return byDayStatus[d].pitched;}),backgroundColor:'rgba(26,158,110,0.65)',borderRadius:3},
-          {label:'Won',data:sortedDates.map(function(d){return byDayStatus[d].won;}),backgroundColor:'rgba(26,158,110,1)',borderRadius:3}
-        ]
-      },
-      options:{
-        responsive:true,
-        plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},padding:12,boxWidth:12}}},
-        scales:{
-          x:{stacked:true,grid:{display:false},ticks:{font:{size:11}}},
-          y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}}
-        }
-      }
-    });
+
+  // Gap breakdown
+  var noSite=leads.filter(function(l){return !l.website;}).length;
+  var noSocial=leads.filter(function(l){return !(l.facebook||l.instagram||l.twitter||l.tiktok);}).length;
+  var noPhone=leads.filter(function(l){return !l.phone;}).length;
+  var noEmail=leads.filter(function(l){return !l.email;}).length;
+  var gapData=[
+    {label:'No Website',count:noSite,color:'#DC2626',bg:'linear-gradient(90deg,#DC2626,#F87171)'},
+    {label:'No Social Media',count:noSocial,color:'#D97706',bg:'linear-gradient(90deg,#D97706,#FCD34D)'},
+    {label:'No Phone',count:noPhone,color:'#7C3AED',bg:'linear-gradient(90deg,#7C3AED,#A78BFA)'},
+    {label:'No Email',count:noEmail,color:'#4F46E5',bg:'linear-gradient(90deg,#4F46E5,#818CF8)'}
+  ];
+  var gapEl=document.getElementById('an-gaps');
+  if(gapEl){
+    var maxG=Math.max.apply(null,gapData.map(function(g){return g.count;}));
+    maxG=Math.max(maxG,1);
+    gapEl.innerHTML=gapData.map(function(g){
+      var w=Math.round((g.count/maxG)*100);
+      var pct=total>0?Math.round((g.count/total)*100):0;
+      return '<div class="gap-bar-row">'
+        +'<div class="gap-bar-header"><span class="gap-bar-label">'+g.label+'</span>'
+        +'<span class="gap-bar-pct" style="color:'+g.color+'">'+g.count+' ('+pct+'%)</span></div>'
+        +'<div class="gap-track"><div class="gap-fill" style="width:'+w+'%;background:'+g.bg+'"></div></div>'
+        +'</div>';
+    }).join('');
   }
+
   // Top suburbs
   var bySub={};
   leads.forEach(function(l){
@@ -3320,24 +3583,39 @@ function renderAnalytics(){
     if(l.status==='won')bySub[s].won++;
   });
   var topSubs=Object.entries(bySub).sort(function(a,b){return b[1].total-a[1].total;}).slice(0,6);
+  var maxSub=topSubs.length?topSubs[0][1].total:1;
   var subEl=document.getElementById('an-suburbs');
   if(subEl){
-    subEl.innerHTML=topSubs.length?topSubs.map(function(entry){
-      return '<div class="suburb-row"><span>'+esc(entry[0])+'</span><span style="display:flex;gap:12px;"><span style="font-size:.74rem;color:var(--muted);">'+entry[1].total+' leads</span><span style="font-size:.74rem;color:var(--green);font-weight:600;">'+entry[1].won+' won</span></span></div>';
-    }).join(''):'<div style="color:var(--muted);font-size:.82rem;">No data yet</div>';
+    subEl.innerHTML=topSubs.length?topSubs.map(function(entry,i){
+      var w=Math.round((entry[1].total/maxSub)*100);
+      return '<div class="location-row">'
+        +'<span class="location-rank">'+(i+1)+'</span>'
+        +'<span class="location-name">'+esc(entry[0])+'</span>'
+        +'<div class="location-bar-wrap"><div class="location-bar" style="width:'+w+'%"></div></div>'
+        +'<div class="location-stats">'
+        +'<span class="location-stat" style="color:var(--muted)">'+entry[1].total+' leads</span>'
+        +(entry[1].won?'<span class="location-stat" style="color:#10B981;font-weight:700">'+entry[1].won+' won</span>':'')
+        +'</div></div>';
+    }).join(''):'<div style="color:var(--muted);font-size:.82rem;padding:8px 0">No location data yet</div>';
   }
-  // Won deals
+
+  // Won deals revenue logger
   var wonLeads=leads.filter(function(l){return l.status==='won';});
   var wonEl=document.getElementById('an-won-list');
   if(wonEl){
     wonEl.innerHTML=wonLeads.length?wonLeads.map(function(l){
-      return '<div class="won-row"><span style="font-size:.82rem;font-weight:600;">'+esc(l.name)+'</span><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:.74rem;color:var(--muted);">$</span><input class="deal-val" type="number" placeholder="0" value="'+(l.dealValue||'')+'" data-id="'+l.id+'" onchange="saveDealValue(this.dataset.id,this.value)"/></div></div>';
-    }).join(''):'<div style="color:var(--muted);font-size:.82rem;padding:8px 0;">No won deals yet.</div>';
+      return '<div class="won-row">'
+        +'<span style="font-size:.84rem;font-weight:600;">'+esc(l.name)+'</span>'
+        +'<div style="display:flex;align-items:center;gap:6px;">'
+        +'<span style="font-size:.76rem;color:var(--muted);font-weight:600;">$</span>'
+        +'<input class="deal-val" type="number" placeholder="0" value="'+(l.dealValue||'')+'" data-id="'+l.id+'" onchange="saveDealValue(this.dataset.id,this.value)"/>'
+        +'</div></div>';
+    }).join(''):'<div style="color:var(--muted);font-size:.82rem;padding:8px 0">No won deals yet — mark leads as Won to track revenue.</div>';
   }
-  var totalRev=leads.filter(function(l){return l.status==='won'&&l.dealValue;}).reduce(function(s,l){return s+parseFloat(l.dealValue||0);},0);
-  var revEl=document.getElementById('an-revenue');
+  var revEl=document.getElementById('an-revenue-total');
   if(revEl)revEl.textContent='$'+totalRev.toLocaleString('en-AU',{minimumFractionDigits:0});
 }
+
 function saveDealValue(id,value){
   var lead=leads.find(function(l){return l.id===id;});
   if(!lead)return;
@@ -4100,6 +4378,83 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   });
 })();
+</script>
+
+<!-- ── Scan celebration confetti ── -->
+<script>
+function launchConfetti(leadCount){
+  // Create canvas
+  var canvas=document.getElementById('fp-confetti');
+  if(!canvas){canvas=document.createElement('canvas');canvas.id='fp-confetti';canvas.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999;';document.body.appendChild(canvas);}
+  var ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+
+  var colors=['#4F46E5','#7C3AED','#10B981','#F59E0B','#EC4899','#6366F1','#A78BFA','#34D399'];
+  var pieces=[];
+  var count=Math.min(40+leadCount*2,120);
+
+  for(var i=0;i<count;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:-10-Math.random()*200,
+      r:Math.random()*6+3,
+      d:Math.random()*count,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      tilt:Math.random()*10-10,
+      tiltAngle:0,
+      tiltAngleIncremental:Math.random()*0.07+0.05,
+      vx:(Math.random()-0.5)*3,
+      vy:Math.random()*3+2,
+      shape:Math.random()>0.5?'rect':'circle',
+      w:Math.random()*8+4,
+      h:Math.random()*4+2
+    });
+  }
+
+  var angle=0, startTime=null, duration=3200;
+
+  function draw(ts){
+    if(!startTime) startTime=ts;
+    var elapsed=ts-startTime;
+    if(elapsed>duration){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      canvas.remove();
+      return;
+    }
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    angle+=0.01;
+    var opacity=elapsed>duration-600?Math.max(0,1-(elapsed-(duration-600))/600):1;
+    pieces.forEach(function(p){
+      p.tiltAngle+=p.tiltAngleIncremental;
+      p.y+=p.vy;
+      p.x+=p.vx+Math.sin(angle+p.d)*0.8;
+      p.tilt=Math.sin(p.tiltAngle)*15;
+      ctx.globalAlpha=opacity;
+      ctx.fillStyle=p.color;
+      ctx.beginPath();
+      if(p.shape==='circle'){
+        ctx.arc(p.x+p.tilt,p.y,p.r,0,Math.PI*2);
+      } else {
+        ctx.save();
+        ctx.translate(p.x+p.tilt,p.y);
+        ctx.rotate(p.tiltAngle);
+        ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+        ctx.restore();
+        ctx.globalAlpha=0; // skip fill below
+      }
+      ctx.fill();
+      ctx.globalAlpha=1;
+    });
+    // Reset pieces that fall off screen
+    pieces.forEach(function(p){ if(p.y>canvas.height+20){ p.y=-10; p.x=Math.random()*canvas.width; } });
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  // Also show a toast
+  toast('🎉 '+leadCount+' leads found!', 3500);
+}
 </script>
 
 <!-- PWA Service Worker registration -->

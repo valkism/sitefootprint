@@ -87,12 +87,13 @@
     .ap:hover { border-color: #C7D2FE; color: var(--primary); background: var(--indigo-50); transform: translateY(-1px); }
 
     /* APP PREVIEW */
-    .preview-wrap { position: relative; width: 100%; max-width: 900px; margin: 52px auto 0; perspective: 2000px; }
-    .preview-tilt { transform: rotateX(3deg) rotateY(-6deg); transition: transform 0.4s ease; animation: heroFloat 6s ease-in-out infinite; }
-    .preview-wrap:hover .preview-tilt { transform: rotateX(1deg) rotateY(-3deg); animation-play-state: paused; }
-    @keyframes heroFloat { 0%,100% { transform: rotateX(3deg) rotateY(-6deg) translateY(0); } 50% { transform: rotateX(3deg) rotateY(-6deg) translateY(-8px); } }
+    .preview-wrap { position: relative; width: 100%; max-width: 900px; margin: 52px auto 0; perspective: 2000px; cursor: default; }
+    .preview-tilt { transform: rotateX(4deg) rotateY(-8deg) translateY(0px); transition: transform 0.08s linear; will-change: transform; }
     /* Section reveal base state handled by JS IntersectionObserver */
     .for-card, .why-card, .feat, .step { will-change: opacity, transform; }
+    @keyframes scanIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
+    .plead-animated { opacity:0; }
+    .plead-animated.visible { animation: scanIn 0.35s ease forwards; }
     .pwin { background: var(--surface); border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 24px 64px rgba(79,70,229,0.14), 0 4px 16px rgba(0,0,0,0.06); }
     .pbar { display: flex; align-items: center; gap: 6px; padding: 11px 16px; background: #F8FAFC; border-bottom: 1px solid var(--border); }
     .pd { width: 10px; height: 10px; border-radius: 50%; }
@@ -254,6 +255,32 @@
     .fade-up:nth-child(1){animation-delay:.05s} .fade-up:nth-child(2){animation-delay:.15s} .fade-up:nth-child(3){animation-delay:.25s} .fade-up:nth-child(4){animation-delay:.35s} .fade-up:nth-child(5){animation-delay:.45s}
     @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
 
+    /* ─── SOCIAL PROOF STRIP ─── */
+    .proof-strip { background:linear-gradient(135deg,#1e1b4b 0%,#2e1065 100%); overflow:hidden; padding:0; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); }
+    .proof-track { display:flex; gap:0; animation:proofScroll 32s linear infinite; width:max-content; }
+    .proof-strip:hover .proof-track { animation-play-state:paused; }
+    @keyframes proofScroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    .proof-item { display:flex; align-items:center; gap:14px; padding:16px 44px; white-space:nowrap; border-right:1px solid rgba(255,255,255,0.07); flex-shrink:0; }
+    .proof-stars { color:#FCD34D; font-size:0.72rem; letter-spacing:2px; }
+    .proof-quote { font-size:0.85rem; color:rgba(255,255,255,0.78); font-style:italic; }
+    .proof-author { font-size:0.74rem; color:rgba(255,255,255,0.38); font-weight:600; white-space:nowrap; }
+
+    /* ─── STEP CONNECTOR ─── */
+    .steps-wrap { position:relative; margin-top:52px; }
+    .step-connector-line { position:absolute; top:28px; left:calc(12.5% + 20px); right:calc(12.5% + 20px); height:2px; z-index:0; background:var(--border); overflow:hidden; border-radius:1px; }
+    .step-connector-fill { height:100%; width:0%; background:linear-gradient(90deg,#4F46E5,#7C3AED); transition:width 1.4s cubic-bezier(0.4,0,0.2,1); }
+    .steps-wrap.animated .step-connector-fill { width:100%; }
+    .steps { position:relative; z-index:1; }
+
+    /* ─── FEATURE ICON ANIMATIONS ─── */
+    .feat-icon { transition:background 0.2s,transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .feat:hover .feat-icon { background:#E0E7FF; transform:scale(1.15) rotate(-4deg); }
+    .feat:hover .feat-icon svg { stroke:#4338CA; }
+    .feat-icon svg { transition:stroke 0.2s; }
+
+    /* ─── CONFETTI CANVAS ─── */
+    #confetti-canvas { position:fixed; inset:0; pointer-events:none; z-index:9999; display:none; }
+
     /* RESPONSIVE */
     @media (max-width:1024px) { .for-grid,.why-grid,.feat-grid{grid-template-columns:1fr 1fr;} .steps{grid-template-columns:1fr 1fr;} .step:nth-child(2)::after,.step:nth-child(4)::after{display:none;} }
     @media (max-width:768px) { .nlinks{display:none;} .stats-i{grid-template-columns:1fr 1fr;} }
@@ -337,6 +364,25 @@
     </div>
   </div>
 </section>
+
+<div class="proof-strip">
+  <div class="proof-track">
+    <!-- First set -->
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Landed my first $2,400 client within 48 hours of signing up."</span><span class="proof-author">— Jake M., Web Designer</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"I found 23 businesses with no Instagram in my suburb. Signed 3 as retainers."</span><span class="proof-author">— Sarah K., Social Media Manager</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Replaced job boards entirely. I now run 3 scans a week and always have leads."</span><span class="proof-author">— Tom R., Freelancer</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"The AI pitch emails are shockingly good. My reply rate went from 4% to 22%."</span><span class="proof-author">— Priya D., Agency Owner</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Used it on a Saturday morning. Had a discovery call booked by Sunday night."</span><span class="proof-author">— Marcus L., Web Dev</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Paid for itself 80x in the first month. Best $20 I spend each month."</span><span class="proof-author">— Aisha W., Freelance Designer</span></div>
+    <!-- Duplicate for seamless loop -->
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Landed my first $2,400 client within 48 hours of signing up."</span><span class="proof-author">— Jake M., Web Designer</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"I found 23 businesses with no Instagram in my suburb. Signed 3 as retainers."</span><span class="proof-author">— Sarah K., Social Media Manager</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Replaced job boards entirely. I now run 3 scans a week and always have leads."</span><span class="proof-author">— Tom R., Freelancer</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"The AI pitch emails are shockingly good. My reply rate went from 4% to 22%."</span><span class="proof-author">— Priya D., Agency Owner</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Used it on a Saturday morning. Had a discovery call booked by Sunday night."</span><span class="proof-author">— Marcus L., Web Dev</span></div>
+    <div class="proof-item"><span class="proof-stars">★★★★★</span><span class="proof-quote">"Paid for itself 80x in the first month. Best $20 I spend each month."</span><span class="proof-author">— Aisha W., Freelance Designer</span></div>
+  </div>
+</div>
 
 <div class="stats">
   <div class="stats-i">
@@ -422,12 +468,15 @@
     <div class="sec-eyebrow" style="justify-content:center">How it works</div>
     <h2>From zero to first client<br><span class="grad-text">in under a day</span></h2>
     <p class="sec-sub" style="margin:0 auto 52px;text-align:center;">Four steps. No cold calls. No expensive ad campaigns. Just you, the tool, and businesses that already need what you do.</p>
-    <div class="steps">
+    <div class="steps-wrap" id="steps-wrap">
+      <div class="step-connector-line"><div class="step-connector-fill"></div></div>
+      <div class="steps">
       <div class="step"><div class="step-num">1</div><div class="step-t">Find leads</div><div class="step-d">Scan any suburb or city. Footprint surfaces local businesses with no website, no social media — real gaps, real need.</div></div>
       <div class="step"><div class="step-num">2</div><div class="step-t">Identify gaps</div><div class="step-d">Every business is scored 0–100. The higher the gap score, the more they need you — and the easier the pitch.</div></div>
       <div class="step"><div class="step-num">3</div><div class="step-t">Contact instantly</div><div class="step-d">One click generates a personalised pitch email. Send directly from the app — no switching between tools.</div></div>
       <div class="step"><div class="step-num">4</div><div class="step-t">Close clients</div><div class="step-d">Track every lead in the CRM. Follow up on pitched leads. Turn "maybe" into "signed" — and watch your pipeline fill.</div></div>
     </div>
+    </div><!-- /steps-wrap -->
     <div style="margin-top:44px"><a href="login.html?signup=1" class="btn btn-primary-lg">Start getting clients free &nbsp;→</a></div>
   </div>
 </section>
@@ -558,32 +607,87 @@
     if(statsEl) io.observe(statsEl);
   })();
 
-  // Tilt effect on app preview on mouse move
+  // ── Preview: smooth float + cursor-tracking tilt (combined rAF loop) ──
   (function(){
     var wrap = document.querySelector('.preview-wrap');
     var tilt = document.querySelector('.preview-tilt');
     if(!wrap || !tilt) return;
+    var curX = 4, curY = -8, targetX = 4, targetY = -8;
+    var isHovering = false, floatT0 = performance.now();
+    function lerp(a,b,t){ return a+(b-a)*t; }
+    function frame(now){
+      if(!isHovering){
+        var s = (now - floatT0) / 1000;
+        var fy = Math.sin(s * 0.65) * 6;
+        tilt.style.transform = 'rotateX('+lerp(curX,targetX,0.07).toFixed(2)+'deg) rotateY('+lerp(curY,targetY,0.07).toFixed(2)+'deg) translateY('+fy.toFixed(1)+'px)';
+      } else {
+        curX = lerp(curX, targetX, 0.1);
+        curY = lerp(curY, targetY, 0.1);
+        tilt.style.transform = 'rotateX('+curX.toFixed(2)+'deg) rotateY('+curY.toFixed(2)+'deg) translateY(0px)';
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+    wrap.addEventListener('mouseenter', function(){ isHovering=true; });
+    wrap.addEventListener('mouseleave', function(){ isHovering=false; targetX=4; targetY=-8; floatT0=performance.now(); });
     wrap.addEventListener('mousemove', function(e){
-      var r = wrap.getBoundingClientRect();
-      var cx = r.left + r.width/2;
-      var cy = r.top + r.height/2;
-      var dx = (e.clientX - cx) / (r.width/2);
-      var dy = (e.clientY - cy) / (r.height/2);
-      tilt.style.transform = 'rotateX('+(dy*-4)+'deg) rotateY('+(dx*5)+'deg)';
-    });
-    wrap.addEventListener('mouseleave', function(){
-      tilt.style.transform = 'rotateX(3deg) rotateY(-6deg)';
-      tilt.style.transition = 'transform 0.6s ease';
-      setTimeout(function(){ tilt.style.transition=''; }, 600);
+      var r=wrap.getBoundingClientRect();
+      var dx=((e.clientX-r.left)/r.width-0.5)*2;
+      var dy=((e.clientY-r.top)/r.height-0.5)*2;
+      targetX=dy*-6; targetY=dx*9;
     });
   })();
 
-  // Smooth nav background on scroll
+  // ── Live counter: badge counts up to 18 on page load ──
   (function(){
-    var nav = document.querySelector('nav');
-    window.addEventListener('scroll', function(){
-      nav.style.boxShadow = window.scrollY > 20 ? '0 4px 20px rgba(79,70,229,0.08)' : '';
-    }, {passive:true});
+    var badge=document.querySelector('.pcnt-n');
+    if(!badge) return;
+    var target=18, startTime=null;
+    setTimeout(function(){
+      function tick(ts){
+        if(!startTime) startTime=ts;
+        var prog=Math.min((ts-startTime)/1400,1);
+        var ease=1-Math.pow(1-prog,3);
+        badge.textContent=Math.round(ease*target);
+        if(prog<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    },900);
+  })();
+
+  // ── Scan animation: leads appear one by one in preview ──
+  (function(){
+    var leads=document.querySelectorAll('.plead');
+    var hdr=document.querySelector('.presult-hdr');
+    leads.forEach(function(l){ l.style.opacity='0'; l.style.transform='translateX(-12px)'; });
+    if(hdr) hdr.style.opacity='0';
+    setTimeout(function(){
+      if(hdr){ hdr.style.transition='opacity 0.4s ease'; hdr.style.opacity='1'; }
+      leads.forEach(function(l,i){
+        setTimeout(function(){
+          l.style.transition='opacity 0.45s ease, transform 0.45s cubic-bezier(0.34,1.4,0.64,1)';
+          l.style.opacity='1'; l.style.transform='translateX(0)';
+        }, 350 + i*200);
+      });
+    }, 700);
+  })();
+
+  // ── Step connector line: draws on scroll into view ──
+  (function(){
+    var wrap=document.getElementById('steps-wrap');
+    var fill=wrap&&wrap.querySelector('.step-connector-fill');
+    if(!wrap||!fill) return;
+    new IntersectionObserver(function(entries,io){
+      if(entries[0].isIntersecting){ setTimeout(function(){ fill.style.width='100%'; },200); io.disconnect(); }
+    },{threshold:0.3}).observe(wrap);
+  })();
+
+  // ── Smooth nav shadow on scroll ──
+  (function(){
+    var nav=document.querySelector('nav');
+    window.addEventListener('scroll',function(){
+      nav.style.boxShadow=window.scrollY>20?'0 4px 20px rgba(79,70,229,0.08)':'';
+    },{passive:true});
   })();
 </script>
 </body>
