@@ -3,112 +3,118 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>Sign in — Footprint</title>
+<title>Sign in - Footprint</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{--bg:#07100a;--surf:#0d1810;--surf2:#142018;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--text:#e4ede1;--muted:#5a7257;--dim:#243026;--accent:#62f050;--accent2:#48db38;--gold:#d4a843;--red:#e05555;}
-html{font-size:16px;-webkit-text-size-adjust:100%;height:100%;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;min-height:100dvh;display:flex;}
+:root{
+  --bg:#f4f8f6;--surf:#ffffff;--surf2:#eef3f1;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
+  --text:#0d1f19;--muted:#6a8c80;--dim:#b8cfc8;
+  --accent:#1a9e6e;--accent2:#157a55;--accent-pale:rgba(26,158,110,0.1);
+  --amber:#c07800;--red:#d63031;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;display:flex;}
 .page{flex:1;display:flex;min-height:100dvh;}
-.lp{display:none;width:400px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--border);padding:44px 40px;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
-.lp::after{content:'';position:absolute;bottom:-80px;left:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(98,240,80,0.07) 0%,transparent 70%);pointer-events:none;}
+.lp{display:none;width:clamp(340px,30vw,440px);flex-shrink:0;background:linear-gradient(160deg,#f0faf5 0%,#e4f5ec 100%);border-right:1px solid var(--border);padding:44px 40px;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+.lp::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(26,158,110,0.1) 0%,transparent 70%);pointer-events:none;}
 @media(min-width:860px){.lp{display:flex;}}
-.lp-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);}
-.lp-mark{width:28px;height:28px;background:var(--accent);clip-path:polygon(50% 0%,100% 35%,82% 100%,18% 100%,0% 35%);flex-shrink:0;}
-.lp-name{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:700;}
-.lp-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:36px 0;}
-.lp-h{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:700;line-height:1.15;margin-bottom:14px;}
-.lp-h em{font-style:italic;color:var(--accent);}
-.lp-p{font-size:0.875rem;color:var(--muted);line-height:1.75;margin-bottom:28px;}
-.lp-list{display:flex;flex-direction:column;gap:12px;}
-.lp-item{display:flex;align-items:flex-start;gap:10px;font-size:0.85rem;}
-.lp-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(98,240,80,0.1);border:1px solid rgba(98,240,80,0.2);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:var(--accent);}
+.lp-logo{display:flex;align-items:center;text-decoration:none;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);position:relative;z-index:1;}
+.lp-logo-fp{color:var(--accent);}
+.lp-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;position:relative;top:-1px;margin-left:1px;}
+.lp-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0;position:relative;z-index:1;}
+.lp-h{font-size:clamp(1.4rem,2.2vw,1.75rem);font-weight:700;line-height:1.2;margin-bottom:12px;letter-spacing:-0.04em;}
+.lp-h em{font-style:normal;color:var(--accent);}
+.lp-p{font-size:0.83rem;color:var(--muted);line-height:1.75;margin-bottom:24px;}
+.lp-list{display:flex;flex-direction:column;gap:10px;}
+.lp-item{display:flex;align-items:flex-start;gap:10px;font-size:0.81rem;}
+.lp-check{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(26,158,110,0.12);border:1.5px solid rgba(26,158,110,0.28);display:flex;align-items:center;justify-content:center;font-size:0.58rem;color:var(--accent);}
 .lp-item-txt{color:var(--muted);line-height:1.5;}
-.lp-item-txt strong{color:var(--text);}
-.lp-trial{padding:16px;background:rgba(212,168,67,0.07);border:1px solid rgba(212,168,67,0.18);border-radius:10px;}
-.lp-trial-tag{font-size:0.7rem;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
-.lp-trial-body{font-size:0.82rem;color:var(--muted);line-height:1.6;}
-.rp{flex:1;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top,24px) 24px env(safe-area-inset-bottom,24px);min-height:100dvh;}
-@media(min-width:860px){.rp{min-height:auto;}}
+.lp-item-txt strong{color:var(--text);font-weight:600;}
+.lp-trial{padding:14px 16px;background:rgba(192,120,0,0.07);border:1.5px solid rgba(192,120,0,0.18);border-radius:10px;position:relative;z-index:1;}
+.lp-trial-tag{font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:700;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
+.lp-trial-body{font-size:0.79rem;color:var(--muted);line-height:1.6;}
+.rp{flex:1;display:flex;align-items:center;justify-content:center;padding:24px clamp(16px,4vw,32px);min-height:100dvh;background:var(--bg);}
+@media(min-width:860px){.rp{min-height:auto;background:#fff;}}
 .form-box{width:100%;max-width:380px;}
-.mob-logo{display:flex;align-items:center;gap:9px;margin-bottom:30px;text-decoration:none;color:var(--text);}
-.mob-mark{width:26px;height:26px;background:var(--accent);clip-path:polygon(50% 0%,100% 35%,82% 100%,18% 100%,0% 35%);}
-.mob-name{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;}
+.mob-logo{display:flex;align-items:center;text-decoration:none;font-size:1.1rem;font-weight:700;letter-spacing:-0.04em;color:var(--text);margin-bottom:26px;}
+.mob-logo-fp{color:var(--accent);}
+.mob-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;position:relative;top:-1px;margin-left:1px;}
 @media(min-width:860px){.mob-logo{display:none;}}
-.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surf2);border:1px solid var(--border);border-radius:12px;padding:3px;gap:3px;margin-bottom:24px;}
-.tab{padding:10px;text-align:center;font-size:0.9rem;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'DM Sans',sans-serif;border-radius:10px;transition:all .15s;-webkit-tap-highlight-color:transparent;}
-.tab.on{background:var(--surf);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.35);}
-.trial-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;margin-bottom:14px;background:rgba(212,168,67,0.1);color:var(--gold);border:1px solid rgba(212,168,67,0.2);border-radius:20px;font-size:0.75rem;font-weight:600;}
-.f-title{font-family:'Fraunces',serif;font-size:1.75rem;font-weight:700;margin-bottom:4px;line-height:1.15;}
-.f-sub{font-size:0.88rem;color:var(--muted);margin-bottom:22px;}
-.alert{padding:11px 14px;border-radius:10px;font-size:0.875rem;margin-bottom:14px;display:none;line-height:1.5;}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surf2);border:1.5px solid var(--border);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px;}
+.tab{padding:9px;text-align:center;font-size:0.84rem;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'Sora',sans-serif;border-radius:8px;transition:all .15s;}
+.tab.on{background:#fff;color:var(--text);box-shadow:0 1px 8px rgba(0,0,0,0.08);}
+.alert{padding:10px 13px;border-radius:8px;font-size:0.83rem;margin-bottom:12px;display:none;line-height:1.5;}
 .alert.show{display:block;}
-.a-err{background:rgba(224,85,85,.1);border:1px solid rgba(224,85,85,.25);color:#f09090;}
-.a-ok{background:rgba(98,240,80,.08);border:1px solid rgba(98,240,80,.2);color:var(--accent);}
-.field{margin-bottom:14px;}
-.flabel{display:block;font-size:0.78rem;font-weight:600;color:var(--muted);margin-bottom:5px;}
-.finput{width:100%;background:var(--surf2);border:1.5px solid var(--border2);border-radius:12px;padding:13px 15px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s;}
-.finput:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(98,240,80,0.12);}
+.a-err{background:rgba(214,48,49,.08);border:1.5px solid rgba(214,48,49,.2);color:var(--red);}
+.a-ok{background:var(--accent-pale);border:1.5px solid rgba(26,158,110,.2);color:var(--accent);}
+.field{margin-bottom:12px;}
+.flabel{display:block;font-size:0.69rem;font-weight:600;color:var(--muted);margin-bottom:4px;letter-spacing:0.04em;text-transform:uppercase;}
+.finput{width:100%;background:var(--surf2);border:1.5px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font-family:'Sora',sans-serif;font-size:0.9rem;outline:none;appearance:none;transition:border-color .15s,box-shadow .15s;}
+.finput:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,158,110,0.1);}
 .finput::placeholder{color:var(--dim);}
-.row-right{display:flex;justify-content:flex-end;margin-top:-7px;margin-bottom:14px;}
-.text-btn{font-size:0.8rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:4px 0;transition:color .15s;}
+.row-right{display:flex;justify-content:flex-end;margin-top:-4px;margin-bottom:12px;}
+.text-btn{font-size:0.77rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Sora',sans-serif;padding:3px 0;transition:color .15s;}
 .text-btn:hover{color:var(--accent);}
-.btn-pri{width:100%;padding:14px;background:var(--accent);color:#07100a;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;-webkit-tap-highlight-color:transparent;}
-.btn-pri:hover:not(:disabled){background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(98,240,80,0.28);}
+.btn-pri{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;box-shadow:0 0 14px rgba(26,158,110,0.18);}
+.btn-pri:hover:not(:disabled){background:var(--accent2);transform:translateY(-1px);}
 .btn-pri:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.btn-google{width:100%;padding:13px;background:var(--surf2);color:var(--text);border:1.5px solid var(--border2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;margin-top:10px;transition:all .2s;-webkit-tap-highlight-color:transparent;}
-.btn-google:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.22);}
-.divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--dim);font-size:0.8rem;}
+.btn-google{width:100%;padding:10px;background:var(--surf);color:var(--text);border:1.5px solid var(--border2);border-radius:10px;font-family:'Sora',sans-serif;font-size:0.86rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;min-height:46px;margin-top:9px;transition:all .2s;}
+.btn-google:hover{background:var(--surf2);}
+.divider{display:flex;align-items:center;gap:10px;margin:15px 0;color:var(--dim);font-size:0.75rem;}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.legal{font-size:0.72rem;color:var(--muted);margin-top:18px;text-align:center;line-height:1.7;}
+.legal{font-size:0.69rem;color:var(--muted);margin-top:15px;text-align:center;line-height:1.7;}
 .legal a{color:var(--muted);text-decoration:underline;}
-.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(7,16,10,.25);border-top-color:#07100a;animation:rot .65s linear infinite;display:none;flex-shrink:0;}
+.spin{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:rot .65s linear infinite;display:none;flex-shrink:0;}
 @keyframes rot{to{transform:rotate(360deg);}}
 .view{display:none;}.view.show{display:block;}
-.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--muted);cursor:pointer;margin-bottom:20px;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0;transition:color .15s;}
+.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;color:var(--muted);cursor:pointer;margin-bottom:16px;background:none;border:none;font-family:'Sora',sans-serif;padding:0;transition:color .15s;}
 .back-btn:hover{color:var(--text);}
-.fgt-title{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;margin-bottom:6px;}
-.fgt-sub{font-size:0.875rem;color:var(--muted);margin-bottom:22px;line-height:1.65;}
+.f-title{font-size:clamp(1.25rem,2vw,1.5rem);font-weight:700;margin-bottom:3px;line-height:1.2;letter-spacing:-0.04em;}
+.f-sub{font-size:0.83rem;color:var(--muted);margin-bottom:19px;line-height:1.5;}
+.fgt-title{font-size:1.3rem;font-weight:700;margin-bottom:5px;letter-spacing:-0.03em;}
+.fgt-sub{font-size:0.83rem;color:var(--muted);margin-bottom:18px;line-height:1.6;}
 </style>
 </head>
 <body>
 <div class="page">
 <div class="lp">
-  <a href="index.html" class="lp-logo"><div class="lp-mark"></div><span class="lp-name">Footprint</span></a>
+  <a href="index.html" class="lp-logo"><span class="lp-logo-fp">foot</span><span>print</span><span class="lp-logo-dot"></span></a>
   <div class="lp-body">
-    <h2 class="lp-h">Find businesses with<br/><em>no digital presence</em></h2>
-    <p class="lp-p">Scan any suburb or city worldwide. Footprint surfaces local businesses with no website or social media — a warm list of people who genuinely need your services.</p>
+    <h2 class="lp-h">Your next client is already<br/><em>out there</em></h2>
+    <p class="lp-p">Footprint scans any suburb or city and finds local businesses with no website, no Instagram, no social media - a ready-made list of warm prospects.</p>
     <div class="lp-list">
-      <div class="lp-item"><div class="lp-dot">✓</div><div class="lp-item-txt"><strong>Works in 180+ countries</strong> — any suburb, city or postcode</div></div>
-      <div class="lp-item"><div class="lp-dot">✓</div><div class="lp-item-txt"><strong>No API key needed</strong> — powered by OpenStreetMap</div></div>
-      <div class="lp-item"><div class="lp-dot">✓</div><div class="lp-item-txt"><strong>Built-in CRM</strong> — track every lead from first contact to won</div></div>
-      <div class="lp-item"><div class="lp-dot">✓</div><div class="lp-item-txt"><strong>$19.95/month flat</strong> — unlimited scans, no per-use fees</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Find businesses with no website</strong> - perfect for web designers</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Find businesses with no social media</strong> - perfect for social media managers</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>AI pitch emails</strong> - written for every lead, free to use</div></div>
+      <div class="lp-item"><div class="lp-check">&#10003;</div><div class="lp-item-txt"><strong>Pipeline tracker</strong> - manage contacted, pitched and won deals</div></div>
     </div>
   </div>
   <div class="lp-trial">
-    <div class="lp-trial-tag">✦ 3-day free trial</div>
-    <div class="lp-trial-body">Full access for 3 days. Card collected but not charged until day 4. Cancel any time.</div>
+    <div class="lp-trial-tag">3-day free trial</div>
+    <div class="lp-trial-body">Full access for 3 days. No payment required to get started.</div>
   </div>
 </div>
+
 <div class="rp">
   <div class="form-box">
-    <a href="index.html" class="mob-logo"><div class="mob-mark"></div><span class="mob-name">Footprint</span></a>
+    <a href="index.html" class="mob-logo"><span class="mob-logo-fp">foot</span><span>print</span><span class="mob-logo-dot"></span></a>
+
     <div id="v-main" class="view show">
       <div class="tabs">
         <button class="tab on" id="tab-in" onclick="setMode('signin')">Sign in</button>
-        <button class="tab"    id="tab-up" onclick="setMode('signup')">Sign up</button>
+        <button class="tab" id="tab-up" onclick="setMode('signup')">Sign up</button>
       </div>
-      <div id="trial-wrap" style="display:none"><div class="trial-badge">✦ 3-day free trial — then $19.95/month</div></div>
       <div class="f-title" id="f-title">Welcome back</div>
-      <div class="f-sub"   id="f-sub">Sign in to your Footprint account</div>
+      <div class="f-sub" id="f-sub">Sign in to your Footprint account</div>
       <div class="alert a-err" id="main-err"></div>
-      <div class="alert a-ok"  id="main-ok"></div>
+      <div class="alert a-ok" id="main-ok"></div>
       <form onsubmit="handleSubmit(event)" autocomplete="on" novalidate>
         <div class="field" id="name-field" style="display:none">
           <label class="flabel">Full name</label>
-          <input class="finput" id="f-name" type="text" placeholder="Jane Smith" autocomplete="name" inputmode="text"/>
+          <input class="finput" id="f-name" type="text" placeholder="Jane Smith" autocomplete="name"/>
         </div>
         <div class="field">
           <label class="flabel">Email</label>
@@ -116,7 +122,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
         </div>
         <div class="field">
           <label class="flabel">Password</label>
-          <input class="finput" id="f-pass" type="password" placeholder="••••••••" autocomplete="current-password" required/>
+          <input class="finput" id="f-pass" type="password" placeholder="Password" autocomplete="current-password" required/>
         </div>
         <div class="row-right" id="forgot-row">
           <button type="button" class="text-btn" onclick="showView('forgot')">Forgot password?</button>
@@ -126,24 +132,20 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
           <div class="spin" id="submit-spin"></div>
         </button>
       </form>
-      <div class="divider">or continue with</div>
+      <div class="divider">or</div>
       <button class="btn-google" onclick="handleGoogle()">
-        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-          <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-          <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
-          <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
-          <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
         Continue with Google
       </button>
       <p class="legal" id="legal-txt">By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
     </div>
+
     <div id="v-forgot" class="view">
-      <button class="back-btn" onclick="showView('main')">← Back to sign in</button>
+      <button class="back-btn" onclick="showView('main')">Back to sign in</button>
       <div class="fgt-title">Reset password</div>
-      <div class="fgt-sub">Enter your email and we'll send a link to set a new password.</div>
+      <div class="fgt-sub">Enter your email and we'll send a reset link.</div>
       <div class="alert a-err" id="fgt-err"></div>
-      <div class="alert a-ok"  id="fgt-ok"></div>
+      <div class="alert a-ok" id="fgt-ok"></div>
       <div class="field">
         <label class="flabel">Email</label>
         <input class="finput" id="fgt-email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email"/>
@@ -153,37 +155,148 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
         <div class="spin" id="fgt-spin"></div>
       </button>
     </div>
+
+    <div id="v-verify" class="view">
+      <div style="text-align:center;padding:12px 0 24px">
+        <div style="font-size:2.5rem;margin-bottom:16px">&#128231;</div>
+        <div class="fgt-title">Check your email</div>
+        <div class="fgt-sub">We sent a verification link to<br/><strong id="verify-email-addr" style="color:var(--text)"></strong><br/>Click it then come back here.</div>
+        <div class="alert a-err" id="verify-err" style="text-align:left"></div>
+        <div class="alert a-ok" id="verify-ok" style="text-align:left"></div>
+        <button class="btn-pri" id="verify-check-btn" onclick="checkVerified()" style="margin-bottom:10px">
+          <span id="verify-check-lbl">I've verified - continue</span>
+          <div class="spin" id="verify-check-spin"></div>
+        </button>
+        <button class="btn-google" onclick="resendVerification()" style="margin-bottom:10px">Resend verification email</button>
+        <button class="back-btn" style="margin:8px auto 0;display:flex;justify-content:center" onclick="auth.signOut().then(function(){showView('main');setMode('signin');})">Use a different account</button>
+      </div>
+    </div>
   </div>
 </div>
 </div>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-firebase.initializeApp({
-  apiKey:"AIzaSyBY_fD1V9-bkYs4hsz_KEGmZi1gA3Pv_70",
-  authDomain:"footprint-eb752.firebaseapp.com",
-  projectId:"footprint-eb752",
-  storageBucket:"footprint-eb752.appspot.com",
-  messagingSenderId:"354485455243",
-  appId:"1:354485455243:web:a119223df4b25a9304478e"
-});
+firebase.initializeApp({apiKey:"AIzaSyBY_fD1V9-bkYs4hsz_KEGmZi1gA3Pv_70",authDomain:"footprint-eb752.firebaseapp.com",projectId:"footprint-eb752",storageBucket:"footprint-eb752.appspot.com",messagingSenderId:"354485455243",appId:"1:354485455243:web:a119223df4b25a9304478e"});
 var auth=firebase.auth(),db=firebase.firestore();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
+
 var mode=new URLSearchParams(location.search).get('signup')==='1'?'signup':'signin';
 setMode(mode);
-function showView(n){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('show');});document.getElementById('v-'+n).classList.add('show');if(n==='forgot'){var em=document.getElementById('f-email').value;if(em)document.getElementById('fgt-email').value=em;hideA('fgt-err');hideA('fgt-ok');}}
-function setMode(m){mode=m;var up=m==='signup';document.getElementById('tab-in').classList.toggle('on',!up);document.getElementById('tab-up').classList.toggle('on',up);document.getElementById('f-title').textContent=up?'Create account':'Welcome back';document.getElementById('f-sub').textContent=up?'Start your 3-day free trial':'Sign in to your Footprint account';document.getElementById('name-field').style.display=up?'block':'none';document.getElementById('forgot-row').style.display=up?'none':'flex';document.getElementById('submit-lbl').textContent=up?'Start free trial':'Sign in';document.getElementById('trial-wrap').style.display=up?'block':'none';document.getElementById('legal-txt').innerHTML=up?'By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.':'By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.';hideA('main-err');hideA('main-ok');}
-function showA(id,msg){var e=document.getElementById(id);e.textContent=msg;e.classList.add('show');}
-function hideA(id){document.getElementById(id).classList.remove('show');}
-function showErr(msg){showA('main-err',msg);hideA('main-ok');}
-function showOk(msg){showA('main-ok',msg);hideA('main-err');}
+auth.onAuthStateChanged(function(user){if(user&&mode==='signin')location.href='app.html';});
+
+function showView(n){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('show');});var el=document.getElementById('v-'+n);if(el)el.classList.add('show');if(n==='forgot'){var em=document.getElementById('f-email').value;if(em)document.getElementById('fgt-email').value=em;hideA('fgt-err');hideA('fgt-ok');}}
+
+function setMode(m){
+  mode=m;var up=m==='signup';
+  document.getElementById('tab-in').classList.toggle('on',!up);
+  document.getElementById('tab-up').classList.toggle('on',up);
+  document.getElementById('f-title').textContent=up?'Create your account':'Welcome back';
+  document.getElementById('f-sub').textContent=up?'Free 3-day trial - no card needed':'Sign in to your Footprint account';
+  document.getElementById('name-field').style.display=up?'block':'none';
+  document.getElementById('forgot-row').style.display=up?'none':'flex';
+  document.getElementById('submit-lbl').textContent=up?'Create account':'Sign in';
+  document.getElementById('legal-txt').innerHTML=up?'By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.':'By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.';
+  hideA('main-err');hideA('main-ok');
+}
+
+function showA(id,msg){var e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show');}}
+function hideA(id){var e=document.getElementById(id);if(e)e.classList.remove('show');}
 function setLoading(on){document.getElementById('submit-btn').disabled=on;document.getElementById('submit-spin').style.display=on?'block':'none';document.getElementById('submit-lbl').style.display=on?'none':'inline';}
-var ERRS={'auth/email-already-in-use':'An account with this email already exists. Sign in instead.','auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts — please wait a moment.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error — check your connection.','auth/popup-blocked':'Popup blocked — please allow popups for this site.'};
-function writeUserDoc(user){db.collection('users').doc(user.uid).set({uid:user.uid,email:user.email,name:user.displayName||'',createdAt:firebase.firestore.FieldValue.serverTimestamp(),plan:'trial',trialEnds:new Date(Date.now()+3*86400000).toISOString(),stripeCustomerId:null,subscriptionStatus:'trialing'},{merge:true}).catch(function(e){console.warn('writeUserDoc:',e);});}
-function afterAuth(user,isNew){if(isNew){writeUserDoc(user);showOk('Account created! Redirecting to billing...');fetch('/api/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid:user.uid,email:user.email,trialDays:3,successUrl:location.origin+'/app.html',cancelUrl:location.origin+'/login.html'})}).then(function(r){return r.json();}).then(function(d){location.href=d.url||'app.html';}).catch(function(){location.href='app.html';});}else{location.href='app.html';}}
-function handleSubmit(e){e.preventDefault();hideA('main-err');hideA('main-ok');setLoading(true);var email=document.getElementById('f-email').value.trim(),pass=document.getElementById('f-pass').value,name=document.getElementById('f-name').value.trim();if(mode==='signup'){auth.createUserWithEmailAndPassword(email,pass).then(function(c){var p=name?c.user.updateProfile({displayName:name}):Promise.resolve();return p.then(function(){afterAuth(c.user,true);});}).catch(function(err){setLoading(false);showErr(ERRS[err.code]||err.message);});}else{auth.signInWithEmailAndPassword(email,pass).then(function(c){afterAuth(c.user,false);}).catch(function(err){setLoading(false);showErr(ERRS[err.code]||err.message);});}}
-function handleGoogle(){hideA('main-err');hideA('main-ok');auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){afterAuth(r.user,r.additionalUserInfo&&r.additionalUserInfo.isNewUser);}).catch(function(err){if(err.code!=='auth/popup-closed-by-user'&&err.code!=='auth/cancelled-popup-request')showErr(ERRS[err.code]||'Google sign-in failed.');});}
-function handleForgot(){var email=document.getElementById('fgt-email').value.trim();hideA('fgt-err');hideA('fgt-ok');if(!email){showA('fgt-err','Please enter your email address.');return;}var btn=document.getElementById('fgt-btn');btn.disabled=true;document.getElementById('fgt-spin').style.display='block';document.getElementById('fgt-lbl').style.display='none';auth.sendPasswordResetEmail(email).then(function(){showA('fgt-ok','Reset link sent to '+email+' — check your inbox and spam folder.');}).catch(function(err){showA('fgt-err',ERRS[err.code]||'Could not send reset email.');}).finally(function(){btn.disabled=false;document.getElementById('fgt-spin').style.display='none';document.getElementById('fgt-lbl').style.display='inline';});}
+
+var ERRS={'auth/email-already-in-use':'An account with this email already exists.','auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts - please wait a moment.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error - check your connection.','auth/popup-blocked':'Popup blocked - please allow popups for this site.'};
+
+function writeUserDoc(user){
+  db.collection('users').doc(user.uid).set({
+    uid:user.uid,email:user.email,name:user.displayName||'',
+    plan:'trial',tier:'solo',subscriptionStatus:'trialing',
+    trialEnds:new Date(Date.now()+3*86400000).toISOString(),
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  },{merge:true}).catch(function(e){console.warn('writeUserDoc:',e);});
+}
+
+function afterAuth(user,isNew){
+  if(isNew){
+    writeUserDoc(user);
+    user.sendEmailVerification().catch(function(){});
+    showVerifyScreen(user.email);
+  } else {
+    if(!user.emailVerified){showVerifyScreen(user.email);return;}
+    location.href='app.html';
+  }
+}
+
+function showVerifyScreen(email){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('show');});
+  document.getElementById('v-verify').classList.add('show');
+  document.getElementById('verify-email-addr').textContent=email;
+}
+
+function handleSubmit(e){
+  e.preventDefault();hideA('main-err');hideA('main-ok');setLoading(true);
+  var email=document.getElementById('f-email').value.trim();
+  var pass=document.getElementById('f-pass').value;
+  var name=document.getElementById('f-name').value.trim();
+  if(mode==='signup'){
+    auth.createUserWithEmailAndPassword(email,pass).then(function(c){
+      var p=name?c.user.updateProfile({displayName:name}):Promise.resolve();
+      return p.then(function(){setLoading(false);afterAuth(c.user,true);});
+    }).catch(function(err){setLoading(false);showA('main-err',ERRS[err.code]||err.message);});
+  } else {
+    auth.signInWithEmailAndPassword(email,pass).then(function(c){setLoading(false);afterAuth(c.user,false);})
+      .catch(function(err){setLoading(false);showA('main-err',ERRS[err.code]||err.message);});
+  }
+}
+
+function handleGoogle(){
+  hideA('main-err');hideA('main-ok');
+  var provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  auth.signInWithPopup(provider).then(function(r){afterAuth(r.user,r.additionalUserInfo&&r.additionalUserInfo.isNewUser);})
+    .catch(function(err){
+      if(err.code==='auth/popup-closed-by-user'||err.code==='auth/cancelled-popup-request')return;
+      showA('main-err',err.code==='auth/account-exists-with-different-credential'?'An account already exists with this email. Please sign in with email and password.':(ERRS[err.code]||'Google sign-in failed.'));
+    });
+}
+
+function handleForgot(){
+  var email=document.getElementById('fgt-email').value.trim();
+  hideA('fgt-err');hideA('fgt-ok');
+  if(!email){showA('fgt-err','Please enter your email address.');return;}
+  var btn=document.getElementById('fgt-btn');
+  btn.disabled=true;document.getElementById('fgt-spin').style.display='block';document.getElementById('fgt-lbl').style.display='none';
+  auth.sendPasswordResetEmail(email).then(function(){showA('fgt-ok','Reset link sent to '+email);})
+    .catch(function(err){showA('fgt-err',ERRS[err.code]||'Could not send reset email.');})
+    .finally(function(){btn.disabled=false;document.getElementById('fgt-spin').style.display='none';document.getElementById('fgt-lbl').style.display='inline';});
+}
+
+function checkVerified(){
+  var btn=document.getElementById('verify-check-btn');
+  btn.disabled=true;document.getElementById('verify-check-spin').style.display='block';document.getElementById('verify-check-lbl').style.display='none';
+  hideA('verify-err');hideA('verify-ok');
+  auth.currentUser.reload().then(function(){
+    var user=auth.currentUser;
+    if(!user){showA('verify-err','Session expired. Please sign in again.');btn.disabled=false;return;}
+    if(user.emailVerified){
+      showA('verify-ok','Email verified! Taking you in...');
+      setTimeout(function(){location.href='app.html';},800);
+    } else {
+      showA('verify-err','Not verified yet. Click the link in your email then try again.');
+      btn.disabled=false;document.getElementById('verify-check-spin').style.display='none';document.getElementById('verify-check-lbl').style.display='inline';
+    }
+  }).catch(function(){
+    showA('verify-err','Could not check verification. Please try again.');
+    btn.disabled=false;document.getElementById('verify-check-spin').style.display='none';document.getElementById('verify-check-lbl').style.display='inline';
+  });
+}
+
+function resendVerification(){
+  var user=auth.currentUser;if(!user)return;
+  user.sendEmailVerification().then(function(){showA('verify-ok','Verification email resent - check your inbox and spam folder.');})
+    .catch(function(err){showA('verify-err',ERRS[err.code]||'Could not resend email.');});
+}
 </script>
 </body>
 </html>

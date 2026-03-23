@@ -25,26 +25,29 @@ export async function onRequestPost(context) {
 
       case 'customer.subscription.created': {
         const uid = data.metadata?.firebaseUid;
+        const tier = data.metadata?.tier || data.metadata?.plan || 'solo';
         if (uid) {
           await updateFirestore(projectId, accessToken, uid, {
             subscriptionStatus:   data.status,
             stripeSubscriptionId: data.id,
             stripeCustomerId:     data.customer,
             trialEnds:            data.trial_end ? new Date(data.trial_end * 1000).toISOString() : null,
-            plan:                 'trial',
+            plan:                 data.status === 'trialing' ? 'trial' : tier,
+            tier,
           });
         }
         break;
       }
 
       case 'invoice.payment_succeeded': {
-        // Fetch the subscription to get firebaseUid from metadata
         const sub = await stripeGet(env.STRIPE_SECRET_KEY, `subscriptions/${data.subscription}`);
         const uid = sub.metadata?.firebaseUid;
+        const tier = sub.metadata?.tier || sub.metadata?.plan || 'solo';
         if (uid) {
           await updateFirestore(projectId, accessToken, uid, {
             subscriptionStatus: 'active',
-            plan: 'pro',
+            plan: tier,
+            tier,
             currentPeriodEnd: new Date(sub.current_period_end * 1000).toISOString(),
           });
         }
@@ -105,6 +108,11 @@ async function verifyStripeSignature(payload, sigHeader, secret) {
     const parts    = sigHeader.split(',');
     const timestamp = parts.find(p => p.startsWith('t=')).slice(2);
     const signature = parts.find(p => p.startsWith('v1=')).slice(3);
+
+    // Reject replayed webhooks older than 5 minutes (Stripe's recommendation)
+    const age = Math.floor(Date.now() / 1000) - Number(timestamp);
+    if (age > 300 || age < -60) return false;
+
     const signedPayload = `${timestamp}.${payload}`;
 
     const key = await crypto.subtle.importKey(
