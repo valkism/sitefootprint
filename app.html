@@ -933,7 +933,7 @@
     </a>
     <div class="topbar-nav">
       <button class="tab-btn on" data-tab="scan">Find Clients</button>
-      <button class="tab-btn" data-tab="crm">Prospects<span class="tab-badge" id="crm-count" style="display:none"></span></button>
+      <button class="tab-btn" data-tab="crm">Leads<span class="tab-badge" id="crm-count" style="display:none"></span></button>
       <button class="tab-btn" data-tab="pipeline">Deals<span class="tab-badge" id="pipeline-count" style="display:none"></span></button>
       <button class="tab-btn" data-tab="analytics">Analytics</button>
       <button class="tab-btn" data-tab="heatmap">Map</button>
@@ -947,7 +947,7 @@
         <span id="status-text">IDLE</span>
       </div>
       <div class="icon-btn" id="theme-btn" title="Cycle theme">◑</div>
-      <div class="icon-btn" id="signout-btn" title="Sign out">⎋</div>
+      <div class="btn btn-ghost btn-sm" id="signout-btn" style="font-size:0.78rem;padding:5px 12px;">Sign out</div>
     </div>
   </div>
 
@@ -1251,9 +1251,9 @@
                 <div class="kanban-header" style="border-top:3px solid #4F46E5">
                   <span class="kanban-dot" style="background:#4F46E5"></span>
                   <span class="kanban-title">Pitched</span>
-                  <span class="kanban-count" id="ptab-count-pitched">0</span>
+                  <span class="kanban-count" id="ptab-count-replied">0</span>
                 </div>
-                <div class="kanban-cards" id="ptab-col-pitched"></div>
+                <div class="kanban-cards" id="ptab-col-replied"></div>
               </div>
 
               <div class="kanban-col">
@@ -1269,9 +1269,9 @@
                 <div class="kanban-header" style="border-top:3px solid #DC2626">
                   <span class="kanban-dot" style="background:#DC2626"></span>
                   <span class="kanban-title">Lost</span>
-                  <span class="kanban-count" id="ptab-count-lost">0</span>
+                  <span class="kanban-count" id="ptab-count-removed">0</span>
                 </div>
-                <div class="kanban-cards" id="ptab-col-lost"></div>
+                <div class="kanban-cards" id="ptab-col-removed"></div>
               </div>
 
             </div>
@@ -3141,8 +3141,8 @@ function renderCard(l){
   const ratingStr=l.rating?`${l.rating}&#9733;`:'N/A';
 
   // Pipeline
-  const pipHtml=['contacted','pitched','won','lost'].map(s=>{
-    const labels={contacted:'Contacted',pitched:'Pitched',won:'Won &#10003;',lost:'Lost'};
+  const pipHtml=['contacted','replied','won'].map(s=>{
+    const labels={contacted:'Contacted',replied:'Replied',won:'Won &#10003;'};
     return `<button class="pip-btn${l.status===s?' active-'+s:''}" data-lead="${l.id}" data-stage="${s}">${labels[s]}</button>`;
   }).join('');
 
@@ -3480,6 +3480,31 @@ function refreshBadge(){const b=document.getElementById('crm-count');const mb=do
 var _analyticsChart=null;
 
 // ── renderPipelineTab: Outreach Dashboard ──
+// Easy Wins toggle
+var _easyWinsOn=false;
+function toggleEasyWins(btn){
+  _easyWinsOn=!_easyWinsOn;
+  if(btn)btn.classList.toggle('on',_easyWinsOn);
+  renderCRM();
+}
+
+// Check overdue follow-ups and update badge
+function checkOverdueFollowups(){
+  var overdue=leads.filter(function(l){
+    return l.followupDate&&new Date(l.followupDate)<new Date()&&l.status!=='won';
+  }).length;
+  // Show red dot on Deals tab if any overdue
+  var dealTab=document.querySelector('.tab-btn[data-tab="pipeline"]');
+  if(dealTab){
+    var existing=dealTab.querySelector('.overdue-dot');
+    if(overdue>0){
+      if(!existing){var dot=document.createElement('span');dot.className='overdue-dot';dot.style.cssText='display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-left:5px;vertical-align:middle;';dealTab.appendChild(dot);}
+    } else {
+      if(existing)existing.remove();
+    }
+  }
+}
+
 function renderPipelineTab(){
   var sort=document.getElementById('pipeline-sort');
   var sortVal=sort?sort.value:'date';
